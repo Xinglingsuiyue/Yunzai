@@ -1,6 +1,6 @@
 # Yunzai
 
-基于 [TRSS-Yunzai](https://github.com/TimeRainStarSky/Yunzai) 与 [Miao-Yunzai](https://github.com/yoimiya-kokomi/Miao-Yunzai)
+基于 [TRSS-Yunzai](https://github.com/TimeRainStarSky/Yunzai)
 
 Yunzai 应用端，支持多账号，支持协议端：OneBotv11、ComWeChat、ICQQ、QQBot、QQ频道、微信、KOOK、Telegram、Discord、OPQBot、Lagrange
 
