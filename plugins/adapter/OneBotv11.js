@@ -17,8 +17,12 @@ Bot.adapter.push(
     sendApi(data, ws, action, params = {}) {
       const echo = ulid()
       const request = { action, params, echo }
+      // 断线后发出的请求不会有任何响应，直接失败，别挂到 60 秒超时
+      if (typeof ws.readyState === "number" && ws.readyState !== 1)
+        return Promise.reject(Bot.makeError("连接已断开", request))
       ws.sendMsg(request)
       const cache = Promise.withResolvers()
+      cache.ws = ws
       this.echo.set(echo, cache)
       const timeout = setTimeout(() => {
         cache.reject(Bot.makeError("请求超时", request, { timeout: this.timeout }))
@@ -26,10 +30,17 @@ Bot.adapter.push(
         ws.terminate()
       }, this.timeout)
 
+      const selfId = data?.self_id
       return cache.promise
         .then(data => {
           if (data.retcode !== 0 && data.retcode !== 1)
             throw Bot.makeError(data.msg || data.wording, request, { error: data })
+          // 发消息类接口成功后累加；这里要按 self_id 找账号实例，
+          // 传进来的 data 是连接报文，不带 stat
+          if (/^(send_msg|send_private_msg|send_group_msg)$/.test(action)) {
+            const bot = Bot[selfId]
+            if (bot?.stat) bot.stat.message_sent = (Number(bot.stat.message_sent) || 0) + 1
+          }
           return data.data
             ? new Proxy(data, {
                 get: (target, prop) => target.data[prop] ?? target[prop],
@@ -977,7 +988,11 @@ Bot.adapter.push(
         sendApi: this.sendApi.bind(this, data, ws),
         stat: {
           start_time: data.time,
+          // 协议端心跳上报的原始 status 放这里，getter 不能再用 this.stat.*，
+          // 那会取到这个空对象自己、永远读到 undefined
           stat: {},
+          message_received: 0,
+          message_sent: 0,
           get lost_pkt_cnt() {
             return this.stat.packet_lost
           },
@@ -985,13 +1000,13 @@ Bot.adapter.push(
             return this.stat.lost_times
           },
           get recv_msg_cnt() {
-            return this.stat.message_received
+            return this.message_received
           },
           get recv_pkt_cnt() {
             return this.stat.packet_received
           },
           get sent_msg_cnt() {
-            return this.stat.message_sent
+            return this.message_sent
           },
           get sent_pkt_cnt() {
             return this.stat.packet_sent
@@ -1052,6 +1067,15 @@ Bot.adapter.push(
       }
       data.bot = Bot[data.self_id]
 
+      // 可选的兼容接口（频道、在线客户端、Cookie 等）缺失或断线时只降级，不中断连接
+      const api = async (action, params) => {
+        try {
+          return await data.bot.sendApi(action, params)
+        } catch (err) {
+          return err?.error ?? null
+        }
+      }
+
       if (!Bot.uin.includes(data.self_id)) Bot.uin.push(data.self_id)
 
       data.bot
@@ -1061,13 +1085,11 @@ Bot.adapter.push(
         })
         .catch(() => {})
 
-      data.bot.info = (await data.bot.sendApi("get_login_info").catch(i => i.error)).data
-      data.bot.guild_info = (
-        await data.bot.sendApi("get_guild_service_profile").catch(i => i.error)
-      ).data
-      data.bot.clients = (await data.bot.sendApi("get_online_clients").catch(i => i.error)).clients
+      data.bot.info = (await api("get_login_info"))?.data ?? {}
+      data.bot.guild_info = (await api("get_guild_service_profile"))?.data ?? {}
+      data.bot.clients = (await api("get_online_clients"))?.clients ?? {}
       data.bot.version = {
-        ...(await data.bot.sendApi("get_version_info").catch(i => i.error)).data,
+        ...((await api("get_version_info"))?.data ?? {}),
         id: this.id,
         name: this.name,
         get version() {
@@ -1075,11 +1097,8 @@ Bot.adapter.push(
         },
       }
 
-      if (
-        (data.bot.cookies["qun.qq.com"] = (
-          await data.bot.sendApi("get_cookies", { domain: "qun.qq.com" }).catch(i => i.error)
-        ).cookies)
-      )
+      data.bot.cookies["qun.qq.com"] = (await api("get_cookies", { domain: "qun.qq.com" }))?.cookies
+      if (data.bot.cookies["qun.qq.com"])
         for (const i of [
           "aq",
           "connect",
@@ -1101,15 +1120,12 @@ Bot.adapter.push(
           "y",
         ]) {
           const domain = `${i}.qq.com`
-          data.bot.cookies[domain] = await data.bot
-            .sendApi("get_cookies", { domain })
-            .then(i => i.cookies)
-            .catch(i => i.error)
+          data.bot.cookies[domain] = (await api("get_cookies", { domain }))?.cookies
         }
-      data.bot.bkn = (await data.bot.sendApi("get_csrf_token").catch(i => i.error)).token
+      data.bot.bkn = (await api("get_csrf_token"))?.token ?? ""
 
-      data.bot.getFriendMap()
-      data.bot.getGroupMemberMap()
+      data.bot.getFriendMap().catch(() => {})
+      data.bot.getGroupMemberMap().catch(() => {})
 
       Bot.makeLog(
         "mark",
@@ -1120,6 +1136,9 @@ Bot.adapter.push(
     }
 
     makeMessage(data) {
+      // 收发统计自己累加：协议端心跳里的 status 往往不带这两个计数，
+      // 只靠它会让面板一直是 0
+      if (data.bot?.stat) data.bot.stat.message_received = (Number(data.bot.stat.message_received) || 0) + 1
       data.message = this.parseMsg(data.message)
       switch (data.message_type) {
         case "private": {
@@ -1438,6 +1457,14 @@ Bot.adapter.push(
           )
           data.bot.getGroupMap()
           break
+        case "bot_status": {
+          const offline = data.sub_type === "offline"
+          data.post_type = "system"
+          data.notice_type = offline ? "offline" : "online"
+          if (data.bot?.stat) data.bot.stat.online = !offline
+          Bot.makeLog("info", `${offline ? "账号下线" : "账号上线"}`, data.self_id)
+          break
+        }
         case "bot_offline":
           data.post_type = "system"
           data.notice_type = "offline"
@@ -1500,6 +1527,9 @@ Bot.adapter.push(
 
     heartbeat(data) {
       if (data.status) Object.assign(data.bot.stat, data.status)
+      // 心跳时间用于判断账号是否仍然在线；间隔由协议端上报（毫秒）
+      data.bot.stat.last_heartbeat = Date.now()
+      if (Number(data.interval) > 0) data.bot.stat.heartbeat_interval = Number(data.interval)
     }
 
     makeMeta(data, ws) {
@@ -1508,7 +1538,13 @@ Bot.adapter.push(
           this.heartbeat(data)
           break
         case "lifecycle":
-          this.connect(data, ws)
+          // SnowLuma 等协议端会先后发 connect 与 enable，同一连接只初始化一次；
+          // disable 表示账号下线，不能当成就绪事件重新握手
+          if (data.sub_type === "disable") {
+            Bot.makeLog("info", "账号已离线", data.self_id)
+            break
+          }
+          if (Bot[data.self_id]?.ws !== ws) this.connect(data, ws)
           break
         default:
           Bot.makeLog("warn", `未知消息：${logger.magenta(data.raw)}`, data.self_id)
@@ -1554,9 +1590,17 @@ Bot.adapter.push(
 
     load() {
       if (!Array.isArray(Bot.wsf[this.path])) Bot.wsf[this.path] = []
-      Bot.wsf[this.path].push((ws, ...args) =>
-        ws.on("message", data => this.message(data, ws, ...args)),
-      )
+      Bot.wsf[this.path].push((ws, ...args) => {
+        ws.on("message", data => this.message(data, ws, ...args))
+        // 断线后挂起的请求不可能再有响应，立刻拒绝，避免逐条等满 60 秒超时
+        ws.on("close", () => {
+          for (const [echo, cache] of this.echo) {
+            if (cache.ws !== ws) continue
+            this.echo.delete(echo)
+            cache.reject(Bot.makeError("连接已断开", { echo }))
+          }
+        })
+      })
     }
   })(),
 )

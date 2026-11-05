@@ -1,5 +1,6 @@
 import cfg from "../../lib/config/config.js"
 import PluginsLoader from "../../lib/plugins/loader.js"
+import { renderStatusImage } from "../../lib/status/index.js"
 import moment from "moment"
 
 export class status extends plugin {
@@ -10,7 +11,7 @@ export class status extends plugin {
       event: "message",
       rule: [
         {
-          reg: "^#(状态|统计)",
+          reg: "^#状态",
           fnc: "status",
         },
       ],
@@ -18,13 +19,12 @@ export class status extends plugin {
   }
 
   async status() {
-    if (!this.e.isMaster)
-      return this.reply(
-        await this.getCount({
-          用户: this.e.user_id,
-          群: this.e.group_id,
-        }),
-      )
+    // 统一渲染成图片，渲染失败回退文本；#状态pro 显示全部账号
+    const wantsPro = /^#状态\s*pro$/i.test(String(this.e.msg || "").trim())
+    // 全部账号属于运维视角，默认只有主人能看，可在 WebUI「其他配置」放开
+    const isPro = wantsPro && (this.e.isMaster || cfg.webui?.statusProForAll === true)
+    const image = await renderStatusImage(this.e, { pro: isPro }).catch(() => null)
+    if (image) return this.reply(segment.image(image))
 
     const msg =
       `—— TRSS Yunzai v${cfg.package.version} ——\n` +
@@ -55,7 +55,7 @@ export class status extends plugin {
   count() {
     const cmd = {
       msg: this.e.msg
-        .replace(/^#(状态|统计)/, "")
+        .replace(/^#状态/, "")
         .trim()
         .split(" "),
     }

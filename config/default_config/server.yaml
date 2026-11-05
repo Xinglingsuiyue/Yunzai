@@ -3,10 +3,10 @@ url: http://localhost:2536
 # 服务器端口
 port: 2536
 # 服务器缺省跳转地址
-redirect: https://git.trss.me/Yunzai
-# 服务器鉴权
+redirect: https://github.com/Xinglingsuiyue/Yunzai
+# 服务器鉴权。请求头格式：Authorization: Bearer <访问令牌>
 auth:
-# Authorization: Bearer <access_token>
+# HTTPS 证书配置
 https:
 # url: https://localhost:2537
 # port: 2537

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>运行状态</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #e8ecf3;
+      --back-bg: #c5ccda;
+      --back-shadow: #ffffff;
+      --text: #514f4f;
+      --sub: #8b8a99;
+      --low: #84A0DF;
+      --w: 104px;
+      --gap: 8px;
+      --stroke: 11px;
+      --inner: calc(var(--w) - var(--gap));
+      --circle: calc(var(--inner) - var(--stroke));
+      --center: calc(var(--circle) - var(--stroke));
+    }
+    html, body { background: transparent; }
+    body {
+      display: inline-block;
+      padding: 16px;
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--text);
+    }
+    #panel { width: {{width}}px; }
+
+    .box {
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      border-radius: 18px;
+      background: var(--bg);
+      box-shadow: 8px 8px 16px var(--back-bg), -8px -8px 16px var(--back-shadow);
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #4a485e;
+    }
+    .title .bar { width: 4px; height: 14px; border-radius: 2px; background: var(--low); }
+
+    /* ---------- Bot ---------- */
+    .botInfo { display: flex; align-items: center; gap: 20px; }
+    .avatarBox { position: relative; flex: none; }
+    .avatar {
+      position: relative;
+      z-index: 0;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: var(--bg);
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
+    /* 头像框：椰奶同款外阴影 + 彩色光晕，边框为圆形；无头像时保留空框 */
+    .avatar::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      z-index: -1;
+      border-radius: inherit;
+      box-shadow: -2px 2px 5px 1px rgba(8, 8, 8, 0.5);
+    }
+    .avatar::after {
+      content: "";
+      position: absolute;
+      inset: -0.8em;
+      z-index: -2;
+      border-radius: inherit;
+      background:
+        radial-gradient(circle at top center, rgba(255, 200, 135, 0.6) 0%, transparent 50%),
+        radial-gradient(circle at top left, rgba(102, 190, 240, 0.6) 0%, transparent 50%),
+        radial-gradient(circle at top right, rgba(255, 100, 100, 0.6) 0%, transparent 50%),
+        radial-gradient(circle at bottom center, rgba(147, 112, 190, 0.6) 0%, transparent 80%);
+      filter: blur(0.4em);
+    }
+    .onlineDot {
+      position: absolute;
+      right: 0;
+      bottom: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+    }
+    .botHead { flex: 1; min-width: 0; }
+    .botName {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #3d3b4f;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9px;
+      font-size: 11.5px;
+      color: #55536b;
+      white-space: nowrap;
+    }
+    .chip b { font-weight: 600; color: #3d3b4f; font-variant-numeric: tabular-nums; }
+    .chip .suffix { margin-left: -2px; font-size: 10.5px; color: var(--sub); }
+    .chip.pink { background: #FBE0F3; }
+    .chip.gray { background: #F0EDF2; }
+    .chip.purple { background: #F1EBFA; }
+    .chip.plain {
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 2px 2px 4px var(--back-bg), -2px -2px 4px var(--back-shadow);
+    }
+    .chip .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ---------- 四格信息 ---------- */
+    .sysBox {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .sysCard {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--bg);
+      box-shadow: 6px 6px 12px var(--back-bg), -6px -6px 12px var(--back-shadow);
+    }
+    .sysTitle { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--sub); }
+    .sysTitle .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--low); }
+    .sysMain {
+      margin-top: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #3d3b4f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sysSub {
+      margin-top: 3px;
+      font-size: 10.5px;
+      color: var(--sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ---------- 资源环 ---------- */
+    .hardware { display: flex; justify-content: space-between; gap: 6px; }
+    .hw { display: flex; flex-direction: column; align-items: center; width: 150px; }
+    .container-box { position: relative; width: var(--w); height: var(--w); }
+    .container-box::after {
+      content: attr(data-num);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+    .circle-outer { position: relative; width: 100%; height: 100%; border-radius: 50%; background: var(--bg); }
+    .circle-outer::before,
+    .circle-outer::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: var(--bg);
+    }
+    .circle-outer::before {
+      width: var(--inner);
+      height: var(--inner);
+      box-shadow: inset 8px 8px 10px var(--back-bg), inset -4px -4px 8px var(--back-shadow);
+    }
+    .circle-outer::after {
+      width: var(--center);
+      height: var(--center);
+      box-shadow: 6px 6px 8px var(--back-bg), -2px -2px 8px var(--back-shadow);
+    }
+    .container-box svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .container-box svg circle {
+      cy: calc(var(--circle) / 2);
+      cx: calc(var(--circle) / 2);
+      r: calc(var(--circle) / 2);
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: var(--stroke);
+      --z: calc(var(--w) / 2);
+      --c: calc(var(--circle) / 2);
+      transform: translate(calc(var(--z) - var(--c)), calc(var(--z) - var(--c)));
+      stroke-dasharray: calc(3.14 * var(--circle));
+    }
+    .hwTitle { margin-top: 8px; font-size: 15px; font-weight: 700; color: #3d3b4f; }
+    .hwDetail {
+      font-size: 11px;
+      color: #5f5d5d;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hwInfo { margin-top: 4px; font-size: 10.5px; color: #2f4f4f; text-align: center; }
+
+    /* ---------- 磁盘 ---------- */
+    .diskRow {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+      margin-bottom: 12px;
+    }
+    .diskRow:last-child { margin-bottom: 0; }
+    .diskRight { flex: 1; min-width: 0; }
+    .diskTop { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+    .mount { font-size: 16px; font-weight: 700; color: #3d3b4f; }
+    .diskSize { font-size: 12px; color: var(--sub); font-variant-numeric: tabular-nums; }
+    .barTrack {
+      height: 9px;
+      margin: 9px 0 8px;
+      border-radius: 5px;
+      background: var(--bg);
+      box-shadow: inset 2px 2px 4px var(--back-bg), inset -2px -2px 4px var(--back-shadow);
+      overflow: hidden;
+    }
+    .barFill { height: 100%; border-radius: 5px; }
+    .diskLegend { display: flex; gap: 16px; font-size: 10.5px; color: var(--sub); }
+    .legendDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
+
+    /* ---------- 网络 ---------- */
+    .chart {
+      padding: 10px 12px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+    }
+    .chart svg { width: 100%; height: 96px; display: block; }
+    .grid { stroke: rgba(140, 150, 170, 0.22); stroke-width: 1; stroke-dasharray: 4 4; }
+    .lineDown { fill: none; stroke: var(--low); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+    .lineUp { fill: none; stroke: #e0be92; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+    .chartFoot { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--sub); }
+    .netGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+    .netTile {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+    }
+    .netTile .k { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--sub); }
+    .netTile .k i { width: 6px; height: 6px; border-radius: 50%; }
+    .netTile .v { margin-top: 5px; font-size: 17px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
+    .netTile .unit { margin-left: 3px; font-size: 10.5px; font-weight: 400; color: var(--sub); }
+
+    /* ---------- Redis ---------- */
+    .redisGrid { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 12px; }
+    .redisPanel {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+    }
+    .redisRow { display: flex; justify-content: space-between; padding: 2px 0; font-size: 11.5px; color: var(--sub); }
+    .redisRow b { color: #3d3b4f; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .redisRow b.running { color: #4caf82; }
+    .panelLabel { font-size: 10.5px; color: var(--sub); }
+    .big { margin-top: 6px; font-size: 20px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
+    .panelFoot { display: flex; justify-content: space-between; margin-top: 7px; font-size: 10px; color: var(--sub); }
+    .spark { width: 100%; height: 26px; display: block; margin-top: 4px; }
+    .spark polyline { fill: none; stroke: var(--low); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+    .keyspace { margin-top: 12px; }
+    .ksRow { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; padding: 6px 10px; font-size: 11px; border-radius: 7px; }
+    .ksRow.head { color: var(--sub); font-size: 10.5px; }
+    .ksRow:not(.head) { margin-top: 5px; background: rgba(255, 255, 255, 0.55); }
+    .ksRow span:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+    .healthTitle {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(140, 150, 170, 0.18);
+      font-size: 11px;
+      color: var(--sub);
+    }
+    .healthGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px 14px; margin-top: 8px; }
+    .healthItem { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+    .healthItem .dot { width: 5px; height: 5px; border-radius: 50%; flex: none; }
+    .healthItem .dot.ok { background: #4caf82; }
+    .healthItem .dot.bad { background: #d73403; }
+    .healthItem .k { color: var(--sub); }
+    .healthItem .v { margin-left: auto; color: #3d3b4f; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    /* ---------- 进程 ---------- */
+    .procCounts { display: flex; gap: 22px; padding: 0 2px 11px; font-size: 12px; color: var(--sub); }
+    .procCounts b { margin-left: 5px; font-size: 13px; color: #4a485e; font-variant-numeric: tabular-nums; }
+    .procCounts b.ok { color: #54ad57; }
+    .procCounts b.warn { color: #cc8823; }
+    .procCounts b.info { color: #3698e8; }
+    .procTable {
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+    }
+    .procRow {
+      display: grid;
+      grid-template-columns: 1fr 100px 70px 100px;
+      gap: 6px;
+      padding: 5px 0;
+      font-size: 11.5px;
+      color: #3d3b4f;
+      border-bottom: 1px solid rgba(140, 150, 170, 0.12);
+    }
+    .procRow span {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .procRow span:not(.name) { text-align: right; color: #55536b; }
+    .procRow .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .procRow.head { color: var(--sub); font-size: 10.5px; border-bottom: none; }
+    .procRow.head span { color: var(--sub); }
+    .procRow.state-running .name { color: #54ad57; }
+    .procRow.state-blocked .name { color: #d73403; }
+    .procRow:last-child { border-bottom: none; }
+    .procHr { height: 1px; background: rgba(140, 150, 170, 0.28); margin: 4px 0; }
+
+    /* ---------- 系统信息 ---------- */
+    .fastGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 16px; }
+    .fastRow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.45);
+      font-size: 11.5px;
+    }
+    .fastKey { display: flex; align-items: center; gap: 6px; flex: none; width: 68px; color: var(--sub); }
+    .fastKey i { width: 7px; height: 7px; border-radius: 50%; }
+    .fastVal {
+      flex: 1;
+      text-align: right;
+      color: #3d3b4f;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ---------- 页脚 ---------- */
+    .foot {
+      margin-top: 2px;
+      text-align: center;
+      font-size: 10px;
+      color: #9a98ab;
+      font-family: Consolas, monospace;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    {{each bots}}
+    <div class="box">
+      <div class="botInfo">
+        <div class="avatarBox">
+          <div class="avatar">
+            {{if $value.avatar}}
+            <img src="{{$value.avatar}}" />
+            {{/if}}
+          </div>
+          <span class="onlineDot" style="background:{{$value.statusColor}}"></span>
+        </div>
+        <div class="botHead">
+          <div class="botName">
+            {{$value.nickname}}
+          </div>
+          <div class="chips">
+            <span class="chip gray"><b>{{$value.loginProtocol}}</b></span>
+            {{if $value.protocolVersion}}<span class="chip gray"><b>{{$value.protocolVersion}}</b></span>{{/if}}
+            {{if $value.botRuntime}}<span class="chip purple">{{$value.botRuntime}}</span>{{/if}}
+          </div>
+          <div class="chips">
+            <span class="chip plain"><b>{{$value.friendCount}}</b><span class="suffix">好友</span></span>
+            <span class="chip plain"><b>{{$value.groupCount}}</b><span class="suffix">群组</span></span>
+            <span class="chip plain"><b>{{$value.groupMemberCount}}</b><span class="suffix">群员</span></span>
+            <span class="chip plain"><b>{{$value.recvCount}}</b><span class="suffix">收</span></span>
+            <span class="chip plain"><b>{{$value.sendCount}}</b><span class="suffix">发</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+    <div class="sysBox">
+      {{each infoCards}}
+      <div class="sysCard">
+        <div class="sysTitle"><span class="dot"></span>{{$value.title}}</div>
+        <div class="sysMain">{{$value.main}}</div>
+        {{if $value.secondary}}<div class="sysSub">{{$value.secondary}}</div>{{/if}}
+      </div>
+      {{/each}}
+    </div>
+
+    <div class="box" style="margin-top:14px">
+      <div class="title"><span class="bar"></span>资源使用</div>
+      <div class="hardware">
+        {{each resources}}
+        <div class="hw">
+          <div class="container-box" data-num="{{$value.inner}}">
+            <div class="circle-outer"></div>
+            <svg><circle stroke="{{$value.color}}" style="stroke-dashoffset:{{$value.dash}}"></circle></svg>
+          </div>
+          <div class="hwTitle">{{$value.title}}</div>
+          {{if $value.detailed}}<div class="hwDetail">{{$value.detailed}}</div>{{/if}}
+          {{each $value.info line}}
+          <div class="hwInfo">{{line}}</div>
+          {{/each}}
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    {{if hasDisks}}
+    <div class="box">
+      <div class="title"><span class="bar"></span>磁盘使用</div>
+      {{each disks}}
+      <div class="diskRow">
+        <div class="container-box" data-num="{{$value.percent}}%">
+          <div class="circle-outer"></div>
+          <svg><circle stroke="{{$value.color}}" style="stroke-dashoffset:{{$value.dash}}"></circle></svg>
+        </div>
+        <div class="diskRight">
+          <div class="diskTop">
+            <span class="mount">{{$value.mount}}</span>
+            <span class="diskSize">{{$value.used}} / {{$value.size}}</span>
+          </div>
+          <div class="barTrack"><div class="barFill" style="width:{{$value.percent}}%;background:{{$value.color}}"></div></div>
+          <div class="diskLegend">
+            <span><i class="legendDot" style="background:{{$value.color}}"></i>已使用 {{$value.used}}</span>
+            <span><i class="legendDot" style="background:#8E8691"></i>未使用 {{$value.available}}</span>
+            <span>文件系统 {{$value.type}}</span>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    <div class="box">
+      <div class="title"><span class="bar"></span>网络状态</div>
+      {{if network.chart}}
+      <div class="chart">
+        <svg viewBox="0 0 600 96" preserveAspectRatio="none">
+          <line x1="0" y1="10" x2="600" y2="10" class="grid" />
+          <line x1="0" y1="50" x2="600" y2="50" class="grid" />
+          <line x1="0" y1="90" x2="600" y2="90" class="grid" />
+          <polyline points="{{network.chart.down}}" class="lineDown" />
+          <polyline points="{{network.chart.up}}" class="lineUp" />
+        </svg>
+        <div class="chartFoot">
+          <span>下载 / 上传</span>
+          <span>峰值 {{network.chart.max}}</span>
+          <span>最近 {{network.chart.span}}</span>
+        </div>
+      </div>
+      {{/if}}
+      <div class="netGrid">
+        <div class="netTile">
+          <div class="k"><i style="background:#e0be92"></i>上传速度</div>
+          <div class="v">{{network.up.size}}<span class="unit">{{network.up.unit}}/s</span></div>
+        </div>
+        <div class="netTile">
+          <div class="k"><i style="background:var(--low)"></i>下载速度</div>
+          <div class="v">{{network.down.size}}<span class="unit">{{network.down.unit}}/s</span></div>
+        </div>
+        <div class="netTile">
+          <div class="k"><i style="background:#e0be92"></i>上传量</div>
+          <div class="v">{{network.tx.size}}<span class="unit">{{network.tx.unit}}</span></div>
+        </div>
+        <div class="netTile">
+          <div class="k"><i style="background:var(--low)"></i>下载量</div>
+          <div class="v">{{network.rx.size}}<span class="unit">{{network.rx.unit}}</span></div>
+        </div>
+      </div>
+    </div>
+
+    {{if hasRedis}}
+    <div class="box">
+      <div class="title"><span class="bar"></span>Redis 服务器</div>
+      <div class="redisGrid">
+        <div class="redisPanel">
+          <div class="redisRow"><span>状态</span><b class="running">运行中</b></div>
+          <div class="redisRow"><span>版本</span><b>{{redis.version}}</b></div>
+          <div class="redisRow"><span>运行时间</span><b>{{redis.uptime}}</b></div>
+          <div class="redisRow"><span>客户端</span><b>{{redis.clients}}</b></div>
+          <div class="redisRow"><span>阻塞</span><b>{{redis.blocked}}</b></div>
+        </div>
+        <div class="redisPanel">
+          <div class="panelLabel">内存使用{{if !redis.maxmemory}}（未设置限制）{{/if}}</div>
+          <div class="big">{{redis.used}}</div>
+          <div class="barTrack"><div class="barFill" style="width:{{redis.usagePercent}}%;background:{{redis.usageColor}}"></div></div>
+          <div class="panelFoot">
+            <span>{{if redis.maxmemory}}限制 {{redis.maxmemory}}{{else}}占用物理内存 {{redis.usagePercent}}%{{/if}}</span>
+            <span>峰值 {{redis.peak}}</span>
+          </div>
+        </div>
+        <div class="redisPanel">
+          <div class="panelLabel">连接数</div>
+          <div class="big">{{redis.clients}}</div>
+          {{if redis.chart}}
+          <svg class="spark" viewBox="0 0 120 26" preserveAspectRatio="none"><polyline points="{{redis.chart}}" /></svg>
+          {{/if}}
+          <div class="panelFoot"><span>客户端 {{redis.clients}}</span><span>阻塞 {{redis.blocked}}</span></div>
+        </div>
+      </div>
+      {{if redis.keyspace.length}}
+      <div class="keyspace">
+        <div class="ksRow head"><span>DB</span><span>Keys</span><span>Expires</span><span>Avg ttl</span></div>
+        {{each redis.keyspace}}
+        <div class="ksRow"><span>{{$value.db}}</span><span>{{$value.keys}}</span><span>{{$value.expires}}</span><span>{{$value.avgTtl}}</span></div>
+        {{/each}}
+      </div>
+      {{/if}}
+      <div class="healthTitle">健康统计</div>
+      <div class="healthGrid">
+        {{each redis.health}}
+        <div class="healthItem">
+          <span class="dot {{$value.ok ? 'ok' : 'bad'}}"></span>
+          <span class="k">{{$value.label}}</span>
+          <span class="v">{{$value.value}}</span>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+
+    <div class="box">
+      <div class="title"><span class="bar"></span>进程信息</div>
+      <div class="procCounts">
+        <div>全部<b>{{processInfo.counts.all}}</b></div>
+        <div>运行中<b class="ok">{{processInfo.counts.running}}</b></div>
+        <div>阻塞<b class="warn">{{processInfo.counts.blocked}}</b></div>
+        <div>休眠<b class="info">{{processInfo.counts.sleeping}}</b></div>
+        <div>未知<b>{{processInfo.counts.unknown}}</b></div>
+      </div>
+      <div class="procTable">
+        <div class="procRow head"><span class="name">Name</span><span>Pid</span><span>CPU</span><span>MEM</span></div>
+        {{each processInfo.list}}
+        {{if $value.hr}}
+        <div class="procHr"></div>
+        {{else}}
+        <div class="procRow state-{{$value.state}}">
+          <span class="name">{{$value.name}}</span>
+          <span>{{$value.pid}}</span>
+          <span>{{$value.cpu}}</span>
+          <span>{{$value.mem}}</span>
+        </div>
+        {{/if}}
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="title"><span class="bar"></span>系统信息</div>
+      <div class="fastGrid">
+        {{each fastInfo}}
+        <div class="fastRow">
+          <span class="fastKey"><i style="background:{{$value.color}}"></i>{{$value.key}}</span>
+          <span class="fastVal">{{$value.value}}</span>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="foot">
+      <div>{{footer.line1}}</div>
+      <div>{{footer.line2}}</div>
+    </div>
+  </div>
+</body>
+</html>

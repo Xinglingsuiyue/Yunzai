@@ -1,5 +1,7 @@
 # 日志等级 trace,debug,info,warn,fatal,mark,error,off
 log_level: info
+# 群日志
+log_file: false
 # 单条日志长度
 log_length: 10000
 # 对象日志格式
@@ -43,6 +45,3 @@ chromium_path:
 puppeteer_ws:
 # puppeteer截图超时时间
 puppeteer_timeout:
-
-# 米游社接口代理地址，国际服用
-proxyAddress:

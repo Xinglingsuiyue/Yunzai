@@ -1,0 +1,28 @@
+# ===================== WebUI =====================
+# 是否启用 WebUI
+enable: true
+# 访问路径
+path: "/webui"
+# 访问令牌
+# 留空 仅允许本机访问
+token: ""
+# 是否允许通过控制台修改
+allowWrite: true
+# 日志页面最多显示的日志行数。20-2000，默认 300
+logLines: 300
+# 状态图清晰度倍数：1 标准 / 1.5 高清 / 2 超清 / 3 极致
+statusImageScale: 2
+# 允许非主人使用 #状态pro 查看全部账号
+statusProForAll: false
+
+# ===================== 快捷登录 =====================
+# 登录指令。留空默认 #云崽登录，添加后默认不再响应
+loginCommands: []
+# 禁用 #云崽登录
+disableDefaultLoginCommand: false
+# 自定义地址。手填域名或反代地址，支持多个
+customAddresses: []
+# 只发送自定义地址（关闭后才会附带内网与外网地址）
+onlyCustomAddress: false
+# 在群里发送指令时，是否直接在群里回复面板地址
+loginInGroup: false

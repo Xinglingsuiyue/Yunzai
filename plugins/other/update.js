@@ -20,6 +20,7 @@ export class update extends plugin {
         {
           reg: "^#(安?静)?(强制)?更新",
           fnc: "update",
+          permission: "master",
         },
         {
           reg: "^#全部(安?静)?(强制)?更新$",

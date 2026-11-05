@@ -1,0 +1,112 @@
+# ===================== AI 模块配置 =====================
+# AI 开关
+enabled: false
+# 旧版单渠道密钥，留空即可，渠道密钥请在「AI 管理 → 渠道」维护
+apiKey: ""
+# 旧版接口地址，未选择渠道时作为后备
+baseURL: "https://api.openai.com/v1"
+# 旧版默认模型，未选择渠道时作为后备
+model: "gpt-4o-mini"
+# 请求超时时间（毫秒）
+timeout: 60000
+# 请求失败重试次数
+maxRetries: 3
+
+# ===================== 上下文 =====================
+# 上下文窗口上限（token）
+maxContextTokens: 32000
+# 保留的历史对话轮数，0 为不保留历史（只带当前消息）
+maxHistoryTurns: 20
+# 是否自动压缩超长上下文
+enableCompression: true
+# 超过该 token 数开始压缩；高于上下文上限的 90% 时按 90% 生效
+compressionThreshold: 16000
+# 压缩时保留的最近轮数
+compressionKeepRecentTurns: 6
+# 压缩摘要的最大长度
+compressionSummaryMaxLength: 800
+# 工具调用轮数
+maxToolRounds: 5
+# 单条消息最多附带给模型的图片数（转发/引用常带多张）
+maxImagesPerMessage: 10
+# 单条消息附图的总字节上限，超出后不再追加
+maxImageBytesPerMessage: 12582912
+
+# ===================== 触发方式 =====================
+# 私聊是否启用
+privateChat: false
+# 私聊白名单：填写后只响应这些 QQ，留空表示不限制
+privateWhitelist: []
+# 私聊黑名单：填写后的 QQ 一律不响应
+privateBlacklist: []
+# 群聊是否启用
+groupChat: false
+# 是否响应 @ 机器人
+triggerAt: false
+# 是否响应群别名前缀（在群设置里配置 botAlias）
+triggerPrefix: false
+# 是否响应关键词触发
+triggerKeyword: false
+# 是否启用自由判断（由小模型决定要不要插话）
+triggerFree: false
+# 关键词列表
+triggerKeywords: []
+# 旧版单选触发模式，仅用于兼容；新配置请用上面的开关
+groupTrigger: ""
+# 回复时是否引用原消息
+replyQuote: false
+# 是否响应别人戳一戳
+pokeReply: false
+# 主人发言时无需 @ /前缀
+masterFree: false
+# 自由模式判定模型
+freeJudgeModel: ""
+# 自由模式判定回复上限（token）
+freeJudgeMaxTokens: 128
+# 自由模式判定超时时间（毫秒）
+freeJudgeTimeout: 15000
+# 同一用户在同一群的冷却时间（秒），0 为不冷却
+freeUserCooldown: 60
+# 每个群每分钟最多主动回复次数，0 为不限制
+freeMaxPerMinute: 6
+# 忽略的消息最短长度，0 为不限制
+freeMinLength: 4
+# 忽略以这些前缀开头的消息
+freeIgnorePrefixes: [ "#", "*", "/", "＃", "＊" ]
+# 同一人连发多条时，等待多久合并成一轮（毫秒），0 为不合并
+mergeWindowMs: 800
+
+# ===================== 工具 =====================
+# 自动把插件规则注册为 AI 工具（默认关闭，可在「工具配置」页开启）
+autoRegisterTools: false
+# 工具按需加载：先检索工具，下一轮请求只携带检索到的工具
+lazyTools: true
+# 每次请求最多携带的工具数，0 为不限制
+maxToolsPerRequest: 64
+# 工具结果返回给模型的最大字符数，0 为不限制
+toolResultMaxLength: 4000
+# 禁止 AI 调用的工具名列表
+disabledTools: []
+# 禁止 AI 调用的插件名列表
+disabledToolPlugins: []
+
+# ===================== 知识库 =====================
+# 启用知识库
+enableKnowledgeBase: true
+# 知识库存放路径（控制台数据统一在 data/webui）
+kbStoragePath: "data/webui/ai_knowledge.json"
+# 容量满时冷条目的归档文件，而不是直接删除
+kbArchivePath: "data/webui/ai_knowledge_archive.ndjson"
+# 知识库最多保存的条目数
+kbMaxEntries: 1000
+# 单条知识的最大字符数
+kbMaxEntrySize: 10000
+# 超过该天数未访问视为冷条目，优先归档
+kbColdAfterDays: 180
+# 检索排序的时间衰减半衰期（天）
+kbRecencyHalfLifeDays: 90
+# 内容相似度达到该值自动合并（0~1）
+kbMergeSimilarity: 0.85
+
+# 主人称呼，用于预设提示词里的 {master_name} 占位符
+masterName: ""

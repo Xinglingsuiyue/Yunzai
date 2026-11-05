@@ -2,21 +2,15 @@ import { Restart } from "./restart.js"
 
 let insing = false
 const list = {
-  Atlas: "https://gitee.com/Nwflower/atlas",
-  genshin: "https://git.trss.me/Yunzai-genshin",
   "DF-Plugin": "https://gitee.com/DenFengLai/DF-Plugin",
   "ws-plugin": "https://gitee.com/xiaoye12123/ws-plugin",
   "TRSS-Plugin": "https://git.trss.me/TRSS-Plugin",
-  "miao-plugin": "https://gitcode.com/TimeRainStarSky/miao-plugin.git",
   "Philia-Plugin": "https://org.trss.me/Yunzai-Philia-Plugin",
   "Guoba-Plugin": "https://gitee.com/guoba-yunzai/guoba-plugin",
   "yenai-plugin": "https://gitee.com/yeyang52/yenai-plugin",
-  "flower-plugin": "https://gitee.com/Nwflower/flower-plugin",
   "xianyu-plugin": "https://gitee.com/suancaixianyu/xianyu-plugin",
   "earth-k-plugin": "https://gitee.com/SmallK111407/earth-k-plugin",
   "useless-plugin": "https://gitee.com/SmallK111407/useless-plugin",
-  "StarRail-plugin": "https://gitee.com/hewang1an/StarRail-plugin",
-  "xiaoyao-cvs-plugin": "https://gitcode.com/TimeRainStarSky/xiaoyao-cvs-plugin.git",
   "trss-xianxin-plugin": "https://gitee.com/snowtafir/xianxin-plugin",
   "Telegram-Plugin": "https://git.trss.me/Yunzai-Telegram-Plugin",
   "Discord-Plugin": "https://git.trss.me/Yunzai-Discord-Plugin",

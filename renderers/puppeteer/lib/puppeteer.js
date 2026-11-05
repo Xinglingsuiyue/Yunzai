@@ -199,6 +199,13 @@ export default class Puppeteer extends Renderer {
 
     try {
       page = await this.browser.newPage()
+      // 单次渲染可提高设备像素比（状态图清晰度），版式尺寸不变
+      const renderScale = Math.min(3, Math.max(1, Number(data.scale) || 1))
+      if (renderScale > 1)
+        await page.setViewport({
+          ...(page.viewport() || { width: 800, height: 600 }),
+          deviceScaleFactor: renderScale,
+        })
       const pageGotoParams = { ...this.pageGotoParams, ...data.pageGotoParams }
       await page.goto(`file://${_path}${lodash.trim(savePath, ".")}`, pageGotoParams)
       const body = (await page.$("#container")) || (await page.$("body"))

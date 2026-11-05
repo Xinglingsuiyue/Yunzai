@@ -1,0 +1,102 @@
+# ===================== 帮助面板 =====================
+# 本文件就是帮助面板的自定义配置：修改后保存，发送 #帮助 立即生效
+# 皮肤放在 resources/help/theme/<名称>/，可包含 main.png、bg.jpg、theme.yaml、theme.css
+helpCfg:
+  # 面板标题
+  title: "帮助"
+  # 副标题，留空不显示
+  subTitle: "发送 #帮助 关键词 可筛选功能"
+  # 每行列数，2-5
+  colCount: 3
+  # 单列宽度，100-500
+  colWidth: 265
+  # 皮肤：all 随机使用全部皮肤，也可填写皮肤名或名称列表
+  theme: "all"
+  # 随机皮肤时排除的名称
+  themeExclude:
+    - default
+  # 面板背景毛玻璃
+  bgBlur: true
+  # 帮助图表格框：显示分组与单元格的边框
+  tableBorder: false
+  # 页脚签名，留空显示 Created By TRSS-Yunzai；版本号自动追加
+  footer: ""
+  # 强调色：分组标记与筛选标签
+  accentColor: ""
+  # 标题与功能名颜色
+  fontColor: ""
+  # 标题阴影（CSS text-shadow，可点下方预设）
+  fontShadow: ""
+  # 说明文字颜色
+  descColor: ""
+  # 说明文字阴影（CSS text-shadow，可点下方预设）
+  descShadow: ""
+  # 分组底色
+  contBgColor: ""
+  # 分组毛玻璃强度，单位像素
+  contBgBlur: ""
+  # 分组标题栏底色
+  headerBgColor: ""
+  # 行底色（交替）
+  rowBgColor1: ""
+  # 行底色（交替）
+  rowBgColor2: ""
+
+# 分组按顺序渲染；auth 可填 master（仅主人）或 admin（管理员与主人）
+helpList:
+  - group: 常用
+    list:
+      - icon: 📖
+        title: "#帮助"
+        desc: 查看本帮助面板
+      - icon: 🔎
+        title: "#帮助 关键词"
+        desc: 按关键词筛选功能
+      - icon: 🎭
+        title: "#persona"
+        desc: 查看人格列表，管理员可切换
+      - icon: 🖥
+        title: "#状态"
+        desc: 查看机器人运行状态
+  - group: 智能对话
+    list:
+      - icon: 🎚
+        title: "#persona 预设名"
+        desc: 切换本群/本私聊的人格
+      - icon: ↩️
+        title: "#persona 默认"
+        desc: 恢复跟随主人格
+      - icon: 🧠
+        title: "#我的记忆"
+        desc: 查看你的回忆
+      - icon: 🗑
+        title: "#清除记忆"
+        desc: 清空你的回忆
+      - icon: 📝
+        title: "#群聊总结"
+        desc: 总结本群近期聊天
+      - icon: 📊
+        title: "#对话状态"
+        desc: 查看当前会话的人格、模型与轮数
+      - icon: 🛑
+        title: "#结束对话"
+        desc: 清空当前会话上下文
+    auth: master
+  - group: 管理
+    auth: master
+    list:
+      - icon: 🔑
+        title: "#云崽登录"
+        desc: 获取带一次性登录码的 WebUI 地址
+      - icon: 📄
+        title: "#版本"
+        desc: 查看当前框架版本
+      - icon: 🔄
+        title: "#重启"
+        desc: 重启机器人
+      - icon: ⏹
+        title: "#关机"
+        desc: 停止运行，也可用
+      - icon: ⬆️
+        title: "#更新"
+        desc: 更新框架与插件

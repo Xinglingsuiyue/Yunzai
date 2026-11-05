@@ -176,6 +176,12 @@ export default class Shotium extends Renderer {
    * @return img 不做 segment 包裹；multiPage 时返回数组；失败返回 false
    */
   async screenshot(name, data = {}) {
+    // 同一模板文件被并发渲染时，后写会覆盖前者正在读取的 HTML，必须按模板路径串行
+    return Renderer.withTpl(name, data, () => this.captureScreenshot(name, data))
+  }
+
+  /** 执行已取得模板路径锁的截图 */
+  async captureScreenshot(name, data = {}) {
     const savePath = this.dealTpl(name, data)
     if (!savePath) return false
 
@@ -187,7 +193,8 @@ export default class Shotium extends Renderer {
       file: pathToFileURL(path.resolve(_path, savePath)).href,
       type,
       viewport: { ...this.config.viewport },
-      scale: this.config.scale,
+      // 单次渲染可覆盖设备像素比（状态图清晰度），不传时跟随全局配置
+      scale: Math.min(8, Math.max(0.01, Number(data.scale) || this.config.scale)),
       pageGotoParams: this.gotoParams(data.pageGotoParams),
       /** 模板通过相对路径引用各插件 resources 目录下的图片和字体，file:// 文档必须放开子资源读取 */
       allowFileAccess: true,

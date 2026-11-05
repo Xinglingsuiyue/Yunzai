@@ -1,39 +1,22 @@
-let App, Common, Version
-try {
-  App = (await import("#miao")).App
-  Common = (await import("#miao")).Common
-  Version = (await import("#miao")).Version
-} catch {}
+import fs from "node:fs"
 
-export let version = {}
-if (App) {
-  let app = App.init({
-    id: "version",
-    name: "版本",
-    desc: "版本",
-  })
+const { version: botVersion } = JSON.parse(
+  fs.readFileSync(new URL("../../package.json", import.meta.url), "utf8"),
+)
 
-  app.reg({
-    version: {
-      rule: /^#版本$/,
-      desc: "【#帮助】 版本介绍",
-      fn: async function (e) {
-        let { changelogs, currentVersion } = Version.readLogFile("root")
-        return await Common.render(
-          "help/version-info",
-          {
-            currentVersion,
-            changelogs,
-            name: "TRSS-Yunzai",
-            elem: "cryo",
-            pluginName: false,
-            pluginVersion: false,
-          },
-          { e, scale: 1.2 },
-        )
-      },
-    },
-  })
+export class version extends plugin {
+  constructor() {
+    super({
+      name: "版本",
+      dsc: "#版本",
+      event: "message",
+      priority: 10,
+      rule: [{ reg: /^#版本$/, fnc: "version" }],
+    })
+  }
 
-  version = app.v3App()
+  async version() {
+    await this.reply(`TRSS-Yunzai v${botVersion}\nhttps://github.com/Xinglingsuiyue/Yunzai`)
+    return true
+  }
 }

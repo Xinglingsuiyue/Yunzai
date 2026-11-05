@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f6f6f7" />
+  <title>Yunzai 控制台</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2317171a'/%3E%3Cpath d='M32 14l4.6 12.4L49 31l-12.4 4.6L32 48l-4.6-12.4L15 31l12.4-4.6z' fill='white'/%3E%3C/svg%3E" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("yunzai-webui-theme");
+        var theme = stored || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+      } catch (error) {
+        document.documentElement.dataset.theme = "light";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/><path d="M5 17.5 5.75 19.25 7.5 20l-1.75.75L5 22.5l-.75-1.75L2.5 20l1.75-.75L5 17.5Z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3Z"/></symbol>
+  <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M19 7h-3V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v3a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-3h3a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76V6a3 3 0 0 1 6 0v4.76a2 2 0 0 0 .53 1.36l2.1 2.21A1 1 0 0 1 16.9 16H7.1a1 1 0 0 1-.73-1.67l2.1-2.21A2 2 0 0 0 9 10.76Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><path d="M8 13h.01"/><path d="M16 13h.01"/><path d="M9 17h6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 3.9"/><path d="M6.3 6.8A17.4 17.4 0 0 0 2 12s3.6 7 10 7a10.6 10.6 0 0 0 4.2-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12v7c0 1.66 3.58 3 8 3s8-1.34 8-3v-7"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h9"/><circle cx="16" cy="6" r="2.5"/><path d="M18.5 6H20"/><path d="M4 12h3"/><circle cx="9.5" cy="12" r="2.5"/><path d="M12 12h8"/><path d="M4 18h9"/><circle cx="16" cy="18" r="2.5"/><path d="M18.5 18H20"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3"/><path d="M13 15h4"/></symbol>
+</svg>
+
+<div class="app">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <button class="brand" type="button" data-nav="dashboard" aria-label="返回仪表盘">
+      <span class="brand-mark"><svg class="icon"><use href="#i-spark"></use></svg></span>
+      <span class="brand-text"><strong>Yunzai</strong><small>BOT CONSOLE</small></span>
+    </button>
+
+    <nav class="nav">
+      <div class="nav-group" data-nav-group="work">
+        <button class="nav-head" type="button">工作台 <svg class="icon"><use href="#i-chevron"></use></svg></button>
+        <div class="nav-items">
+          <button class="nav-item active" type="button" data-nav="dashboard">
+            <svg class="icon"><use href="#i-grid"></use></svg>仪表盘
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-nav-group="config">
+        <button class="nav-head" type="button">配置管理 <svg class="icon"><use href="#i-chevron"></use></svg></button>
+        <div class="nav-items">
+          <button class="nav-item" type="button" data-nav="config-basic">
+            <svg class="icon"><use href="#i-settings"></use></svg>基础配置
+          </button>
+          <button class="nav-item" type="button" data-nav="config-group">
+            <svg class="icon"><use href="#i-users"></use></svg>群组配置
+          </button>
+          <button class="nav-item" type="button" data-nav="help-panel">
+            <svg class="icon"><use href="#i-book"></use></svg>帮助面板
+          </button>
+          <button class="nav-item" type="button" data-nav="config-other">
+            <svg class="icon"><use href="#i-database"></use></svg>其他配置
+          </button>
+          <button class="nav-item" type="button" data-nav="plugins">
+            <svg class="icon"><use href="#i-puzzle"></use></svg>插件管理
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-nav-group="plugin-config">
+        <button class="nav-head" type="button">插件配置 <svg class="icon"><use href="#i-chevron"></use></svg></button>
+        <div class="nav-items">
+          <div class="plugin-cfg-list" id="pluginCfgNav">
+            <div class="nav-empty">正在加载…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-group" data-nav-group="ai">
+        <button class="nav-head" type="button">AI <svg class="icon"><use href="#i-chevron"></use></svg></button>
+        <div class="nav-items">
+          <button class="nav-item" type="button" data-nav="ai">
+            <svg class="icon"><use href="#i-spark"></use></svg>状态
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-system">
+            <svg class="icon"><use href="#i-settings"></use></svg>设置
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-stickers">
+            <svg class="icon"><use href="#i-grid"></use></svg>表情
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-groups">
+            <svg class="icon"><use href="#i-users"></use></svg>群设置
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-presets">
+            <svg class="icon"><use href="#i-book"></use></svg>预设管理
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-channels">
+            <svg class="icon"><use href="#i-database"></use></svg>渠道管理
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-voice">
+            <svg class="icon"><use href="#i-message"></use></svg>语音设置
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-proxies">
+            <svg class="icon"><use href="#i-arrow"></use></svg>代理设置
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-skills">
+            <svg class="icon"><use href="#i-puzzle"></use></svg>技能中心
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-mcp">
+            <svg class="icon"><use href="#i-puzzle"></use></svg>MCP 服务
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-tool-config">
+            <svg class="icon"><use href="#i-tool"></use></svg>工具配置
+          </button>
+          <button class="nav-item" type="button" data-nav="tools">
+            <svg class="icon"><use href="#i-tool"></use></svg>工具
+            <span class="nav-count" id="navToolCount" hidden></span>
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-image">
+            <svg class="icon"><use href="#i-spark"></use></svg>绘图预设
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-nav-group="data">
+        <button class="nav-head" type="button">数据 <svg class="icon"><use href="#i-chevron"></use></svg></button>
+        <div class="nav-items">
+          <button class="nav-item" type="button" data-nav="knowledge">
+            <svg class="icon"><use href="#i-book"></use></svg>知识库
+            <span class="nav-count" id="navKbCount" hidden></span>
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-memories">
+            <svg class="icon"><use href="#i-database"></use></svg>回忆管理
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-stats">
+            <svg class="icon"><use href="#i-sliders"></use></svg>调用统计
+          </button>
+          <button class="nav-item" type="button" data-nav="ai-sessions">
+            <svg class="icon"><use href="#i-message"></use></svg>数据记录
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-nav-group="system">
+        <button class="nav-head" type="button">系统 <svg class="icon"><use href="#i-chevron"></use></svg></button>
+        <div class="nav-items">
+          <button class="nav-item" type="button" data-nav="terminal">
+            <svg class="icon"><use href="#i-terminal"></use></svg>终端
+          </button>
+          <button class="nav-item" type="button" data-nav="backend">
+            <svg class="icon"><use href="#i-tool"></use></svg>后台
+          </button>
+          <button class="nav-item" type="button" data-nav="accounts">
+            <svg class="icon"><use href="#i-bot"></use></svg>账号显示
+          </button>
+          <button class="nav-item" type="button" data-nav="groups">
+            <svg class="icon"><use href="#i-users"></use></svg>群聊与好友
+          </button>
+          <button class="nav-item" type="button" data-nav="logs">
+            <svg class="icon"><use href="#i-file"></use></svg>日志
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="bot-card">
+        <div class="bot-card-top">
+          <span class="status-dot" id="botDot" aria-label="协议端状态"></span>
+          <span class="bot-ver" id="botVersion"></span>
+        </div>
+        <div class="bot-name" id="botName">Yunzai Bot</div>
+        <div class="bot-sub" id="botSub">等待运行状态</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn menu-btn" type="button" id="menuBtn" aria-label="打开导航">
+          <svg class="icon"><use href="#i-menu"></use></svg>
+        </button>
+        <div class="topbar-title">Yunzai 控制台</div>
+      </div>
+      <div class="topbar-right">
+        <button class="search-trigger" type="button" id="searchTrigger" aria-label="打开全局搜索">
+          <svg class="icon"><use href="#i-search"></use></svg>
+          <span>搜索功能、记忆与插件</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <button class="icon-btn" type="button" id="themeBtn" aria-label="切换深浅主题">
+          <svg class="icon icon-sun"><use href="#i-sun"></use></svg>
+          <svg class="icon icon-moon"><use href="#i-moon"></use></svg>
+        </button>
+        <div class="avatar-wrap" id="avatarWrap">
+          <button class="avatar" type="button" id="avatar" title="Yunzai" aria-haspopup="menu" aria-expanded="false">Y</button>
+          <div class="user-menu" id="userMenu" role="menu" hidden>
+            <button class="user-menu-item" type="button" id="logoutBtn" role="menuitem">
+              <svg class="icon"><use href="#i-logout"></use></svg>退出登录
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- ===================== 仪表盘 ===================== -->
+      <section class="page active" data-page="dashboard">
+        <div class="page-head">
+          <div>
+            <h1>仪表盘</h1>
+            <p>Yunzai 的运行状态</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-label">AI 工具</span>
+            <div class="stat-value" id="statTools">—</div>
+            <div class="stat-foot" id="statToolsFoot">正在加载</div>
+            <span class="stat-icon tile-1"><svg class="icon"><use href="#i-tool"></use></svg></span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">知识条目</span>
+            <div class="stat-value" id="statKb">—</div>
+            <div class="stat-foot" id="statKbFoot">正在加载</div>
+            <span class="stat-icon tile-2"><svg class="icon"><use href="#i-book"></use></svg></span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">已加载插件</span>
+            <div class="stat-value" id="statPlugins">—</div>
+            <div class="stat-foot" id="statPluginsFoot">正在加载</div>
+            <span class="stat-icon tile-3"><svg class="icon"><use href="#i-puzzle"></use></svg></span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">运行时长</span>
+            <div class="stat-value small" id="statUptime">—</div>
+            <div class="stat-foot" id="statUptimeFoot">正在加载</div>
+            <span class="stat-icon tile-4"><svg class="icon"><use href="#i-clock"></use></svg></span>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>资源使用</h3></div>
+            </div>
+            <div class="card-body">
+              <div class="gauge-grid" id="resourceGauges">
+                <div class="skeleton sk-row" style="width:100%;height:104px"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>磁盘</h3></div>
+            </div>
+            <div class="card-body">
+              <div class="gauge-grid disk-gauges" id="diskGauges">
+                <div class="skeleton sk-row" style="width:100%;height:104px"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>系统运行状态</h3></div>
+              <span class="pill" id="sysStatusPill" aria-label="协议端状态"><span class="dot"></span></span>
+            </div>
+            <div class="card-body">
+              <div class="kv-list" id="sysInfo">
+                <div class="skeleton sk-row" style="width:76%"></div>
+                <div class="skeleton sk-row" style="width:64%"></div>
+                <div class="skeleton sk-row" style="width:82%"></div>
+                <div class="skeleton sk-row" style="width:58%"></div>
+                <div class="skeleton sk-row" style="width:70%"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>AI 状态</h3></div>
+              <span class="pill" id="aiStatusPill">—</span>
+            </div>
+            <div class="card-body">
+              <div class="kv-list" id="aiInfo">
+                <div class="skeleton sk-row" style="width:72%"></div>
+                <div class="skeleton sk-row" style="width:60%"></div>
+                <div class="skeleton sk-row" style="width:80%"></div>
+                <div class="skeleton sk-row" style="width:55%"></div>
+              </div>
+              <button class="link-btn" type="button" data-nav="ai" style="margin-top:14px">
+                打开状态<svg class="icon"><use href="#i-arrow"></use></svg>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>最近日志</h3></div>
+              <button class="link-btn" type="button" data-nav="logs">查看日志</button>
+            </div>
+            <div class="card-body no-pad">
+              <div class="cmd-list" id="recentLogs">
+                <div style="padding:10px 20px">
+                  <div class="skeleton sk-row" style="width:88%"></div>
+                  <div class="skeleton sk-row" style="width:74%"></div>
+                  <div class="skeleton sk-row" style="width:81%"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>知识库概览</h3></div>
+              <button class="link-btn" type="button" data-nav="knowledge">管理知识库</button>
+            </div>
+            <div class="card-body">
+              <div class="kb-usage">
+                <div class="kb-usage-row"><span>条目容量</span><span id="kbUsageText">—</span></div>
+                <div class="bar"><span id="kbUsageBar" style="width:0%"></span></div>
+              </div>
+              <div class="mini-label">Scope 分布</div>
+              <div class="chips" id="kbScopes"><span class="skeleton sk-line" style="width:120px"></span></div>
+              <div class="mini-label">常用标签</div>
+              <div class="chips" id="kbTags"><span class="skeleton sk-line" style="width:160px"></span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 状态 ===================== -->
+      <section class="page" data-page="ai">
+        <div class="page-head">
+          <div>
+            <h1>状态</h1>
+            <p>统一选择 AI 使用的渠道与模型，查看能力开关和活跃会话。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" data-nav="ai-channels">
+              <svg class="icon"><use href="#i-database"></use></svg>渠道管理
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-grid cols-3">
+          <article class="stat-card">
+            <span class="stat-label">服务状态</span>
+            <div class="stat-value small" id="aiStatStatus">—</div>
+            <div class="stat-foot" id="aiStatStatusFoot">正在加载</div>
+            <span class="stat-icon tile-1"><svg class="icon"><use href="#i-spark"></use></svg></span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">当前模型</span>
+            <div class="stat-value small" id="aiStatModel">—</div>
+            <div class="stat-foot" id="aiStatModelFoot">正在加载</div>
+            <span class="stat-icon tile-2"><svg class="icon"><use href="#i-tool"></use></svg></span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">活跃会话</span>
+            <div class="stat-value" id="aiStatSessions">—</div>
+            <div class="stat-foot" id="aiStatSessionsFoot">正在加载</div>
+            <span class="stat-icon tile-4"><svg class="icon"><use href="#i-message"></use></svg></span>
+          </article>
+        </div>
+
+        <section class="card ai-model-card">
+          <div class="card-head">
+            <div><h3>模型选择</h3></div>
+            <span class="pill" id="aiKeyPill">—</span>
+          </div>
+          <div class="card-body">
+            <div class="ai-current">
+              <div class="ai-current-main">
+                <span class="ai-current-label">正在使用的模型</span>
+                <div class="ai-current-value mono" id="aiCurrentModel">—</div>
+                <div class="ai-current-meta" id="aiCurrentMeta">
+                  <span class="skeleton sk-line" style="width:180px"></span>
+                </div>
+              </div>
+              <div class="ai-current-side">
+                <span class="ai-current-label">接口地址</span>
+                <div class="ai-current-endpoint mono" id="aiCurrentEndpoint">—</div>
+              </div>
+            </div>
+            <div class="ai-model-note" id="aiModelNote" hidden></div>
+            <div class="ai-picker">
+              <label class="field">
+                <span>渠道</span>
+                <select id="aiModelChannel"></select>
+              </label>
+              <label class="field">
+                <span>模型</span>
+                <select id="aiModelName"></select>
+              </label>
+              <span class="model-badge" id="aiModelBadge" hidden></span>
+              <button type="button" class="btn btn-primary" id="aiModelApply">应用</button>
+            </div>
+            <div class="ai-pool-head">
+              <div><h4>模型池</h4></div>
+              <span class="pill pill-outline" id="aiPoolCount">—</span>
+            </div>
+            <div class="ai-pool" id="aiModelPool">
+              <div class="skeleton sk-row" style="width:60%"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>备选模型轮询</h3></div>
+          </div>
+          <div class="card-body" id="aiModelFallbackPanel"><div class="muted">正在加载…</div></div>
+        </section>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>请求参数</h3></div>
+              <button class="link-btn" type="button" data-nav="ai-system">设置<svg class="icon"><use href="#i-arrow"></use></svg></button>
+            </div>
+            <div class="card-body">
+              <div class="kv-list" id="aiConfig">
+                <div class="skeleton sk-row" style="width:72%"></div>
+                <div class="skeleton sk-row" style="width:60%"></div>
+                <div class="skeleton sk-row" style="width:80%"></div>
+                <div class="skeleton sk-row" style="width:55%"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>能力开关</h3></div>
+              <button class="link-btn" type="button" data-nav="ai-system">设置<svg class="icon"><use href="#i-arrow"></use></svg></button>
+            </div>
+            <div class="card-body">
+              <div class="kv-list" id="aiFlags">
+                <div class="skeleton sk-row" style="width:74%"></div>
+                <div class="skeleton sk-row" style="width:62%"></div>
+                <div class="skeleton sk-row" style="width:78%"></div>
+                <div class="skeleton sk-row" style="width:58%"></div>
+              </div>
+              <div id="aiDisabledWrap" hidden>
+                <div class="mini-label">已禁用的工具</div>
+                <div class="chips" id="aiDisabledTools"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>会话上下文</h3></div>
+            <span class="pill pill-outline" id="sessionCountPill">—</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr><th>会话</th><th>消息</th><th>轮次</th><th>Token</th><th>状态</th><th>最后活跃</th></tr>
+              </thead>
+              <tbody id="sessionRows">
+                <tr class="table-empty"><td colspan="6">正在加载…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 工具 ===================== -->
+      <section class="page" data-page="tools">
+        <div class="page-head">
+          <div>
+            <h1>工具</h1>
+            <p>插件自动注册的 Function Calling 工具及其权限。</p>
+          </div>
+        </div>
+
+        <div class="mini-stats" id="toolStats">
+          <div class="mini-stat"><span class="mini-icon tile-1"><svg class="icon"><use href="#i-tool"></use></svg></span><div><small>工具总数</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-2"><svg class="icon"><use href="#i-check"></use></svg></span><div><small>已注册</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-3"><svg class="icon"><use href="#i-info"></use></svg></span><div><small>已跳过</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-4"><svg class="icon"><use href="#i-alert"></use></svg></span><div><small>重名冲突</small><strong>—</strong></div></div>
+        </div>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>已注册工具</h3><p id="toolCountText">正在加载…</p></div>
+            <div class="head-tools">
+              <div class="field-inline">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="toolSearch" type="search" placeholder="搜索工具或插件" autocomplete="off" />
+              </div>
+              <div class="segmented small" id="toolPermFilter"></div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr><th>工具</th><th>描述</th><th>所属插件</th><th>权限</th><th>危险</th><th>群聊</th><th>事件</th></tr>
+              </thead>
+              <tbody id="toolRows">
+                <tr class="table-empty"><td colspan="7">正在加载…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 设置 ===================== -->
+      <section class="page" data-page="ai-system">
+        <div class="page-head">
+          <div>
+            <h1>设置</h1>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" data-nav="ai-channels">
+              <svg class="icon"><use href="#i-database"></use></svg>渠道管理
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSystemStats">
+          <div class="mini-stat"><span class="mini-icon tile-1"><svg class="icon"><use href="#i-spark"></use></svg></span><div><small>运行状态</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-2"><svg class="icon"><use href="#i-database"></use></svg></span><div><small>当前渠道</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-3"><svg class="icon"><use href="#i-sliders"></use></svg></span><div><small>当前预设</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-4"><svg class="icon"><use href="#i-arrow"></use></svg></span><div><small>代理</small><strong>—</strong></div></div>
+        </div>
+        <section class="card config-main" id="aiSystemMain">
+          <div class="config-loading"><span class="spinner"></span>正在加载 ai.yaml…</div>
+        </section>
+      </section>
+
+      <!-- ===================== 预设管理 ===================== -->
+      <!-- ===================== 语音设置 ===================== -->
+      <section class="page" data-page="ai-voice">
+        <div class="page-head">
+          <div>
+            <h1>语音设置</h1>
+            <p>把文字合成语音发出去，默认用免费通道。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" id="voiceSave">
+              <svg class="icon"><use href="#i-save"></use></svg>保存
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head"><div><h3>合成服务</h3><p>免费通道无需密钥</p></div></div>
+            <div class="card-body" id="voiceForm">
+              <label class="switch">
+                <input type="checkbox" id="voiceEnabled" />
+                <span class="track"></span><span>启用语音</span>
+              </label>
+              <label class="field"><span>服务商</span>
+                <select id="voiceProvider">
+                  <option value="free">免费通道（百度朗读）</option>
+                  <option value="custom">自定义服务（OpenAI 兼容）</option>
+                </select>
+              </label>
+              <label class="field" id="voiceFreeVoiceField"><span>音色 / 语言</span><select id="voiceVoice"></select></label>
+              <label class="field"><span>语速 <small class="muted" id="voiceSpeedHint">1-15，默认 5</small></span><input id="voiceSpeed" type="number" min="1" max="15" step="1" /></label>
+              <div id="voiceCustomFields" hidden>
+                <label class="field"><span>音色 ID</span><input id="voiceCustomVoice" type="text" placeholder="alloy / nova / 服务商自定义音色" autocomplete="off" /></label>
+                <label class="field"><span>接口地址</span><input id="voiceBaseURL" type="text" placeholder="https://api.example.com/v1" autocomplete="off" /></label>
+                <label class="field"><span>API Key</span><input id="voiceApiKey" type="text" placeholder="留空则不发送鉴权头" autocomplete="off" /></label>
+                <label class="field"><span>模型</span><input id="voiceModel" type="text" placeholder="tts-1" autocomplete="off" /></label>
+              </div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><h3>试听</h3><p>合成一段测试语音</p></div></div>
+            <div class="card-body">
+              <label class="field"><span>文本</span><textarea id="voiceTestText" rows="3">你好，这是语音试听。</textarea></label>
+              <button class="btn btn-outline btn-sm" type="button" id="voiceTestBtn">
+                <svg class="icon"><use href="#i-spark"></use></svg>开始合成
+              </button>
+              <audio id="voicePlayer" controls style="width:100%;margin-top:10px" hidden></audio>
+              <div class="hint" id="voiceTestNote" style="margin-top:8px"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 主动聊天已并入驻 AI 设置页 ===================== -->
+
+      <section class="page" data-page="ai-presets" data-ai-section-page="presets">
+        <div class="page-head">
+          <div>
+            <h1>预设管理</h1>
+            <p>为不同场景准备人格，可全局启用或被群组单独引用。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" id="aiPresetExport">
+              <svg class="icon"><use href="#i-download"></use></svg>导出
+            </button>
+            <button class="btn btn-outline" type="button" id="aiPresetImport">
+              <svg class="icon"><use href="#i-file"></use></svg>导入
+            </button>
+            <button class="btn btn-primary" type="button" data-ai-add>
+              <svg class="icon"><use href="#i-plus"></use></svg>新建预设
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSecPresetsStats"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>预设列表</h3><p id="aiSecPresetsCount">正在加载…</p></div></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead id="aiSecPresetsHead"></thead>
+              <tbody id="aiSecPresetsRows"><tr class="table-empty"><td colspan="7">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 渠道管理 ===================== -->
+      <section class="page" data-page="ai-channels" data-ai-section-page="channels">
+        <div class="page-head">
+          <div>
+            <h1>渠道管理</h1>
+            <p>支持 OpenAI、Gemini 与 Claude，可自定义接口路径。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" data-ai-add>
+              <svg class="icon"><use href="#i-plus"></use></svg>新建渠道
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSecChannelsStats"></div>
+        <section class="card channel-panel">
+          <div class="card-head channel-panel-head">
+            <div><h3>渠道列表</h3><p id="aiSecChannelsCount">正在加载…</p></div>
+            <div class="channel-panel-tools">
+              <div class="segmented small" id="aiChannelStatusFilter" role="group" aria-label="按测试状态筛选">
+                <button type="button" data-ai-channel-filter="all" class="active">全部 <span data-ai-channel-filter-count>0</span></button>
+                <button type="button" data-ai-channel-filter="success">成功 <span data-ai-channel-filter-count>0</span></button>
+                <button type="button" data-ai-channel-filter="failed">失败 <span data-ai-channel-filter-count>0</span></button>
+                <button type="button" data-ai-channel-filter="pending">待测试 <span data-ai-channel-filter-count>0</span></button>
+              </div>
+              <button class="btn btn-outline btn-sm" type="button" data-ai-test-all>
+                <svg class="icon"><use href="#i-spark"></use></svg>批量测试
+              </button>
+            </div>
+          </div>
+          <div id="aiSecChannelsCards" class="channel-grid"><div class="channel-empty">正在加载…</div></div>
+        </section>
+      </section>
+
+      <!-- ===================== 代理设置 ===================== -->
+      <section class="page" data-page="ai-proxies" data-ai-section-page="proxies">
+        <div class="page-head">
+          <div>
+            <h1>代理设置</h1>
+            <p>为 AI 请求配置 HTTP / HTTPS / SOCKS 代理，支持仅代理接口或全部请求。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" data-ai-add>
+              <svg class="icon"><use href="#i-plus"></use></svg>新建代理
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSecProxiesStats"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>代理列表</h3><p id="aiSecProxiesCount">正在加载…</p></div></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead id="aiSecProxiesHead"></thead>
+              <tbody id="aiSecProxiesRows"><tr class="table-empty"><td colspan="6">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 技能中心 ===================== -->
+      <section class="page" data-page="ai-skills" data-ai-section-page="skills">
+        <div class="page-head">
+          <div>
+            <h1>技能中心</h1>
+            <p>按关键词或常驻模式向 AI 注入额外指令与建议工具，扩展专业能力。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" data-ai-add>
+              <svg class="icon"><use href="#i-plus"></use></svg>新建技能
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSecSkillsStats"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>技能列表</h3><p id="aiSecSkillsCount">正在加载…</p></div></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead id="aiSecSkillsHead"></thead>
+              <tbody id="aiSecSkillsRows"><tr class="table-empty"><td colspan="7">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 工具配置 ===================== -->
+      <section class="page" data-page="ai-tool-config">
+        <div class="page-head">
+          <div>
+            <h1>工具配置</h1>
+            <p>限制工具数量、结果长度与调用回合，并按工具或插件快速启用 / 禁用。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" id="toolCfgSave">
+              <svg class="icon"><use href="#i-save"></use></svg>保存策略
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="toolCfgStats"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>调用策略</h3><p>留空表示沿用 ai.yaml 或默认值</p></div></div>
+          <div class="config-form" id="toolCfgForm">
+            <div class="config-loading"><span class="spinner"></span>正在加载…</div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card-head">
+            <div><h3>工具开关</h3><p id="toolCfgCount">正在加载…</p></div>
+            <div class="head-tools">
+              <div class="field-inline">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="toolCfgSearch" type="search" placeholder="搜索工具、插件或描述" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="mini-label">插件开关（点击切换）</div>
+            <div class="chips" id="toolCfgPlugins"></div>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>工具</th><th>描述</th><th>插件</th><th>权限</th><th>危险</th><th style="text-align:right">启用</th></tr></thead>
+              <tbody id="toolCfgRows"><tr class="table-empty"><td colspan="6">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== MCP 服务 ===================== -->
+      <section class="page" data-page="ai-mcp" data-ai-section-page="mcpServers">
+        <div class="page-head">
+          <div>
+            <h1>MCP 服务</h1>
+            <p>连接 stdio / Streamable HTTP MCP 服务，把远端工具注册给 AI 使用。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" id="mcpSync">
+              <svg class="icon"><use href="#i-refresh"></use></svg>同步连接
+            </button>
+            <button class="btn btn-primary" type="button" data-ai-add>
+              <svg class="icon"><use href="#i-plus"></use></svg>添加服务
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSecMcpServersStats"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>MCP 服务列表</h3><p id="aiSecMcpServersCount">正在加载…</p></div></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead id="aiSecMcpServersHead"></thead>
+              <tbody id="aiSecMcpServersRows"><tr class="table-empty"><td colspan="6">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 表情 ===================== -->
+      <section class="page" data-page="ai-stickers">
+        <div class="page-head">
+          <div>
+            <h1>表情</h1>
+            <p>按含义分类存放表情，AI 能自己保存并在合适的时候发出去。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" id="stickerUploadBtn">
+              <svg class="icon"><use href="#i-plus"></use></svg>上传表情
+            </button>
+            <input type="file" id="stickerFile" accept="image/*" multiple hidden />
+          </div>
+        </div>
+
+        <div class="mini-stats" id="stickerStats"></div>
+
+        <div class="sticker-layout">
+          <aside class="card sticker-side">
+            <div class="card-head"><div><h3>分类</h3><p id="stickerCatCount">加载中…</p></div></div>
+            <div class="sticker-cats" id="stickerCats"></div>
+          </aside>
+          <section class="card sticker-main">
+            <div class="card-head">
+              <div><h3>表情列表</h3><p id="stickerCount">正在加载…</p></div>
+              <div class="sticker-tools">
+                <label class="switch">
+                  <input type="checkbox" id="stickerEnabled" />
+                  <span class="track"></span><span>启用表情包</span>
+                </label>
+                <button class="btn btn-outline btn-sm" type="button" id="stickerPermBtn" title="设置哪些预设可以上传表情">
+                  <svg class="icon"><use href="#i-lock"></use></svg>上传权限
+                </button>
+                <button class="btn btn-outline btn-sm" type="button" id="stickerGateBtn" title="发送频率与自动收集">
+                  <svg class="icon"><use href="#i-sliders"></use></svg>自动收发
+                </button>
+                <button class="btn btn-outline btn-sm" type="button" id="stickerEnrichBtn" title="用视觉模型补全缺少的描述与标签">
+                  <svg class="icon"><use href="#i-spark"></use></svg>补全描述
+                </button>
+                <button class="btn btn-outline btn-sm" type="button" id="stickerPendingBtn" title="查看待审核表情">
+                  <svg class="icon"><use href="#i-check"></use></svg>待审核 <span id="stickerPendingBadge" class="sticker-badge" hidden>0</span>
+                </button>
+                <input id="stickerSearch" type="search" placeholder="搜索含义或标签" autocomplete="off" />
+              </div>
+            </div>
+            <div class="sticker-grid" id="stickerGrid"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 绘图预设 ===================== -->
+      <section class="page" data-page="ai-image" data-ai-section-page="imagePresets">
+        <div class="page-head">
+          <div>
+            <h1>绘图预设</h1>
+            <p>管理图片生成模型、尺寸与提示词前缀，并可直接测试生图。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" data-ai-add>
+              <svg class="icon"><use href="#i-plus"></use></svg>新建绘图预设
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiSecImagePresetsStats"></div>
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head"><div><h3>绘图开关</h3><p>控制 AI 绘图工具与测试入口</p></div><span class="pill" id="imageCfgPill">—</span></div>
+            <div class="card-body">
+              <label class="switch">
+                <input type="checkbox" id="imageCfgEnabled" />
+                <span class="track"></span><span>启用绘图能力</span>
+              </label>
+              <div class="config-help" id="imageCfgNote" style="margin-top:10px">正在加载…</div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><h3>测试生图</h3><p>调用当前渠道的图片接口，消耗真实额度</p></div></div>
+            <div class="card-body" id="imageTestForm">
+              <div class="field-row">
+                <label class="field"><span>预设</span><select id="imageTestPreset"></select></label>
+                <label class="field"><span>尺寸（可选）</span><input id="imageTestSize" type="text" placeholder="例如 1024x1024" autocomplete="off" /></label>
+              </div>
+              <label class="field"><span>提示词</span><textarea id="imageTestPrompt" rows="3" placeholder="描述你想生成的画面…"></textarea></label>
+              <button class="btn btn-primary btn-sm" type="button" id="imageTestRun">
+                <svg class="icon"><use href="#i-spark"></use></svg>开始生成
+              </button>
+              <div id="imageTestResult" class="ai-test-result" hidden></div>
+            </div>
+          </section>
+        </div>
+        <section class="card">
+          <div class="card-head"><div><h3>预设列表</h3><p id="aiSecImagePresetsCount">正在加载…</p></div></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead id="aiSecImagePresetsHead"></thead>
+              <tbody id="aiSecImagePresetsRows"><tr class="table-empty"><td colspan="6">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 群设置 ===================== -->
+      <section class="page" data-page="ai-groups">
+        <div class="page-head">
+          <div>
+            <h1>群设置</h1>
+          </div>
+        </div>
+        <div class="mini-stats" id="aiGroupStats"></div>
+        <section class="card">
+          <div class="card-head">
+            <div><h3>群聊 AI 配置</h3><p id="aiGroupCount">正在加载…</p></div>
+            <div class="head-tools">
+              <div class="field-inline">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="aiGroupSearch" type="search" placeholder="搜索群名或群号" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>群聊</th><th>成员</th><th>AI 状态</th><th>触发方式</th><th>预设</th><th>限制</th><th style="text-align:right">操作</th></tr></thead>
+              <tbody id="aiGroupRows"><tr class="table-empty"><td colspan="7">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 知识库 ===================== -->
+      <section class="page" data-page="knowledge">
+        <div class="page-head">
+          <div>
+            <h1>知识库</h1>
+            <p>结构化知识条目：按作用域隔离、检索、合并与归档，AI 可在对话中自动添加与更新。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" data-action="kb-export">
+              <svg class="icon"><use href="#i-download"></use></svg>导出
+            </button>
+            <button class="btn btn-primary" type="button" data-action="kb-add">
+              <svg class="icon"><use href="#i-plus"></use></svg>添加知识
+            </button>
+          </div>
+        </div>
+
+        <div class="mini-stats" id="kbStats">
+          <div class="mini-stat"><span class="mini-icon tile-1"><svg class="icon"><use href="#i-book"></use></svg></span><div><small>总条目</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-2"><svg class="icon"><use href="#i-pin"></use></svg></span><div><small>固定知识</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-3"><svg class="icon"><use href="#i-database"></use></svg></span><div><small>作用域</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-4"><svg class="icon"><use href="#i-clock"></use></svg></span><div><small>最后更新</small><strong>—</strong></div></div>
+        </div>
+
+        <section class="card" id="kbSharedParams">
+          <div class="config-loading"><span class="spinner"></span>正在读取 ai.yaml…</div>
+        </section>
+
+        <section class="card">
+          <div class="filter-bar">
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="kbSearch" type="search" placeholder="搜索标题、内容或标签…" autocomplete="off" />
+            </div>
+            <select class="select" id="kbScope" aria-label="按作用域筛选">
+              <option value="">全部作用域</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" type="button" id="kbClear">清除筛选</button>
+            <div class="filter-spacer"></div>
+            <span class="log-meta" id="kbCount">—</span>
+          </div>
+          <div class="filter-tags" id="kbTagChips" hidden></div>
+          <div class="kb-list" id="kbList">
+            <div style="padding:18px 20px">
+              <div class="skeleton sk-row" style="width:86%"></div>
+              <div class="skeleton sk-row" style="width:72%"></div>
+              <div class="skeleton sk-row" style="width:80%"></div>
+            </div>
+          </div>
+          <div class="pager" id="kbPager"></div>
+        </section>
+      </section>
+
+      <!-- ===================== 回忆管理 ===================== -->
+      <section class="page" data-page="ai-memories">
+        <div class="page-head">
+          <div>
+            <h1>回忆管理</h1>
+            <p>以经历为核心：记录发生了什么、感受、思考、行动、关系与教训，关联的记忆会被一起想起并注入提示词。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" id="memCompress">
+              <svg class="icon"><use href="#i-refresh"></use></svg>整理记忆
+            </button>
+            <button class="btn btn-outline" type="button" id="memExport">
+              <svg class="icon"><use href="#i-download"></use></svg>导出
+            </button>
+            <button class="btn btn-ghost" type="button" id="memClear">清空</button>
+            <button class="btn btn-primary" type="button" id="memAdd">
+              <svg class="icon"><use href="#i-plus"></use></svg>添加回忆
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="memStats"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>回忆策略</h3><p>控制注入数量、容量与自动整理频率</p></div></div>
+          <div class="config-form" id="memConfigForm">
+            <div class="config-loading"><span class="spinner"></span>正在加载…</div>
+          </div>
+          <div class="config-foot">
+            <span class="config-dirty">修改后需保存</span>
+            <button class="btn btn-primary btn-sm" type="button" id="memConfigSave">
+              <svg class="icon"><use href="#i-save"></use></svg>保存策略
+            </button>
+          </div>
+        </section>
+        <section class="card">
+          <div class="filter-bar">
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="memSearch" type="search" placeholder="搜索经历、感受、人物或标签…" autocomplete="off" />
+            </div>
+            <select class="select" id="memKind" aria-label="按类型筛选">
+              <option value="">全部类型</option>
+              <option value="episode">经历</option>
+              <option value="fact">事实</option>
+            </select>
+            <select class="select" id="memScope" aria-label="按作用域筛选">
+              <option value="">全部作用域</option>
+            </select>
+            <select class="select" id="memArchived" aria-label="按遗忘状态筛选">
+              <option value="">未遗忘</option>
+              <option value="1">已遗忘</option>
+              <option value="all">全部</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" type="button" id="memFilterClear">清除筛选</button>
+            <div class="filter-spacer"></div>
+            <span class="log-meta" id="memCount">—</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table mem-table">
+              <thead><tr><th>回忆</th><th>类型</th><th>作用域</th><th>感受与关系</th><th>关联</th><th>深度</th><th>更新时间</th><th style="text-align:right">操作</th></tr></thead>
+              <tbody id="memRows"><tr class="table-empty"><td colspan="8">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pager" id="memPager"></div>
+        </section>
+      </section>
+
+      <!-- ===================== 调用统计 ===================== -->
+      <section class="page" data-page="ai-stats">
+        <div class="page-head">
+          <div>
+            <h1>调用统计</h1>
+            <p>请求量、Token、错误与工具调用的聚合趋势。</p>
+          </div>
+          <div class="page-actions">
+            <select class="select" id="statsDays" aria-label="统计范围">
+              <option value="1">最近 1 天</option>
+              <option value="7" selected>最近 7 天</option>
+              <option value="30">最近 30 天</option>
+              <option value="90">最近 90 天</option>
+            </select>
+          </div>
+        </div>
+        <div class="stats-grid auto-fit" id="statsCards"></div>
+        <section class="card">
+          <div class="card-head"><div><h3>按日趋势</h3><p>点击柱子查看当天数据</p></div><span class="pill pill-outline" id="statsRange">—</span></div>
+          <div class="card-body">
+            <div class="ai-chart-legend"><span><i class="c1"></i>对话</span><span><i class="c2"></i>工具</span><span><i class="c3"></i>错误</span></div>
+            <div class="ai-chart" id="statsChart"></div>
+            <div class="ai-chart-detail" id="statsChartDetail" hidden></div>
+          </div>
+        </section>
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head"><div><h3>按模型</h3><p>对话分布</p></div></div>
+            <div class="table-wrap"><table class="table"><thead><tr><th>模型</th><th>请求</th><th>Token</th><th>缓存命中</th><th>错误</th></tr></thead><tbody id="statsModels"><tr class="table-empty"><td colspan="5">正在加载…</td></tr></tbody></table></div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><h3>按渠道</h3><p>渠道使用分布</p></div></div>
+            <div class="table-wrap"><table class="table"><thead><tr><th>渠道</th><th>请求</th><th>Token</th><th>缓存命中</th><th>错误</th></tr></thead><tbody id="statsChannels"><tr class="table-empty"><td colspan="5">正在加载…</td></tr></tbody></table></div>
+          </section>
+        </div>
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-head"><div><h3>工具调用</h3><p>按工具汇总</p></div></div>
+            <div class="table-wrap"><table class="table"><thead><tr><th>工具</th><th>调用</th><th>成功</th><th>平均耗时</th></tr></thead><tbody id="statsTools"><tr class="table-empty"><td colspan="4">正在加载…</td></tr></tbody></table></div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><h3>最近错误</h3><p>按时间倒序</p></div></div>
+            <div class="card-body" id="statsErrors"><div class="skeleton sk-row" style="width:80%"></div><div class="skeleton sk-row" style="width:65%"></div></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 数据记录 ===================== -->
+      <section class="page" data-page="ai-sessions">
+        <div class="page-head">
+          <div>
+            <h1>数据记录</h1>
+            <p>会话、调用记录与工具调用日志，支持筛选、导出与清空。</p>
+          </div>
+        </div>
+        <section class="card">
+          <div class="card-head">
+            <div><h3>对话历史</h3><p>持久化会话记录，可查看完整消息、压缩上下文或清理旧会话</p></div>
+            <div class="head-tools">
+              <button class="btn btn-outline btn-sm" type="button" id="sessExport">
+                <svg class="icon"><use href="#i-download"></use></svg>导出全部
+              </button>
+              <button class="btn btn-ghost btn-sm" type="button" id="sessClear">清空全部</button>
+            </div>
+          </div>
+          <div class="filter-bar">
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="sessSearch" type="search" placeholder="搜索会话 ID、标题或群号…" autocomplete="off" />
+            </div>
+            <div class="filter-spacer"></div>
+            <span class="log-meta" id="sessCount">—</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>会话</th><th>来源</th><th>消息</th><th>轮次</th><th>上下文</th><th>最后活跃</th><th style="text-align:right">操作</th></tr></thead>
+              <tbody id="sessRows"><tr class="table-empty"><td colspan="7">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pager" id="sessPager"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>调用记录</h3><p>逐条查看对话与工具调用日志，支持筛选、导出与清空</p></div>
+            <div class="head-tools">
+              <button class="btn btn-outline btn-sm" type="button" id="recExport">
+                <svg class="icon"><use href="#i-download"></use></svg>导出
+              </button>
+              <button class="btn btn-ghost btn-sm" type="button" id="recClear">清空</button>
+            </div>
+          </div>
+          <div class="filter-bar">
+            <select class="select" id="recType" aria-label="记录类型">
+              <option value="">全部类型</option>
+              <option value="chat">对话请求</option>
+              <option value="tool">工具调用</option>
+            </select>
+            <select class="select" id="recDays" aria-label="时间范围">
+              <option value="0">全部时间</option>
+              <option value="1">最近 1 天</option>
+              <option value="7" selected>最近 7 天</option>
+              <option value="30">最近 30 天</option>
+            </select>
+            <select class="select" id="recStatus" aria-label="状态">
+              <option value="">全部状态</option>
+              <option value="true">成功</option>
+              <option value="false">失败</option>
+            </select>
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="recSearch" type="search" placeholder="搜索会话、模型、工具或错误…" autocomplete="off" />
+            </div>
+            <div class="filter-spacer"></div>
+            <span class="log-meta" id="recCount">—</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>时间</th><th>类型</th><th>会话 / 群组</th><th>模型 / 工具</th><th>Token</th><th>耗时</th><th>状态</th><th>摘要</th></tr></thead>
+              <tbody id="recRows"><tr class="table-empty"><td colspan="8">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pager" id="recPager"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>工具调用</h3><p>查看 AI 实际调用的工具、参数、结果、耗时与错误</p></div>
+            <div class="head-tools">
+              <button class="btn btn-outline btn-sm" type="button" id="tcExport">
+                <svg class="icon"><use href="#i-download"></use></svg>导出
+              </button>
+            </div>
+          </div>
+          <div class="card-body"><div class="mini-stats cols-3" id="tcStats"></div></div>
+          <div class="filter-bar">
+            <select class="select" id="tcDays" aria-label="时间范围">
+              <option value="0">全部时间</option>
+              <option value="1">最近 1 天</option>
+              <option value="7" selected>最近 7 天</option>
+              <option value="30">最近 30 天</option>
+            </select>
+            <select class="select" id="tcStatus" aria-label="状态">
+              <option value="">全部状态</option>
+              <option value="true">成功</option>
+              <option value="false">失败</option>
+            </select>
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="tcSearch" type="search" placeholder="搜索工具、插件或会话…" autocomplete="off" />
+            </div>
+            <div class="filter-spacer"></div>
+            <span class="log-meta" id="tcCount">—</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>时间</th><th>工具</th><th>插件</th><th>耗时</th><th>状态</th><th>参数</th><th>结果</th></tr></thead>
+              <tbody id="tcRows"><tr class="table-empty"><td colspan="7">正在加载…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pager" id="tcPager"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><div><h3>工具排行</h3><p>统计范围内按调用次数排序</p></div></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>工具</th><th>调用</th><th>成功</th><th>错误</th><th>平均耗时</th></tr></thead><tbody id="tcByTool"><tr class="table-empty"><td colspan="5">正在加载…</td></tr></tbody></table></div>
+        </section>
+      </section>
+
+      <!-- ===================== 基础配置 ===================== -->
+      <section class="page" data-page="config-basic">
+        <div class="page-head">
+          <div>
+            <h1>基础配置</h1>
+          </div>
+        </div>
+
+        <div class="config-layout">
+          <aside class="card config-side">
+            <div class="config-side-head"><strong>配置文件</strong><small>config/config</small></div>
+            <div class="config-file-list" id="configBasicNav">
+              <div class="config-side-empty">正在加载…</div>
+            </div>
+          </aside>
+          <section class="card config-main" id="configBasicMain">
+            <div class="config-loading"><span class="spinner"></span>正在加载配置…</div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 群组配置 ===================== -->
+      <section class="page" data-page="config-group">
+        <div class="page-head">
+          <div>
+            <h1>群组配置</h1>
+            <p>按全局默认 ＜ Bot 默认 ＜ 群设置 ＜Bot + 群设置</p>
+          </div>
+        </div>
+
+        <section class="card config-scope-card">
+          <div class="config-scope-grid">
+            <div class="config-mini-field">
+              <span>Bot 账号</span>
+              <div class="config-combo" id="groupCfgBotCombo" data-combo-kind="bot">
+                <input id="groupCfgBot" type="text" inputmode="numeric" placeholder="留空表示全部 Bot" autocomplete="off" aria-label="Bot 账号" aria-expanded="false" aria-controls="groupCfgBotMenu" />
+                <button class="config-combo-toggle" type="button" aria-label="选择 Bot 账号" aria-expanded="false">
+                  <svg class="icon"><use href="#i-chevron"></use></svg>
+                </button>
+                <div class="config-combo-menu" id="groupCfgBotMenu" role="listbox" hidden></div>
+              </div>
+            </div>
+            <div class="config-mini-field">
+              <span>群号</span>
+              <div class="config-combo" id="groupCfgGroupCombo" data-combo-kind="group">
+                <input id="groupCfgGroup" type="text" placeholder="留空表示全部群聊" autocomplete="off" aria-label="群号" aria-expanded="false" aria-controls="groupCfgGroupMenu" />
+                <button class="config-combo-toggle" type="button" aria-label="选择群聊" aria-expanded="false">
+                  <svg class="icon"><use href="#i-chevron"></use></svg>
+                </button>
+                <div class="config-combo-menu" id="groupCfgGroupMenu" role="listbox" hidden></div>
+              </div>
+            </div>
+            <div class="config-scope-actions">
+              <button class="btn btn-primary" type="button" id="groupCfgApply">
+                <svg class="icon"><use href="#i-plus"></use></svg>添加
+              </button>
+              <button class="btn btn-outline" type="button" id="groupCfgRemove" disabled>
+                <svg class="icon"><use href="#i-trash"></use></svg>删除
+              </button>
+            </div>
+          </div>
+          <div class="config-scope-meta" id="groupCfgScopeMeta">正在加载作用范围…</div>
+        </section>
+
+        <div class="config-layout">
+          <aside class="card config-side">
+            <div class="config-side-head"><strong>已有作用范围</strong><small>点击快速切换</small></div>
+            <div class="config-file-list" id="groupCfgScopes">
+              <div class="config-side-empty">正在加载…</div>
+            </div>
+          </aside>
+          <section class="card config-main" id="groupCfgMain">
+            <div class="config-loading"><span class="spinner"></span>正在加载群组配置…</div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 帮助面板 ===================== -->
+      <section class="page help-page" data-page="help-panel">
+        <div class="page-head">
+          <div>
+            <h1>帮助面板</h1>
+            <p>点击直接编辑</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" id="helpAdvanced">
+              <svg class="icon"><use href="#i-settings"></use></svg>高级设置
+            </button>
+            <button class="btn btn-outline" type="button" id="helpRollback">
+              <svg class="icon"><use href="#i-refresh"></use></svg>回滚
+            </button>
+            <button class="btn btn-outline" type="button" id="helpSkin">
+              <svg class="icon"><use href="#i-spark"></use></svg>皮肤
+            </button>
+            <button class="btn btn-outline" type="button" id="helpBackup">
+              <svg class="icon"><use href="#i-download"></use></svg>备份
+            </button>
+            <button class="btn btn-primary" type="button" id="helpSave">
+              <svg class="icon"><use href="#i-save"></use></svg>保存
+            </button>
+          </div>
+        </div>
+
+        <div class="help-stage" id="helpStage">
+          <div class="help-stage-canvas" id="helpStageCanvas">
+            <div class="help-stage-loading" id="helpPreviewEmpty">
+              <span class="spinner"></span>正在生成预览…
+            </div>
+            <div class="help-live-wrap" id="helpLiveWrap" hidden>
+              <iframe
+                class="help-live-frame"
+                id="helpLiveFrame"
+                title="帮助面板预览"
+                sandbox="allow-scripts"
+              ></iframe>
+            </div>
+          </div>
+
+          <section class="help-float" id="helpContentDialog" hidden aria-label="编辑内容">
+            <div class="help-float-head" id="helpDialogDrag">
+              <strong>编辑内容</strong>
+              <span class="help-float-hint">按住这里可拖动</span>
+              <button class="help-float-close" type="button" data-help-dialog-close aria-label="关闭">
+                <svg class="icon"><use href="#i-close"></use></svg>
+              </button>
+            </div>
+            <div class="help-float-body" id="helpContentBody">
+              <div class="config-loading"><span class="spinner"></span>正在加载配置…</div>
+            </div>
+          </section>
+
+          <aside class="help-drawer" id="helpAdvancedDrawer" hidden aria-label="高级设置">
+            <div class="help-drawer-head">
+              <h3>高级设置</h3>
+              <button class="help-float-close" type="button" data-help-drawer-close aria-label="关闭">
+                <svg class="icon"><use href="#i-close"></use></svg>
+              </button>
+            </div>
+            <div class="help-drawer-body" id="helpCfgBody">
+              <div class="config-loading"><span class="spinner"></span>正在加载配置…</div>
+            </div>
+            <div class="help-drawer-foot">
+              <span class="muted">修改实时显示在预览中，保存后对群聊生效</span>
+              <button type="button" class="btn btn-outline btn-sm" data-help-drawer-close>关闭</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ===================== 其他配置 ===================== -->
+      <section class="page" data-page="config-other">
+        <div class="page-head">
+          <div>
+            <h1>其他配置</h1>
+            <p>HTTP 服务、Redis、数据库、渲染器与协议适配器设置，修改后通常需要重启。</p>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>状态图</h3><p>#状态 图片的渲染清晰度</p></div>
+          </div>
+          <div class="card-body">
+            <div class="status-image-row">
+              <label class="field">
+                <span>分辨率</span>
+                <select id="statusImageScale">
+                  <option value="1">标准 1x</option>
+                  <option value="1.5">高清 1.5x</option>
+                  <option value="2">超清 2x</option>
+                  <option value="3">极致 3x</option>
+                </select>
+              </label>
+              <button class="btn btn-primary" type="button" id="statusImageSave">保存</button>
+            </div>
+            <label class="switch status-pro-switch">
+              <input type="checkbox" id="statusProForAll" />
+              <span class="track"></span>
+              <span>允许非主人查看 #状态pro 的全部账号</span>
+            </label>
+          </div>
+        </section>
+
+        <div class="config-layout">
+          <aside class="card config-side">
+            <div class="config-side-head"><strong>配置文件</strong><small>config/config</small></div>
+            <div class="config-file-list" id="configOtherNav">
+              <div class="config-side-empty">正在加载…</div>
+            </div>
+          </aside>
+          <section class="card config-main" id="configOtherMain">
+            <div class="config-loading"><span class="spinner"></span>正在加载配置…</div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 插件配置 ===================== -->
+      <section class="page" data-page="config-plugin">
+        <div class="page-head">
+          <div>
+            <h1>插件配置</h1>
+            <p>从左侧「插件配置」选择插件，编辑其 Guoba 表单或 YAML 配置，保存前会进行类型与字段校验。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" id="configPluginRefresh">
+              <svg class="icon"><use href="#i-refresh"></use></svg>刷新
+            </button>
+          </div>
+        </div>
+
+        <div class="config-layout single">
+          <section class="card config-main" id="pluginCfgMain">
+            <div class="config-loading"><span class="spinner"></span>正在加载插件配置…</div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ===================== 插件管理 ===================== -->
+      <section class="page" data-page="plugins">
+        <div class="page-head">
+          <div>
+            <h1>插件管理</h1>
+            <p>支持安装、配置、更新与卸载。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-outline" type="button" id="pluginsRefresh">
+              <svg class="icon"><use href="#i-refresh"></use></svg>同步插件库
+            </button>
+            <button class="btn btn-primary" type="button" id="pluginInstallCustom">
+              <svg class="icon"><use href="#i-plus"></use></svg>安装自定义插件
+            </button>
+          </div>
+        </div>
+
+        <div class="mini-stats" id="pluginStats">
+          <div class="mini-stat"><span class="mini-icon tile-1"><svg class="icon"><use href="#i-puzzle"></use></svg></span><div><small>插件库</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-2"><svg class="icon"><use href="#i-grid"></use></svg></span><div><small>已安装</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-3"><svg class="icon"><use href="#i-download"></use></svg></span><div><small>未安装</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-4"><svg class="icon"><use href="#i-check"></use></svg></span><div><small>已加载</small><strong>—</strong></div></div>
+        </div>
+
+        <section class="card plugin-store">
+          <div class="plugin-store-head">
+            <div class="plugin-sources" id="pluginSources">
+              <span class="plugin-sources-label">插件库</span>
+              <span class="muted">正在读取索引…</span>
+            </div>
+            <div class="head-tools">
+              <div class="segmented small" id="pluginTabs">
+                <button type="button" class="active" data-plugin-tab="installed">已安装</button>
+                <button type="button" data-plugin-tab="available">未安装</button>
+              </div>
+              <div class="field-inline">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="pluginSearch" type="search" placeholder="搜索标题、名称、作者或说明" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+          <div class="plugin-store-meta" id="pluginStoreMeta">正在加载插件库…</div>
+          <div class="table-wrap">
+            <table class="table plugin-table">
+              <thead>
+                <tr>
+                  <th>插件标题</th>
+                  <th>插件名称</th>
+                  <th>插件作者</th>
+                  <th>插件说明</th>
+                  <th>状态</th>
+                  <th style="text-align:right">操作</th>
+                </tr>
+              </thead>
+              <tbody id="pluginRows">
+                <tr class="table-empty"><td colspan="6">正在加载…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card plugin-store">
+          <div class="plugin-store-head">
+            <div class="plugin-sources" id="singlePluginSources">
+              <span class="plugin-sources-label">example</span>
+              <span class="muted">正在读取索引…</span>
+            </div>
+            <div class="head-tools">
+              <div class="segmented small" id="singlePluginTabs">
+                <button type="button" class="active" data-single-tab="installed">已安装</button>
+                <button type="button" data-single-tab="available">未安装</button>
+              </div>
+              <button class="btn btn-outline btn-sm" type="button" id="singlePluginClone">
+                <svg class="icon"><use href="#i-download"></use></svg>从 Git 克隆
+              </button>
+              <button class="btn btn-outline btn-sm" type="button" id="singlePluginCreate">
+                <svg class="icon"><use href="#i-plus"></use></svg>新建
+              </button>
+              <div class="field-inline">
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="singlePluginSearch" type="search" placeholder="搜索标题、名称、作者或说明" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+          <div class="plugin-store-meta" id="singlePluginMeta">正在加载插件库…</div>
+          <div class="table-wrap">
+            <table class="table plugin-table">
+              <thead>
+                <tr>
+                  <th>插件标题</th>
+                  <th>文件</th>
+                  <th>作者</th>
+                  <th>说明</th>
+                  <th>状态</th>
+                  <th style="text-align:right">操作</th>
+                </tr>
+              </thead>
+              <tbody id="singlePluginRows">
+                <tr class="table-empty"><td colspan="6">正在加载…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 账号显示 ===================== -->
+      <section class="page" data-page="accounts">
+        <div class="page-head">
+          <div>
+            <h1>账号显示</h1>
+            <p>当前登录的账号与连接状态。</p>
+          </div>
+        </div>
+        <div class="account-grid" id="accountCards">
+          <div class="skeleton sk-row" style="width:100%;height:140px"></div>
+        </div>
+      </section>
+
+      <!-- ===================== 群聊与好友 ===================== -->
+      <section class="page" data-page="groups">
+        <div class="page-head">
+          <div>
+            <h1>群聊与好友</h1>
+            <p>机器人当前可见的群聊、好友与账号状态。</p>
+          </div>
+        </div>
+
+        <div class="mini-stats cols-3" id="groupStats">
+          <div class="mini-stat"><span class="mini-icon tile-1"><svg class="icon"><use href="#i-users"></use></svg></span><div><small>群聊</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-2"><svg class="icon"><use href="#i-message"></use></svg></span><div><small>好友</small><strong>—</strong></div></div>
+          <div class="mini-stat"><span class="mini-icon tile-3"><svg class="icon"><use href="#i-bot"></use></svg></span><div><small>Bot 账号</small><strong>—</strong></div></div>
+        </div>
+
+        <section class="card">
+          <div class="card-head">
+            <div><h3>联系人与群组</h3><p id="groupCountText">正在加载…</p></div>
+            <div class="head-tools">
+              <div class="segmented" id="groupTabs">
+                <button type="button" class="active" data-group-tab="groups">群聊</button>
+                <button type="button" data-group-tab="friends">好友</button>
+              </div>
+            </div>
+          </div>
+          <div class="filter-bar">
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="groupSearch" type="search" placeholder="搜索名称或账号…" autocomplete="off" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr><th>名称</th><th>账号</th><th>详情</th><th>机器人</th></tr>
+              </thead>
+              <tbody id="groupRows">
+                <tr class="table-empty"><td colspan="4">正在加载…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================== 终端 ===================== -->
+      <section class="page" data-page="terminal">
+        <div class="page-head">
+          <div>
+            <h1>终端</h1>
+            <p>命令执行</p>
+          </div>
+          <div class="page-actions">
+            <span class="term-conn" id="termConn"><span class="term-conn-dot"></span><span id="termConnText">未连接</span></span>
+            <button class="btn" type="button" id="termNewBtn">
+              <svg class="icon"><use href="#i-plus"></use></svg>新建终端
+            </button>
+          </div>
+        </div>
+
+        <div class="term-shell" id="termShell" hidden>
+          <div class="term-tabs-wrap">
+            <div class="term-tabs" id="termTabs"></div>
+          </div>
+          <div class="term-main">
+            <div class="term-empty" id="termEmpty" hidden>
+              <svg class="icon"><use href="#i-terminal"></use></svg>
+              <strong>还没有打开的终端</strong>
+              <span>新建后即可直接执行命令</span>
+            </div>
+            <div class="term-panes" id="termPanes" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== 后台 ===================== -->
+      <section class="page" data-page="backend">
+        <div class="page-head">
+          <div>
+            <h1>后台</h1>
+          </div>
+          <div class="page-actions">
+            <span class="term-conn" id="backendStatus" aria-label="协议端状态"><span class="term-conn-dot"></span></span>
+            <button class="btn btn-outline" type="button" id="backendClear">
+              <svg class="icon"><use href="#i-trash"></use></svg>清空记录
+            </button>
+          </div>
+        </div>
+
+        <div class="backend-shell">
+          <div class="backend-options">
+            <label class="switch">
+              <input type="checkbox" id="backendAllowDangerous" />
+              <span class="track"></span><span>允许危险指令</span>
+            </label>
+          </div>
+          <div class="backend-log" id="backendLog"></div>
+          <form class="backend-input" id="backendForm">
+            <span class="backend-prompt">$</span>
+            <input id="backendCommand" type="text" autocomplete="off" />
+            <button class="btn btn-primary" type="submit" id="backendRun">发送</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===================== 日志 ===================== -->
+      <section class="page" data-page="logs">
+        <div class="page-head">
+          <div>
+            <h1>日志</h1>
+            <p>实时查看命令与错误日志，辅助排查运行问题。</p>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="log-toolbar">
+            <div class="log-toolbar-left">
+              <div class="segmented" id="logTypeBtns">
+                <button type="button" class="active" data-log-type="command">命令日志</button>
+                <button type="button" data-log-type="error">错误日志</button>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="logAuto" />
+                <span class="track"></span>
+                <span>自动刷新</span>
+              </label>
+            </div>
+            <span class="log-meta" id="logsMeta">正在加载…</span>
+          </div>
+          <div class="terminal" id="logLines">
+            <div class="terminal-empty">
+              <svg class="icon"><use href="#i-file"></use></svg>
+              <strong>正在加载日志…</strong>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <footer class="content-foot">
+        <span>Yunzai</span>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<!-- ===================== 登录 ===================== -->
+<div class="login" id="login">
+  <div class="login-card">
+    <div class="login-mark"><svg class="icon"><use href="#i-spark"></use></svg></div>
+    <h2 id="loginTitle">正在连接控制台</h2>
+    <div class="login-loading" id="loginLoading"><span class="spinner"></span></div>
+    <form id="loginForm" hidden>
+      <label class="field">
+        <span>访问令牌</span>
+        <input id="loginToken" type="password" autocomplete="current-password" />
+      </label>
+      <div class="login-options">
+        <label class="login-check">
+          <input type="checkbox" id="loginRemember" />
+          <span>记住令牌</span>
+        </label>
+        <label class="login-check">
+          <input type="checkbox" id="loginAuto" />
+          <span>自动登录</span>
+        </label>
+      </div>
+      <div class="form-error" id="loginError"></div>
+      <button class="btn btn-primary btn-block" type="submit" id="loginSubmit">
+        <svg class="icon"><use href="#i-lock"></use></svg>进入控制台
+      </button>
+    </form>
+    <button class="btn btn-outline btn-block" type="button" id="loginRetry" hidden>重新检测</button>
+    <div class="form-error" id="loginErrorPlain" style="margin-top:14px;text-align:left"></div>
+  </div>
+</div>
+
+<!-- ===================== 全局搜索 ===================== -->
+<div class="palette-backdrop" id="palette" hidden>
+  <div class="palette-panel">
+    <div class="palette-search">
+      <svg class="icon"><use href="#i-search"></use></svg>
+      <input id="paletteInput" type="text" placeholder="搜索页面、操作或知识…" autocomplete="off" />
+      <kbd>ESC</kbd>
+    </div>
+    <div class="palette-list" id="paletteList"></div>
+    <div class="palette-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> 选择</span>
+      <span><kbd>↵</kbd> 打开</span>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="./terminal.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

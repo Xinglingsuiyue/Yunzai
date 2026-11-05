@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{helpCfg.title}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #0b0d12; }
+    body {
+      display: inline-block;
+      padding: 26px;
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+      color: var(--title-color);
+      -webkit-font-smoothing: antialiased;
+    }
+    #panel {
+      width: {{width}}px;
+      padding: 28px 30px 22px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: #10141c;
+      background-image: linear-gradient(160deg, #151a23 0%, #0b0e14 100%);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+    .head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .title {
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: 0.05em;
+      color: var(--title-color);
+      text-shadow: var(--title-shadow);
+    }
+    .subtitle {
+      margin-top: 7px;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--desc-color);
+      text-shadow: var(--desc-shadow);
+    }
+    .filter {
+      flex: none;
+      padding: 5px 12px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+    }
+    .group {
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      background: var(--cont-bg);
+      backdrop-filter: blur(var(--cont-blur));
+      overflow: hidden;
+    }
+    .group:last-of-type { margin-bottom: 0; }
+    .group-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--header-bg);
+    }
+    .group-head::before {
+      content: "";
+      width: 3px;
+      height: 14px;
+      border-radius: 2px;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .group-name {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--title-color);
+      text-shadow: var(--title-shadow);
+    }
+    .group-desc {
+      margin-left: auto;
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      color: var(--desc-color);
+    }
+    .row { display: flex; }
+    .row + .row { border-top: 1px solid rgba(255, 255, 255, 0.035); }
+    .row:nth-child(odd) { background: var(--row-bg1); }
+    .row:nth-child(even) { background: var(--row-bg2); }
+    #panel.table-border .group { border-color: rgba(255, 255, 255, 0.16); }
+    #panel.table-border .group-head { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    #panel.table-border .row + .row { border-top-color: rgba(255, 255, 255, 0.08); }
+    #panel.table-border .cell + .cell { border-left: 1px solid rgba(255, 255, 255, 0.07); }
+    .cell {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      min-height: 66px;
+      padding: 12px 16px;
+    }
+    .cell.empty { opacity: 0; }
+    .icon {
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      line-height: 1;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .icon.is-image { padding: 0; border-color: transparent; background: none; overflow: hidden; }
+    .icon-img { display: block; width: 30px; height: 30px; object-fit: cover; border-radius: 9px; }
+    .cell-body { flex: 1; min-width: 0; padding-top: 1px; }
+    .item-name {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--title-color);
+      text-shadow: var(--title-shadow);
+      word-break: break-word;
+    }
+    .item-desc {
+      margin-top: 3px;
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: var(--desc-color);
+      text-shadow: var(--desc-shadow);
+      word-break: break-word;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--desc-color);
+      text-shadow: var(--desc-shadow);
+    }
+    .footer-version {
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+      opacity: 0.72;
+    }
+  </style>
+  {{@themeStyle}}
+  {{if bare}}
+  <style>
+    html, body { background: transparent !important; }
+    body { padding: 0 !important; }
+    #panel { box-shadow: none !important; }
+  </style>
+  {{/if}}
+</head>
+<body>
+  <div id="panel"{{if helpCfg.tableBorder}} class="table-border"{{/if}}>
+    <div class="head">
+      <div>
+        <div class="title">{{helpCfg.title}}</div>
+        {{if helpCfg.subTitle}}<div class="subtitle">{{helpCfg.subTitle}}</div>{{/if}}
+      </div>
+      {{if keyword}}<div class="filter">筛选：{{keyword}}</div>{{/if}}
+    </div>
+    {{each helpGroups group}}
+    <section class="group" data-group-index="{{group.index}}">
+      <div class="group-head">
+        <span class="group-name">{{group.name}}</span>
+        {{if group.desc}}<span class="group-desc">{{group.desc}}</span>{{/if}}
+      </div>
+      {{each group.rows row}}
+      <div class="row">
+        {{each row.cells item}}
+        <div class="cell" data-item-index="{{item.index}}" style="width:{{cellWidth}}%">
+          {{if item.iconHtml}}<span class="icon {{item.iconClass}}">{{@item.iconHtml}}</span>{{/if}}
+          <div class="cell-body">
+            {{if item.title}}<div class="item-name">{{item.title}}</div>{{/if}}
+            {{if item.desc}}<div class="item-desc">{{item.desc}}</div>{{/if}}
+          </div>
+        </div>
+        {{/each}}
+        {{each row.fillers}}<div class="cell empty" style="width:{{cellWidth}}%"></div>{{/each}}
+      </div>
+      {{/each}}
+    </section>
+    {{/each}}
+    <div class="footer">
+      <span>{{helpFooter}}</span>
+      {{if helpVersion}}<span class="footer-version">v{{helpVersion}}</span>{{/if}}
+    </div>
+  </div>
+</body>
+</html>
