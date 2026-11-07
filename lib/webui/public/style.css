@@ -1511,9 +1511,6 @@ body.modal-open { overflow: hidden; }
   top: 18px;
   right: 18px;
   z-index: 300;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   width: 100%;
   max-width: 360px;
   pointer-events: none;
@@ -2400,7 +2397,17 @@ a.plugin-link:hover { color: var(--blue); }
 .ai-pool-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
 .ai-pool-head h4 { margin: 0; font-size: 13px; font-weight: 600; }
 .ai-pool-head p { margin: 3px 0 0; font-size: 11.5px; color: var(--text-3); }
-.ai-pool { display: flex; flex-direction: column; gap: 12px; }
+.ai-pool {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  padding: 8px;
+  overflow-y: auto;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
 .ai-pool-group { display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: start; gap: 10px 14px; }
 .ai-pool-channel { display: flex; align-items: center; gap: 5px; overflow: hidden; padding-top: 4px; font-size: 11.5px; color: var(--text-3); text-overflow: ellipsis; white-space: nowrap; }
 
