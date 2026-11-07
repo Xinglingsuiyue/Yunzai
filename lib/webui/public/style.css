@@ -1,6 +1,3 @@
-/* =========================================================
-   Yunzai WebUI —— 浅色极简 / 黑色主色 / 可切换深色
-   ========================================================= */
 
 :root {
   --bg: #f6f6f7;
@@ -84,7 +81,6 @@
 
 * { box-sizing: border-box; }
 
-/* 移动端点击时浏览器默认会闪一下淡蓝色高亮，和这套配色不搭，统一关掉 */
 * {
   -webkit-tap-highlight-color: transparent;
 }
@@ -125,7 +121,6 @@ svg { display: block; }
 .hidden { display: none !important; }
 [hidden] { display: none !important; }
 
-/* ---------------- Layout ---------------- */
 
 .app { display: flex; min-height: 100vh; min-height: 100dvh; }
 
@@ -171,7 +166,6 @@ svg { display: block; }
   padding: 26px 28px 40px;
 }
 
-/* ---------------- Brand ---------------- */
 
 .brand {
   display: flex;
@@ -207,7 +201,6 @@ svg { display: block; }
   color: var(--text-3);
 }
 
-/* ---------------- Navigation ---------------- */
 
 .nav {
   display: flex;
@@ -355,7 +348,6 @@ svg { display: block; }
   text-overflow: ellipsis;
 }
 
-/* ---------------- Topbar ---------------- */
 
 .topbar-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .topbar-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
@@ -474,7 +466,6 @@ kbd {
 [data-theme="light"] .icon-sun { display: none; }
 [data-theme="dark"] .icon-moon { display: none; }
 
-/* ---------------- Pages ---------------- */
 
 .page { display: none; }
 .page.active { display: block; animation: pageIn 0.28s ease both; }
@@ -515,7 +506,6 @@ kbd {
   border-top: 1px solid var(--border);
 }
 
-/* ---------------- Buttons ---------------- */
 
 .btn {
   display: inline-flex;
@@ -592,7 +582,6 @@ kbd {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------------- Cards & stats ---------------- */
 
 .card {
   min-width: 0;
@@ -634,7 +623,6 @@ kbd {
 
 .stats-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-/* 卡片数量不固定时按容器宽度自动排布，避免末行只剩一张 */
 .stats-grid.auto-fit { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 
 .stat-card {
@@ -742,7 +730,6 @@ kbd {
   text-overflow: ellipsis;
 }
 
-/* ---------------- Key / value ---------------- */
 
 .kv {
   display: flex;
@@ -768,7 +755,6 @@ kbd {
 .kv-val.mono { font-size: 11.5px; }
 .kv-val.wrap { white-space: normal; word-break: break-all; }
 
-/* ---------------- Pills, chips, bar ---------------- */
 
 .pill {
   display: inline-flex;
@@ -826,7 +812,6 @@ kbd {
 .bar { height: 6px; margin-top: 7px; overflow: hidden; background: var(--pill); border-radius: 99px; }
 .bar > span { display: block; height: 100%; background: var(--black); border-radius: 99px; transition: width 0.4s ease; }
 
-/* ---------------- Tables ---------------- */
 
 .table-wrap { overflow-x: auto; }
 
@@ -877,7 +862,6 @@ kbd {
 .cell-actions { text-align: right; white-space: nowrap; }
 .cell-num { font-variant-numeric: tabular-nums; }
 
-/* 预设表：内容长短不该决定列宽，名称与标签固定不折行 */
 [data-ai-section-page="presets"] .table th:first-child,
 [data-ai-section-page="presets"] .table td:first-child { min-width: 200px; }
 [data-ai-section-page="presets"] .cell-main strong,
@@ -902,7 +886,6 @@ kbd {
 
 .table-more:hover { background: var(--card) !important; }
 
-/* ---------------- Filters / forms ---------------- */
 
 .field-inline {
   display: flex;
@@ -940,7 +923,6 @@ kbd {
   border: 1px solid var(--border);
   border-radius: 9px;
   outline: 0;
-  /* 作用域选项带计数，长文本会把整条筛选栏撑出屏幕 */
   max-width: 100%;
   min-width: 0;
 }
@@ -971,7 +953,6 @@ kbd {
 
 .head-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-/* ---------------- Segmented ---------------- */
 
 .segmented {
   display: inline-flex;
@@ -1003,7 +984,6 @@ kbd {
 
 .segmented.small button { height: 26px; padding: 0 9px; font-size: 11.5px; }
 
-/* ---------------- Empty & skeleton ---------------- */
 
 .empty {
   display: flex;
@@ -1051,7 +1031,6 @@ kbd {
 .sk-row { height: 12px; margin: 15px 0; }
 .sk-line { display: block; height: 10px; }
 
-/* ---------------- Commands ---------------- */
 
 .cmd-list { padding: 6px 0; }
 
@@ -1070,7 +1049,6 @@ kbd {
 .cmd-row .dot { width: 5px; height: 5px; flex: none; background: var(--green); border-radius: 50%; }
 .cmd-text { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
-/* ---------------- Knowledge list ---------------- */
 
 .kb-list { display: flex; flex-direction: column; }
 
@@ -1138,7 +1116,6 @@ kbd {
 
 .pager-btns { display: flex; gap: 6px; }
 
-/* ---------------- Logs ---------------- */
 
 .log-toolbar {
   display: flex;
@@ -1206,7 +1183,6 @@ kbd {
 .log-line.warn .txt { color: #fcd34d; }
 .log-line.mark .txt { color: #93c5fd; }
 
-/* ---------------- Modal ---------------- */
 
 .modal-layer {
   position: fixed;
@@ -1287,7 +1263,6 @@ body.modal-open { overflow: hidden; }
 @keyframes fadeIn { from { opacity: 0; } }
 @keyframes modalIn { from { opacity: 0; transform: translateY(10px) scale(0.985); } }
 
-/* ---------------- Forms ---------------- */
 
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .field > span { font-size: 12px; font-weight: 500; color: var(--text-2); }
@@ -1346,7 +1321,6 @@ body.modal-open { overflow: hidden; }
 }
 .form-error.show { display: block; }
 
-/* ---------------- Palette ---------------- */
 
 .palette-backdrop {
   position: fixed;
@@ -1423,7 +1397,6 @@ body.modal-open { overflow: hidden; }
 
 .palette-foot kbd { margin-right: 2px; }
 
-/* ---------------- Login ---------------- */
 
 .login {
   position: fixed;
@@ -1489,7 +1462,6 @@ body.modal-open { overflow: hidden; }
 .login-check input { margin: 0; accent-color: var(--text); cursor: pointer; }
 .login-check:hover { color: var(--text); }
 
-/* 选项已留出下间距，错误提示出现时只占自身高度，不再重复撑开 */
 .login-options + .form-error { margin: 0 0 12px; }
 
 .login-loading { display: flex; justify-content: center; padding: 6px 0 4px; }
@@ -1504,7 +1476,6 @@ body.modal-open { overflow: hidden; }
   animation: spin 0.8s linear infinite;
 }
 
-/* ---------------- Toast ---------------- */
 
 .toasts {
   position: fixed;
@@ -1541,7 +1512,6 @@ body.modal-open { overflow: hidden; }
 
 @keyframes toastIn { from { opacity: 0; transform: translateY(-6px); } }
 
-/* ---------------- Config management ---------------- */
 
 .config-layout {
   display: grid;
@@ -1689,7 +1659,6 @@ body.modal-open { overflow: hidden; }
 
 .config-main { overflow: hidden; }
 
-/* 分区视图：只做分区标题，不套卡片 */
 .ai-sectioned .config-section + .config-section { margin-top: 26px; }
 .ai-sectioned .config-section-title {
   margin: 0 0 12px;
@@ -1800,7 +1769,6 @@ body.modal-open { overflow: hidden; }
 .config-label .req { color: var(--red); font-style: normal; }
 .config-label .pill { padding: 1px 5px; font-size: 9.5px; }
 .config-help { font-size: 10.5px; line-height: 1.5; color: var(--text-3); word-break: break-word; }
-/* 说明过长时折叠为两行，完整内容点击查看 */
 .config-help.clamp {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -1859,10 +1827,14 @@ textarea.config-input.text-area { font-family: inherit; font-size: 12.5px; }
 .config-list-add { display: flex; gap: 6px; align-items: center; }
 .config-list-add .config-input { flex: 1; min-width: 0; }
 .config-list-add .btn { flex: none; }
+.config-list-input { width: 100%; font-size: 12px; }
 .config-candidates { display: flex; flex-direction: column; gap: 6px; }
 .config-candidates-head { display: flex; align-items: baseline; gap: 6px; font-size: 11.5px; color: var(--text-2); }
 .config-candidates-head small { font-size: 11px; color: var(--text-3); }
 .config-candidate-list { display: flex; flex-wrap: wrap; gap: 6px; max-height: 190px; overflow: auto; padding: 2px; }
+.config-candidate-search { width: 100%; margin-bottom: 2px; font-size: 12px; }
+.config-candidate-empty { padding: 8px 2px; font-size: 11.5px; color: var(--text-3); }
+.config-candidate[hidden] { display: none; }
 .config-candidate {
   display: inline-flex;
   align-items: center;
@@ -1893,7 +1865,19 @@ textarea.config-input.text-area { font-family: inherit; font-size: 12.5px; }
   background: var(--pill);
   border-radius: 7px;
 }
-/* 标签文字过长时单行省略，完整内容靠悬停提示或点击弹窗查看 */
+.config-tag-value {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+}
+.config-tags-count {
+  flex: none;
+  align-self: center;
+  margin-right: 2px;
+  font-size: 11px;
+  color: var(--text-3);
+}
 .config-tag-text {
   min-width: 0;
   overflow: hidden;
@@ -2040,7 +2024,6 @@ textarea.config-input.text-area { font-family: inherit; font-size: 12.5px; }
 .config-scope-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .config-scope-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: var(--text-3); }
 
-/* ---------------- Plugin store ---------------- */
 
 .plugin-store { overflow: hidden; }
 
@@ -2095,7 +2078,6 @@ a.plugin-source:hover { color: var(--text); background: var(--hover); border-col
 .plugin-source .status-dot { width: 6px; height: 6px; box-shadow: none; }
 .plugin-source b { font-weight: 600; color: var(--text-3); }
 
-/* 单 js 插件代码编辑框：等宽、可换行、不自动大写 */
 textarea.single-editor-code {
   min-height: 44vh;
   font-family: var(--mono);
@@ -2208,7 +2190,6 @@ a.plugin-link:hover { color: var(--blue); }
 .plugin-install-error { margin: 10px 0 0; font-size: 11.5px; color: var(--red); }
 .field > span code { padding: 1px 5px; font-family: var(--mono); font-size: 11px; background: var(--pill); border-radius: 5px; }
 
-/* ---------------- Responsive ---------------- */
 
 @media (max-width: 1080px) {
   .menu-btn { display: grid; }
@@ -2321,7 +2302,6 @@ a.plugin-link:hover { color: var(--blue); }
   .config-file-item { min-width: 170px; }
 }
 
-/* ---------------- AI 管理页 ---------------- */
 
 .ai-form-grid {
   display: grid;
@@ -2337,7 +2317,6 @@ a.plugin-link:hover { color: var(--blue); }
 .ai-model-row { display: flex; align-items: center; gap: 8px; }
 .ai-model-row select { flex: 1; width: auto; min-width: 0; }
 
-/* 按账号指定人格：账号 + 人格 + 本账号触发词 + 删除 */
 .bot-preset-row {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.85fr) minmax(0, 1fr) auto;
@@ -2345,13 +2324,11 @@ a.plugin-link:hover { color: var(--blue); }
   gap: 8px;
 }
 .bot-preset-bot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 8px; }
-/* 手填框隐藏时账号下拉占满，避免右侧留空 */
 .bot-preset-bot.is-picked { grid-template-columns: minmax(0, 1fr); }
 .bot-preset-bot select,
 .bot-preset-bot input,
 .bot-preset-row > select,
 .bot-preset-row > input {
-  /* 覆盖 .field select 的 9px 上下内边距；固定高度会把字形下缘裁掉 */
   height: 36px;
   padding: 7px 10px;
   font-size: 13px;
@@ -2361,7 +2338,6 @@ a.plugin-link:hover { color: var(--blue); }
 .bot-preset-add { margin-top: 10px; }
 .ai-model-row .btn { flex: none; height: 36px; }
 
-/* ---------------- AI 模型选择 ---------------- */
 
 .ai-model-card .card-body { display: flex; flex-direction: column; gap: 18px; }
 
@@ -2411,7 +2387,6 @@ a.plugin-link:hover { color: var(--blue); }
 .ai-pool-group { display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: start; gap: 10px 14px; }
 .ai-pool-channel { display: flex; align-items: center; gap: 5px; overflow: hidden; padding-top: 4px; font-size: 11.5px; color: var(--text-3); text-overflow: ellipsis; white-space: nowrap; }
 
-/* 模型图标：按服务商识别，内联品牌 SVG，无需外部图片 */
 .model-icon {
   display: inline-grid;
   flex: none;
@@ -2446,7 +2421,6 @@ a.plugin-link:hover { color: var(--blue); }
 .ai-pool-chip:disabled { opacity: 0.6; cursor: not-allowed; }
 .ai-pool .channel-empty { padding: 32px 16px; }
 
-/* ---------------- 渠道卡片 ---------------- */
 
 .channel-grid {
   display: grid;
@@ -2509,7 +2483,6 @@ a.plugin-link:hover { color: var(--blue); }
 .channel-card-test .pill { flex: none; height: 22px; }
 .channel-card-test-text { overflow: hidden; font-size: 11.5px; color: var(--text-3); text-overflow: ellipsis; white-space: nowrap; }
 
-/* ---------------- 渠道测试面板 ---------------- */
 
 .channel-test-summary {
   display: flex;
@@ -2560,7 +2533,6 @@ a.plugin-link:hover { color: var(--blue); }
 .channel-test-message { overflow: hidden; font-size: 11.5px; color: var(--text-3); text-overflow: ellipsis; white-space: nowrap; }
 .channel-test-empty { padding: 30px 16px; font-size: 12px; color: var(--text-3); text-align: center; }
 
-/* ---------------- 渠道表单 ---------------- */
 
 .ai-models-field { display: flex; flex-direction: column; gap: 9px; }
 .ai-model-chips {
@@ -2649,7 +2621,6 @@ a.plugin-link:hover { color: var(--blue); }
 .fallback-group-title small { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); }
 .ai-fallback-actions { display: flex; justify-content: flex-end; margin-top: 14px; }
 
-/* 主动聊天：并入驻「设置」页，作为独立分组块 */
 .proactive-block { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
 .proactive-head {
   display: flex;
@@ -2689,7 +2660,6 @@ a.plugin-link:hover { color: var(--blue); }
   .ai-key-row input[data-ai-key-note] { display: none; }
 }
 
-/* 群列表触发方式：四项各一盏灯，开启绿、关闭黄 */
 .trigger-lights { display: flex; flex-wrap: wrap; gap: 6px 10px; }
 .trigger-light {
   display: inline-flex;
@@ -2709,7 +2679,6 @@ a.plugin-link:hover { color: var(--blue); }
 .trigger-light.is-on .light { background: #2fbf6b; box-shadow: 0 0 0 3px rgba(47, 191, 107, 0.15); }
 .trigger-light.is-off .light { background: #e8a23a; box-shadow: 0 0 0 3px rgba(232, 162, 58, 0.14); }
 
-/* 密钥字段：输入框 + 眼睛按钮，平时掩码显示 */
 .secret-field { position: relative; display: flex; align-items: center; }
 .secret-field > input { flex: 1; min-width: 0; padding-right: 34px; }
 .secret-field .secret-eye {
@@ -2756,7 +2725,6 @@ a.plugin-link:hover { color: var(--blue); }
 .ai-advanced summary span { font-size: 11px; font-weight: 400; color: var(--text-3); }
 .ai-advanced .ai-form-grid { padding: 4px 0 2px; }
 
-/* ---------------- 模型选择器 ---------------- */
 
 .model-picker-layer {
   position: fixed;
@@ -2841,7 +2809,6 @@ a.plugin-link:hover { color: var(--blue); }
   font-size: 10px;
   color: var(--text-3);
 }
-/* 单行省略：flex 子项默认不收缩，必须显式 min-width:0 才会截断 */
 .mem-sub > *,
 .mem-sub > span {
   min-width: 0;
@@ -2868,18 +2835,14 @@ a.plugin-link:hover { color: var(--blue); }
   min-width: 0;
   flex: 0 1 auto;
 }
-/* 多个标签平分宽度会各自只剩一两个字，让首个标签优先占用 */
 .mem-table .chips .chip:first-child { flex: 1 1 auto; }
 .mem-table .chips .chip:not(:first-child) { flex: 0 1 auto; max-width: 40%; }
 
-/* 回忆表格：8 列内容差异大，固定布局 + 列内截断，避免长文本压到相邻列 */
 .mem-table { table-layout: fixed; }
 .mem-table th, .mem-table td { overflow: hidden; }
-/* 窄列被左右内边距吃掉太多，回忆表格收窄到 8px */
 .mem-table th, .mem-table td { padding-left: 8px; padding-right: 8px; }
 .mem-table th:first-child, .mem-table td:first-child { padding-left: 14px; }
 .mem-table th:last-child, .mem-table td:last-child { padding-right: 14px; }
-/* 短内容列（类型/作用域/关联）按实际文字给足宽度，剩下留给长文本列 */
 .mem-table th:nth-child(1), .mem-table td:nth-child(1) { width: 24%; }
 .mem-table th:nth-child(2), .mem-table td:nth-child(2) { width: 10%; }
 .mem-table th:nth-child(3), .mem-table td:nth-child(3) { width: 17%; }
@@ -2890,12 +2853,10 @@ a.plugin-link:hover { color: var(--blue); }
 .mem-table th:nth-child(8), .mem-table td:nth-child(8) { width: 5%; }
 .mem-table td > * { max-width: 100%; }
 .mem-table .cell-actions { white-space: nowrap; }
-/* 这几列本来就只有几个字，不需要省略 */
 .mem-table td:nth-child(2) .pill,
 .mem-table td:nth-child(3) .pill,
 .mem-table td:nth-child(5) { overflow: visible; text-overflow: clip; }
 
-/* 表格内的 pill / chip 必须自己截断，否则 nowrap 文字会溢出色块背景 */
 .mem-table .pill,
 .mem-table .chip {
   max-width: 100%;
@@ -2903,7 +2864,6 @@ a.plugin-link:hover { color: var(--blue); }
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* 类型和作用域只有几个字，固定不收缩，确保完整显示 */
 .mem-table td:nth-child(2) .pill,
 .mem-table td:nth-child(3) .pill {
   flex: none;
@@ -2922,11 +2882,6 @@ a.plugin-link:hover { color: var(--blue); }
   overflow: hidden;
 }
 
-/*
- * 窄屏：列宽、操作按钮都保持原样，只让第一列标题下的标签换行显示完整。
- * 类型/作用域这些 pill 仍按原规则省略，不能改成 overflow:visible，
- * 否则长群号会撑破单元格。
- */
 @media (max-width: 720px) {
   .mem-sub {
     flex-wrap: wrap;
@@ -2939,13 +2894,11 @@ a.plugin-link:hover { color: var(--blue); }
     text-overflow: clip;
     white-space: normal;
   }
-  /* 标签独占一行：和 id、日期挤在同一行时，24% 的列宽放不下几个标签 */
   .mem-sub .chips {
     flex: 1 0 100%;
     flex-wrap: wrap;
     overflow: visible;
   }
-  /* 覆盖桌面端「首个标签优先、其余最多 40%」的压缩规则 */
   .mem-sub .chips .chip,
   .mem-sub .chips .chip:first-child,
   .mem-sub .chips .chip:not(:first-child) {
@@ -2954,7 +2907,6 @@ a.plugin-link:hover { color: var(--blue); }
     overflow: visible;
     text-overflow: clip;
   }
-  /* 「全部作用域」这类长选项在窄屏按内容收缩，不再把筛选栏顶出去 */
   .filter-bar .select,
   .filter-bar .field-inline {
     flex: 1 1 calc(50% - 4px);
@@ -3240,7 +3192,6 @@ a.plugin-link:hover { color: var(--blue); }
 @media (max-width: 720px) {
   .ai-form-grid { grid-template-columns: minmax(0, 1fr); }
   .ai-form-grid .field.wide { grid-column: auto; }
-  /* 账号行：账号独占一行，人格+触发词并排，删除按钮贴右 */
   .bot-preset-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; row-gap: 6px; }
   .bot-preset-bot { grid-column: 1 / -1; grid-row: 1; }
   .bot-preset-row > select { grid-column: 1 / 2; grid-row: 2; }
@@ -3261,7 +3212,6 @@ a.plugin-link:hover { color: var(--blue); }
   .model-picker { max-height: 90vh; border-radius: 16px 16px 0 0; }
 }
 
-/* ===================== 帮助面板 ===================== */
 
 .help-stage {
   position: relative;
@@ -3695,7 +3645,6 @@ a.plugin-link:hover { color: var(--blue); }
   .help-theme-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
 }
 
-/* ---------------- 终端 ---------------- */
 
 .term-conn { display: inline-flex; align-items: center; gap: 7px; padding: 0 4px; color: var(--text-2); font-size: 11.5px; white-space: nowrap; }
 .term-conn-dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--text-3); }
@@ -3894,7 +3843,6 @@ a.plugin-link:hover { color: var(--blue); }
   .term-toolbar { opacity: 1; }
 }
 
-/* ---------------- 表情包 ---------------- */
 .sticker-layout {
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr);
@@ -3925,7 +3873,6 @@ a.plugin-link:hover { color: var(--blue); }
 .sticker-cat.active { color: var(--text); background: var(--bg-soft); font-weight: 600; }
 .sticker-cat .count { font-size: 11px; color: var(--text-3); }
 
-/* 开关 + 四个按钮 + 搜索框放不下一行时整体换行，避免被挤出卡片 */
 .sticker-main .card-head { flex-wrap: wrap; row-gap: 10px; }
 
 .sticker-tools {
@@ -4030,7 +3977,6 @@ a.plugin-link:hover { color: var(--blue); }
   .sticker-layout { grid-template-columns: 1fr; }
 }
 
-/* 窄屏：开关与搜索框各占一行，四个按钮自成一行，点按目标更大 */
 @media (max-width: 720px) {
   .sticker-main .card-head { align-items: flex-start; }
   .sticker-tools { flex: 1 1 100%; justify-content: flex-start; }
@@ -4040,9 +3986,23 @@ a.plugin-link:hover { color: var(--blue); }
 }
 
 .sticker-perm-group[hidden] { display: none; }
-.sticker-perm-list { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 4px 0; }
+.sticker-perm-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 4px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
 .sticker-perm-item { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-2); cursor: pointer; }
+.sticker-perm-item[hidden] { display: none; }
 .sticker-perm-item input { margin: 0; accent-color: var(--black); }
+.sticker-perm-search { width: 100%; font-size: 12px; }
+.sticker-perm-count { margin-left: 6px; font-weight: 400; color: var(--text-3); }
+.sticker-perm-empty { padding: 6px 2px; font-size: 11.5px; color: var(--text-3); }
 
 .sticker-badge {
   display: inline-flex;
@@ -4081,7 +4041,6 @@ a.plugin-link:hover { color: var(--blue); }
 .sticker-pending-meta small { font-size: 11px; color: var(--text-3); }
 .sticker-pending-actions { display: flex; gap: 6px; }
 
-/* ---------------- AI 群设置：工具选择器 ---------------- */
 .group-picker { display: flex; flex-direction: column; gap: 6px; }
 .group-picker-head { display: flex; align-items: center; gap: 8px; }
 .group-picker-head input {
@@ -4119,7 +4078,6 @@ a.plugin-link:hover { color: var(--blue); }
 .group-picker-name { flex: none; font-family: var(--mono); font-size: 11.5px; color: var(--text); }
 .group-picker-meta { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10.5px; color: var(--text-3); }
 
-/* ---------------- 后端模式 ---------------- */
 .backend-shell {
   display: flex;
   flex-direction: column;
@@ -4183,7 +4141,6 @@ a.plugin-link:hover { color: var(--blue); }
 
 .backend-entry-meta { flex: none; font-size: 10.5px; color: #6b7280; }
 
-/* 执行中：左边亮一条，配合转圈，让等待有反馈 */
 .backend-entry.is-pending {
   border-color: rgba(124, 196, 255, 0.36);
   box-shadow: inset 2px 0 0 #7cc4ff;
@@ -4282,13 +4239,11 @@ a.plugin-link:hover { color: var(--blue); }
 }
 .backend-input input:focus { border-color: rgba(124, 196, 255, 0.55); }
 
-/* ===================== 状态图分辨率 ===================== */
 .status-image-row { display: grid; grid-template-columns: minmax(0, 220px) auto; align-items: end; gap: 12px; }
 .status-image-row .field { margin-bottom: 0; }
 .status-image-row .btn { height: 36px; }
 .status-pro-switch { margin-top: 14px; }
 
-/* ===================== 仪表盘表盘 ===================== */
 .gauge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 10px; }
 .gauge { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 2px 2px; text-align: center; }
 .gauge-ring { position: relative; width: 104px; height: 104px; }
@@ -4301,12 +4256,10 @@ a.plugin-link:hover { color: var(--blue); }
 .gauge-info { font-size: 10.5px; color: var(--text-3); }
 .gauge-empty { grid-column: 1 / -1; padding: 10px 0; font-size: 11.5px; text-align: center; }
 
-/* ===================== 开关灯 ===================== */
 .toggle-light { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; font-size: 12px; }
 .toggle-light:last-child { margin-right: 0; }
 .status-dot.red { background: #e5484d; box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.14); }
 
-/* ===================== 账号显示 ===================== */
 .account-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
 .account-card { display: flex; align-items: center; gap: 18px; padding: 18px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
 .account-avatar-wrap { position: relative; flex: none; padding: 6px; }
