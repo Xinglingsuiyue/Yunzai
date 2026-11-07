@@ -28,6 +28,9 @@
       color: var(--text);
     }
     #panel { width: {{width}}px; }
+    .narrow .sysBox,
+    .narrow .netGrid { grid-template-columns: repeat(2, 1fr); }
+    .narrow .hardware { display: grid; grid-template-columns: repeat(2, 1fr); row-gap: 14px; }
 
     .box {
       padding: 16px 20px;
@@ -47,6 +50,7 @@
     }
     .title .bar { width: 4px; height: 14px; border-radius: 2px; background: var(--low); }
 
+    /* ---------- Bot ---------- */
     .botInfo { display: flex; align-items: center; gap: 20px; }
     .avatarBox { position: relative; flex: none; }
     .avatar {
@@ -58,7 +62,7 @@
       background: var(--bg);
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
-
+    /* 头像框：椰奶同款外阴影 + 彩色光晕，边框为圆形；无头像时保留空框 */
     .avatar::before {
       content: "";
       position: absolute;
@@ -120,9 +124,10 @@
     }
     .chip .dot { width: 6px; height: 6px; border-radius: 50%; }
 
+    /* ---------- 四格信息 ---------- */
     .sysBox {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
       gap: 12px;
       padding: 0;
       background: transparent;
@@ -133,6 +138,7 @@
       border-radius: 14px;
       background: var(--bg);
       box-shadow: 6px 6px 12px var(--back-bg), -6px -6px 12px var(--back-shadow);
+      min-width: 0;
     }
     .sysTitle { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--sub); }
     .sysTitle .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--low); }
@@ -154,8 +160,9 @@
       text-overflow: ellipsis;
     }
 
-    .hardware { display: flex; justify-content: space-between; gap: 6px; }
-    .hw { display: flex; flex-direction: column; align-items: center; width: 150px; }
+    /* ---------- 资源环 ---------- */
+    .hardware { display: flex; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+    .hw { display: flex; flex-direction: column; align-items: center; flex: 1 1 120px; min-width: 0; }
     .container-box { position: relative; width: var(--w); height: var(--w); }
     .container-box::after {
       content: attr(data-num);
@@ -206,13 +213,14 @@
     .hwDetail {
       font-size: 11px;
       color: #5f5d5d;
-      max-width: 150px;
+      max-width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .hwInfo { margin-top: 4px; font-size: 10.5px; color: #2f4f4f; text-align: center; }
+    .hwInfo { margin-top: 4px; font-size: 10.5px; color: #2f4f4f; text-align: center; word-break: break-all; }
 
+    /* ---------- 磁盘 ---------- */
     .diskRow {
       display: flex;
       align-items: center;
@@ -237,9 +245,11 @@
       overflow: hidden;
     }
     .barFill { height: 100%; border-radius: 5px; }
-    .diskLegend { display: flex; gap: 16px; font-size: 10.5px; color: var(--sub); }
+    .diskLegend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 10.5px; color: var(--sub); }
+    .diskLegend span { min-width: 0; word-break: break-all; }
     .legendDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
 
+    /* ---------- 网络 ---------- */
     .chart {
       padding: 10px 12px 8px;
       border-radius: 12px;
@@ -251,7 +261,7 @@
     .lineDown { fill: none; stroke: var(--low); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
     .lineUp { fill: none; stroke: #e0be92; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
     .chartFoot { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--sub); }
-    .netGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+    .netGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 12px; margin-top: 12px; }
     .netTile {
       padding: 10px 12px;
       border-radius: 12px;
@@ -263,6 +273,7 @@
     .netTile .v { margin-top: 5px; font-size: 17px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
     .netTile .unit { margin-left: 3px; font-size: 10.5px; font-weight: 400; color: var(--sub); }
 
+    /* ---------- Redis ---------- */
     .redisGrid { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 12px; }
     .redisPanel {
       padding: 12px 14px;
@@ -298,6 +309,7 @@
     .healthItem .k { color: var(--sub); }
     .healthItem .v { margin-left: auto; color: #3d3b4f; font-weight: 600; font-variant-numeric: tabular-nums; }
 
+    /* ---------- 进程 ---------- */
     .procCounts { display: flex; gap: 22px; padding: 0 2px 11px; font-size: 12px; color: var(--sub); }
     .procCounts b { margin-left: 5px; font-size: 13px; color: #4a485e; font-variant-numeric: tabular-nums; }
     .procCounts b.ok { color: #54ad57; }
@@ -311,7 +323,7 @@
     }
     .procRow {
       display: grid;
-      grid-template-columns: 1fr 100px 70px 100px;
+      grid-template-columns: minmax(0, 1fr) 78px 54px 78px;
       gap: 6px;
       padding: 5px 0;
       font-size: 11.5px;
@@ -333,7 +345,8 @@
     .procRow:last-child { border-bottom: none; }
     .procHr { height: 1px; background: rgba(140, 150, 170, 0.28); margin: 4px 0; }
 
-    .fastGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 16px; }
+    /* ---------- 系统信息 ---------- */
+    .fastGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 9px 16px; }
     .fastRow {
       display: flex;
       align-items: center;
@@ -343,18 +356,18 @@
       background: rgba(255, 255, 255, 0.45);
       font-size: 11.5px;
     }
-    .fastKey { display: flex; align-items: center; gap: 6px; flex: none; width: 68px; color: var(--sub); }
+    .fastKey { display: flex; align-items: center; gap: 6px; flex: none; width: 52px; color: var(--sub); }
     .fastKey i { width: 7px; height: 7px; border-radius: 50%; }
     .fastVal {
       flex: 1;
+      min-width: 0;
       text-align: right;
       color: #3d3b4f;
       font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow-wrap: anywhere;
     }
 
+    /* ---------- 页脚 ---------- */
     .foot {
       margin-top: 2px;
       text-align: center;
@@ -366,7 +379,7 @@
   </style>
 </head>
 <body>
-  <div id="panel">
+  <div id="panel" class="{{if width < 540}}narrow{{/if}}">
     {{each bots}}
     <div class="box">
       <div class="botInfo">
@@ -454,6 +467,7 @@
     </div>
     {{/if}}
 
+    {{if hasNetwork}}
     <div class="box">
       <div class="title"><span class="bar"></span>网络状态</div>
       {{if network.chart}}
@@ -491,6 +505,7 @@
         </div>
       </div>
     </div>
+    {{/if}}
 
     {{if hasRedis}}
     <div class="box">

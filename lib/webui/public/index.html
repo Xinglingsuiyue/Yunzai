@@ -1363,17 +1363,26 @@
 
         <section class="card">
           <div class="card-head">
-            <div><h3>状态图</h3><p>#状态 图片的渲染清晰度</p></div>
+            <div><h3>状态图</h3><p>#状态 图片的渲染清晰度与版式宽度</p></div>
           </div>
           <div class="card-body">
             <div class="status-image-row">
               <label class="field">
-                <span>分辨率</span>
+                <span>清晰度</span>
                 <select id="statusImageScale">
                   <option value="1">标准 1x</option>
                   <option value="1.5">高清 1.5x</option>
                   <option value="2">超清 2x</option>
                   <option value="3">极致 3x</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>版式宽度</span>
+                <select id="statusImageWidth">
+                  <option value="460">窄 460（手机最清楚）</option>
+                  <option value="560">标准 560</option>
+                  <option value="660">宽 660</option>
+                  <option value="760">超宽 760</option>
                 </select>
               </label>
               <button class="btn btn-primary" type="button" id="statusImageSave">保存</button>

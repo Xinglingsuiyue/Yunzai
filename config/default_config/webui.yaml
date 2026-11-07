@@ -12,6 +12,8 @@ allowWrite: true
 logLines: 300
 # 状态图清晰度倍数：1 标准 / 1.5 高清 / 2 超清 / 3 极致
 statusImageScale: 2
+# 状态图版式宽度。越窄手机上看字越大，默认 560。420-900
+statusImageWidth: 560
 # 允许非主人使用 #状态pro 查看全部账号
 statusProForAll: false
 
