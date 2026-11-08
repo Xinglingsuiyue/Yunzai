@@ -1735,6 +1735,26 @@ body.modal-open { overflow: hidden; }
 .config-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .config-field.wide { grid-column: 1 / -1; }
 
+.config-field-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 -2px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.config-field-divider::before,
+.config-field-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.config-field-divider.empty { gap: 0; }
+
 .config-field.config-fold {
   gap: 8px;
   padding: 10px 12px;
@@ -1861,6 +1881,45 @@ textarea.config-input.text-area { font-family: inherit; font-size: 12.5px; }
 .config-candidate:hover:not(:disabled) { color: var(--text); background: var(--hover); border-color: var(--border-strong); }
 .config-candidate.active { color: var(--blue); background: var(--blue-bg); border-color: transparent; }
 .config-candidate:disabled { cursor: default; opacity: 0.75; }
+.config-candidate-detail { flex: none; font-size: 10px; color: var(--text-3); }
+.config-candidate.active .config-candidate-detail { color: inherit; opacity: 0.7; }
+.config-candidate-loading { padding: 8px 2px; font-size: 11.5px; color: var(--text-3); }
+.config-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.config-field-buttons .config-label { margin-bottom: 2px; }
+.config-color-editor { display: flex; align-items: center; gap: 8px; }
+.config-color-editor .config-color-text { flex: 1; min-width: 0; }
+.config-color-swatch {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--border);
+  background-image: linear-gradient(45deg, var(--pill) 25%, transparent 25%), linear-gradient(-45deg, var(--pill) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--pill) 75%), linear-gradient(-45deg, transparent 75%, var(--pill) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+}
+.config-color-pick {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: conic-gradient(#ff5f5f, #ffe25f, #5fff8b, #5fd8ff, #8b5fff, #ff5fd8, #ff5f5f);
+  cursor: pointer;
+  overflow: hidden;
+}
+.config-color-pick input[type="color"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+.config-date-editor { position: relative; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.config-date-editor .config-input { flex: 1; min-width: 0; }
+.config-date-btn { flex: none; width: 34px; height: 34px; }
+.config-date-native { position: absolute; right: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.config-daterange-editor { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.config-daterange-editor .config-date-editor { flex: 1; min-width: 0; }
+.config-daterange-sep { flex: none; font-size: 11.5px; color: var(--text-3); }
+.config-select-multiple { min-height: 96px; padding: 4px; }
+.config-upload-hint { margin-top: 4px; }
 .config-tag {
   display: inline-flex;
   align-items: center;
@@ -1929,6 +1988,7 @@ textarea.config-input.text-area { font-family: inherit; font-size: 12.5px; }
 }
 .subform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px 10px; flex: 1; min-width: 0; }
 .subform-field { display: flex; flex-direction: column; gap: 4px; font-size: 10.5px; color: var(--text-2); }
+.subform-field[data-wide="1"] { grid-column: 1 / -1; }
 .subform-field .config-input { height: 30px; font-size: 11.5px; background: var(--card); }
 .subform-field .config-switch { min-height: 30px; }
 .subform-remove { flex: none; width: 28px; height: 28px; }
