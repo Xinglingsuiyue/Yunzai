@@ -1633,15 +1633,23 @@ body.modal-open { overflow: hidden; }
 .config-section-tabs {
   display: flex;
   gap: 4px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   margin: -4px 0 16px;
   padding-bottom: 9px;
   border-bottom: 1px solid var(--border);
 }
 
+.config-section-tabs::-webkit-scrollbar { display: none; }
+
 .config-section-tab {
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
   height: 30px;
   padding: 0 12px;
   font-size: 12px;
