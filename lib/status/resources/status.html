@@ -226,43 +226,53 @@
     }
     .hwInfo { margin-top: 4px; font-size: 10.5px; color: #2f4f4f; text-align: center; word-break: break-all; }
 
-    .diskGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 10px; }
-    .diskTile {
-      min-width: 0;
-      padding: 8px 11px;
-      border-radius: 12px;
+    .diskRow {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 14px;
+      border-radius: 14px;
       background: rgba(255, 255, 255, 0.55);
       box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+      margin-bottom: 12px;
     }
-    .diskTop { display: flex; align-items: baseline; gap: 8px; }
+    .diskRow:last-child { margin-bottom: 0; }
+    .diskRow .container-box {
+      --w: 65px;
+      --gap: 5px;
+      --stroke: 6px;
+      --inner: calc(var(--w) - var(--gap));
+      --circle: calc(var(--inner) - var(--stroke));
+      --center: calc(var(--circle) - var(--stroke));
+    }
+    .diskRow .container-box::after { font-size: 16px; }
+    .diskRow .container-box svg circle {
+      stroke-dashoffset: calc(3.14 * var(--circle) * (1 - var(--pct) / 100));
+    }
+    .diskRight { flex: 1; min-width: 0; }
+    .diskTop { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
     .mount {
-      flex: 1;
       min-width: 0;
-      font-size: 12.5px;
+      font-size: 16px;
       font-weight: 700;
       color: #3d3b4f;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .diskPct { flex: none; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .diskSize { flex: none; font-size: 12px; color: var(--sub); font-variant-numeric: tabular-nums; }
     .barTrack {
-      height: 7px;
-      margin: 5px 0 4px;
-      border-radius: 4px;
+      height: 9px;
+      margin: 9px 0 8px;
+      border-radius: 5px;
       background: var(--bg);
       box-shadow: inset 2px 2px 4px var(--back-bg), inset -2px -2px 4px var(--back-shadow);
       overflow: hidden;
     }
-    .barFill { height: 100%; border-radius: 4px; }
-    .diskMeta {
-      font-size: 10px;
-      color: var(--sub);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-variant-numeric: tabular-nums;
-    }
+    .barFill { height: 100%; border-radius: 5px; }
+    .diskLegend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 10.5px; color: var(--sub); }
+    .diskLegend span { min-width: 0; word-break: break-all; }
+    .legendDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
 
     .chart {
       padding: 9px 11px 7px;
@@ -388,7 +398,7 @@
     }
   </style>
 </head>
-<body>
+<body style="transform: scale({{imgScale || 2}}); transform-origin: top left;">
   <div id="panel" class="{{if width < 540}}narrow{{/if}}">
     {{each bots}}
     <div class="box">
@@ -457,18 +467,26 @@
         <span class="bar"></span>磁盘使用
         {{if diskIo}}<span class="titleExtra">读 {{diskIo.read.size}} {{diskIo.read.unit}}/s · 写 {{diskIo.write.size}} {{diskIo.write.unit}}/s · 合计 {{diskIo.total.size}} {{diskIo.total.unit}}/s</span>{{/if}}
       </div>
-      <div class="diskGrid">
-        {{each disks}}
-        <div class="diskTile">
+      {{each disks}}
+      <div class="diskRow">
+        <div class="container-box" data-num="{{$value.percent}}%" style="--pct:{{$value.percent}}">
+          <div class="circle-outer"></div>
+          <svg><circle stroke="{{$value.color}}"></circle></svg>
+        </div>
+        <div class="diskRight">
           <div class="diskTop">
             <span class="mount">{{$value.mount}}</span>
-            <span class="diskPct" style="color:{{$value.color}}">{{$value.percent}}%</span>
+            <span class="diskSize">{{$value.used}} / {{$value.size}}</span>
           </div>
           <div class="barTrack"><div class="barFill" style="width:{{$value.percent}}%;background:{{$value.color}}"></div></div>
-          <div class="diskMeta">{{$value.used}} / {{$value.size}} · 未用 {{$value.available}} · {{$value.type}}</div>
+          <div class="diskLegend">
+            <span><i class="legendDot" style="background:{{$value.color}}"></i>已使用 {{$value.used}}</span>
+            <span><i class="legendDot" style="background:#8E8691"></i>未使用 {{$value.available}}</span>
+            <span>文件系统 {{$value.type}}</span>
+          </div>
         </div>
-        {{/each}}
       </div>
+      {{/each}}
     </div>
     {{/if}}
 
