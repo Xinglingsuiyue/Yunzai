@@ -3845,6 +3845,7 @@ a.plugin-link:hover { color: var(--blue); }
   pointer-events: none;
   background: transparent;
   border: 0;
+  font-size: 16px; /* 低于 16px 时 iOS 聚焦会自动放大页面 */
 }
 
 .term-keys {
@@ -4017,6 +4018,42 @@ a.plugin-link:hover { color: var(--blue); }
 .sticker-actions button:hover { color: var(--text); background: var(--hover); }
 .sticker-actions button.danger:hover { color: var(--red); border-color: var(--red); }
 
+.sticker-tools .btn.active {
+  color: var(--text);
+  background: var(--bg-soft);
+  border-color: var(--text-3);
+}
+
+.sticker-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  user-select: none;
+}
+.sticker-check[hidden] { display: none; }
+.sticker-check input { margin: 0; accent-color: var(--black); }
+
+.sticker-card.is-editing { cursor: pointer; }
+.sticker-card.is-picked { border-color: var(--text); box-shadow: 0 0 0 1px var(--text); }
+.sticker-pick {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 5px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+}
+.sticker-pick input { margin: 0; width: 14px; height: 14px; accent-color: var(--black); }
+
 .sticker-upload-preview {
   display: flex;
   align-items: center;
@@ -4043,6 +4080,25 @@ a.plugin-link:hover { color: var(--blue); }
 
 @media (max-width: 860px) {
   .sticker-layout { grid-template-columns: 1fr; }
+  .sticker-side { position: static; padding-bottom: 4px; }
+  .sticker-cats {
+    flex-direction: row;
+    gap: 4px;
+    padding: 2px 12px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sticker-cat {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 7px 12px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .sticker-cat .count { flex: none; }
+  .sticker-cat.active { background: var(--hover); border-color: var(--border); }
 }
 
 @media (max-width: 720px) {
@@ -4088,6 +4144,16 @@ a.plugin-link:hover { color: var(--blue); }
 .sticker-badge[hidden] { display: none; }
 
 .sticker-pending-list { display: flex; flex-direction: column; gap: 8px; max-height: 60vh; overflow: auto; }
+.sticker-pending-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 120px;
+  font-size: 12px;
+  color: var(--text-3);
+}
 .sticker-pending-item {
   display: flex;
   align-items: center;
@@ -4108,6 +4174,31 @@ a.plugin-link:hover { color: var(--blue); }
 .sticker-pending-meta strong { font-size: 12.5px; color: var(--text); }
 .sticker-pending-meta small { font-size: 11px; color: var(--text-3); }
 .sticker-pending-actions { display: flex; gap: 6px; }
+
+.sticker-pending-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.sticker-pending-tools[hidden] { display: none; }
+.sticker-pending-batch { display: flex; gap: 6px; margin-left: auto; }
+.sticker-pending-item > input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--black);
+}
+.sticker-pending-item.is-picked { border-color: var(--text); box-shadow: 0 0 0 1px var(--text); }
+.sticker-pending-item.is-busy { opacity: .6; pointer-events: none; }
+
+@media (max-width: 560px) {
+  .sticker-pending-item { flex-wrap: wrap; }
+  .sticker-pending-meta { flex: 1 1 100px; }
+  .sticker-pending-actions { width: 100%; justify-content: flex-end; }
+}
 
 .group-picker { display: flex; flex-direction: column; gap: 6px; }
 .group-picker-head { display: flex; align-items: center; gap: 8px; }

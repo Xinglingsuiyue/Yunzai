@@ -839,6 +839,15 @@
                 <button class="btn btn-outline btn-sm" type="button" id="stickerPendingBtn" title="查看待审核表情">
                   <svg class="icon"><use href="#i-check"></use></svg>待审核 <span id="stickerPendingBadge" class="sticker-badge" hidden>0</span>
                 </button>
+                <button class="btn btn-outline btn-sm" type="button" id="stickerEditBtn" title="批量选择与删除">
+                  <svg class="icon"><use href="#i-edit"></use></svg><span id="stickerEditLabel">编辑</span>
+                </button>
+                <label class="sticker-check" id="stickerSelectAllWrap" hidden>
+                  <input type="checkbox" id="stickerSelectAll" />全选
+                </label>
+                <button class="btn btn-danger btn-sm" type="button" id="stickerBulkDelete" hidden disabled>
+                  <svg class="icon"><use href="#i-trash"></use></svg>删除选中<span id="stickerBulkCount"></span>
+                </button>
                 <input id="stickerSearch" type="search" placeholder="搜索含义或标签" autocomplete="off" />
               </div>
             </div>
