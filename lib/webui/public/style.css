@@ -3385,12 +3385,13 @@ a.plugin-link:hover { color: var(--blue); }
 
 .help-dialog-item {
   display: grid;
-  grid-template-columns: 40px minmax(90px, .8fr) minmax(0, 1.4fr);
+  grid-template-columns: auto 40px minmax(90px, .8fr) minmax(0, 1.4fr) auto;
   gap: 8px;
   align-items: center;
 }
 
 .help-dialog-item .config-input { height: 32px; font-size: 12px; }
+.help-dialog-item .help-actions { grid-column: 5; grid-row: 1; }
 .help-dialog-divider { margin: 14px 0; border-top: 1px dashed var(--border); }
 .help-dialog-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
 
@@ -3707,8 +3708,9 @@ a.plugin-link:hover { color: var(--blue); }
 @media (max-width: 720px) {
   .help-float { top: 56px; width: calc(100% - 16px); }
   .help-float-body { max-height: 62vh; }
-  .help-dialog-item { grid-template-columns: 40px minmax(0, 1fr); }
+  .help-dialog-item { grid-template-columns: auto 40px minmax(0, 1fr) auto; }
   .help-dialog-item .config-input[data-help-item-desc] { grid-column: 1 / -1; }
+  .help-dialog-item .help-actions { grid-column: 4; grid-row: 1; }
   .help-master-switch .config-switch-text { font-size: 11px; }
   .help-theme-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
 }
