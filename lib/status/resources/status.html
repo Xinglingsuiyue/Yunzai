@@ -33,8 +33,8 @@
     .narrow .hardware { display: grid; grid-template-columns: repeat(2, 1fr); row-gap: 14px; }
 
     .box {
-      padding: 16px 20px;
-      margin-bottom: 14px;
+      padding: 13px 18px;
+      margin-bottom: 12px;
       border-radius: 18px;
       background: var(--bg);
       box-shadow: 8px 8px 16px var(--back-bg), -8px -8px 16px var(--back-shadow);
@@ -43,12 +43,22 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       font-size: 14px;
       font-weight: 700;
       color: #4a485e;
     }
     .title .bar { width: 4px; height: 14px; border-radius: 2px; background: var(--low); }
+    .title .titleExtra {
+      margin-left: auto;
+      min-width: 0;
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     .botInfo { display: flex; align-items: center; gap: 20px; }
     .avatarBox { position: relative; flex: none; }
@@ -216,102 +226,109 @@
     }
     .hwInfo { margin-top: 4px; font-size: 10.5px; color: #2f4f4f; text-align: center; word-break: break-all; }
 
-    .diskRow {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.55);
-      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
-      margin-bottom: 12px;
-    }
-    .diskRow:last-child { margin-bottom: 0; }
-    .diskRight { flex: 1; min-width: 0; }
-    .diskTop { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-    .mount { font-size: 16px; font-weight: 700; color: #3d3b4f; }
-    .diskSize { font-size: 12px; color: var(--sub); font-variant-numeric: tabular-nums; }
-    .barTrack {
-      height: 9px;
-      margin: 9px 0 8px;
-      border-radius: 5px;
-      background: var(--bg);
-      box-shadow: inset 2px 2px 4px var(--back-bg), inset -2px -2px 4px var(--back-shadow);
-      overflow: hidden;
-    }
-    .barFill { height: 100%; border-radius: 5px; }
-    .diskLegend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 10.5px; color: var(--sub); }
-    .diskLegend span { min-width: 0; word-break: break-all; }
-    .legendDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
-    .diskIoRow { padding: 11px 14px; }
-    .diskIo { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; font-size: 11.5px; color: var(--sub); }
-    .diskIo b { color: #3d3b4f; font-weight: 600; font-variant-numeric: tabular-nums; }
-
-    .chart {
-      padding: 10px 12px 8px;
+    .diskGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 10px; }
+    .diskTile {
+      min-width: 0;
+      padding: 8px 11px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.55);
       box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
     }
-    .chart svg { width: 100%; height: 96px; display: block; }
+    .diskTop { display: flex; align-items: baseline; gap: 8px; }
+    .mount {
+      flex: 1;
+      min-width: 0;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #3d3b4f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .diskPct { flex: none; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .barTrack {
+      height: 7px;
+      margin: 5px 0 4px;
+      border-radius: 4px;
+      background: var(--bg);
+      box-shadow: inset 2px 2px 4px var(--back-bg), inset -2px -2px 4px var(--back-shadow);
+      overflow: hidden;
+    }
+    .barFill { height: 100%; border-radius: 4px; }
+    .diskMeta {
+      font-size: 10px;
+      color: var(--sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chart {
+      padding: 9px 11px 7px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
+    }
+    .chart svg { width: 100%; height: 74px; display: block; }
     .grid { stroke: rgba(140, 150, 170, 0.22); stroke-width: 1; stroke-dasharray: 4 4; }
     .lineDown { fill: none; stroke: var(--low); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
     .lineUp { fill: none; stroke: #e0be92; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
-    .chartFoot { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--sub); }
-    .netGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 12px; margin-top: 12px; }
+    .chartFoot { display: flex; justify-content: space-between; margin-top: 4px; font-size: 10px; color: var(--sub); }
+    .netGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 10px; margin-top: 9px; }
     .netTile {
-      padding: 10px 12px;
+      padding: 8px 10px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.55);
       box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
     }
     .netTile .k { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--sub); }
     .netTile .k i { width: 6px; height: 6px; border-radius: 50%; }
-    .netTile .v { margin-top: 5px; font-size: 17px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
+    .netTile .v { margin-top: 4px; font-size: 16px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
     .netTile .unit { margin-left: 3px; font-size: 10.5px; font-weight: 400; color: var(--sub); }
 
-    .redisGrid { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 12px; }
+    .redisGrid { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 10px; }
     .redisPanel {
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.55);
       box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
     }
-    .redisRow { display: flex; justify-content: space-between; padding: 2px 0; font-size: 11.5px; color: var(--sub); }
+    .redisRow { display: flex; justify-content: space-between; padding: 1px 0; font-size: 11px; color: var(--sub); }
     .redisRow b { color: #3d3b4f; font-weight: 600; font-variant-numeric: tabular-nums; }
     .redisRow b.running { color: #4caf82; }
     .panelLabel { font-size: 10.5px; color: var(--sub); }
-    .big { margin-top: 6px; font-size: 20px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
-    .panelFoot { display: flex; justify-content: space-between; margin-top: 7px; font-size: 10px; color: var(--sub); }
-    .spark { width: 100%; height: 26px; display: block; margin-top: 4px; }
+    .big { margin-top: 4px; font-size: 18px; font-weight: 700; color: #3d3b4f; font-variant-numeric: tabular-nums; }
+    .panelFoot { display: flex; justify-content: space-between; margin-top: 5px; font-size: 10px; color: var(--sub); }
+    .spark { width: 100%; height: 24px; display: block; margin-top: 3px; }
     .spark polyline { fill: none; stroke: var(--low); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
-    .keyspace { margin-top: 12px; }
-    .ksRow { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; padding: 6px 10px; font-size: 11px; border-radius: 7px; }
-    .ksRow.head { color: var(--sub); font-size: 10.5px; }
-    .ksRow:not(.head) { margin-top: 5px; background: rgba(255, 255, 255, 0.55); }
+    .keyspace { margin-top: 9px; }
+    .ksRow { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; padding: 4px 10px; font-size: 10.5px; border-radius: 7px; }
+    .ksRow.head { color: var(--sub); font-size: 10px; }
+    .ksRow:not(.head) { margin-top: 3px; background: rgba(255, 255, 255, 0.55); }
     .ksRow span:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
     .healthTitle {
-      margin-top: 12px;
-      padding-top: 10px;
+      margin-top: 9px;
+      padding-top: 7px;
       border-top: 1px solid rgba(140, 150, 170, 0.18);
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--sub);
     }
-    .healthGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px 14px; margin-top: 8px; }
-    .healthItem { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+    .healthGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 12px; margin-top: 6px; }
+    .healthItem { display: flex; align-items: center; gap: 5px; font-size: 10.5px; }
     .healthItem .dot { width: 5px; height: 5px; border-radius: 50%; flex: none; }
     .healthItem .dot.ok { background: #4caf82; }
     .healthItem .dot.bad { background: #d73403; }
     .healthItem .k { color: var(--sub); }
     .healthItem .v { margin-left: auto; color: #3d3b4f; font-weight: 600; font-variant-numeric: tabular-nums; }
 
-    .procCounts { display: flex; gap: 22px; padding: 0 2px 11px; font-size: 12px; color: var(--sub); }
-    .procCounts b { margin-left: 5px; font-size: 13px; color: #4a485e; font-variant-numeric: tabular-nums; }
+    .procCounts { margin-left: auto; display: flex; gap: 11px; font-size: 10.5px; font-weight: 400; color: var(--sub); }
+    .procCounts b { margin-left: 4px; font-size: 11.5px; color: #4a485e; font-variant-numeric: tabular-nums; }
     .procCounts b.ok { color: #54ad57; }
     .procCounts b.warn { color: #cc8823; }
     .procCounts b.info { color: #3698e8; }
     .procTable {
-      padding: 6px 14px;
+      padding: 4px 12px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.55);
       box-shadow: 2px 2px 6px var(--back-bg), -2px -2px 6px var(--back-shadow);
@@ -320,7 +337,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 78px 54px 78px;
       gap: 6px;
-      padding: 5px 0;
+      padding: 4px 0;
       font-size: 11.5px;
       color: #3d3b4f;
       border-bottom: 1px solid rgba(140, 150, 170, 0.12);
@@ -340,17 +357,17 @@
     .procRow:last-child { border-bottom: none; }
     .procHr { height: 1px; background: rgba(140, 150, 170, 0.28); margin: 4px 0; }
 
-    .fastGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 9px 16px; }
+    .fastGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px 12px; }
     .fastRow {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 10px;
+      gap: 9px;
+      padding: 4px 9px;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.45);
-      font-size: 11.5px;
+      font-size: 11px;
     }
-    .fastKey { display: flex; align-items: center; gap: 6px; flex: none; width: 52px; color: var(--sub); }
+    .fastKey { display: flex; align-items: center; gap: 5px; flex: none; width: 50px; color: var(--sub); }
     .fastKey i { width: 7px; height: 7px; border-radius: 50%; }
     .fastVal {
       flex: 1;
@@ -436,36 +453,22 @@
 
     {{if hasDisks}}
     <div class="box">
-      <div class="title"><span class="bar"></span>磁盘使用</div>
-      {{each disks}}
-      <div class="diskRow">
-        <div class="container-box" data-num="{{$value.percent}}%">
-          <div class="circle-outer"></div>
-          <svg><circle stroke="{{$value.color}}" style="stroke-dashoffset:{{$value.dash}}"></circle></svg>
-        </div>
-        <div class="diskRight">
+      <div class="title">
+        <span class="bar"></span>磁盘使用
+        {{if diskIo}}<span class="titleExtra">读 {{diskIo.read.size}} {{diskIo.read.unit}}/s · 写 {{diskIo.write.size}} {{diskIo.write.unit}}/s · 合计 {{diskIo.total.size}} {{diskIo.total.unit}}/s</span>{{/if}}
+      </div>
+      <div class="diskGrid">
+        {{each disks}}
+        <div class="diskTile">
           <div class="diskTop">
             <span class="mount">{{$value.mount}}</span>
-            <span class="diskSize">{{$value.used}} / {{$value.size}}</span>
+            <span class="diskPct" style="color:{{$value.color}}">{{$value.percent}}%</span>
           </div>
           <div class="barTrack"><div class="barFill" style="width:{{$value.percent}}%;background:{{$value.color}}"></div></div>
-          <div class="diskLegend">
-            <span><i class="legendDot" style="background:{{$value.color}}"></i>已使用 {{$value.used}}</span>
-            <span><i class="legendDot" style="background:#8E8691"></i>未使用 {{$value.available}}</span>
-            <span>文件系统 {{$value.type}}</span>
-          </div>
+          <div class="diskMeta">{{$value.used}} / {{$value.size}} · 未用 {{$value.available}} · {{$value.type}}</div>
         </div>
+        {{/each}}
       </div>
-      {{/each}}
-      {{if diskIo}}
-      <div class="diskRow diskIoRow">
-        <div class="diskIo">
-          <span><i class="legendDot" style="background:var(--low)"></i>读 <b>{{diskIo.read.size}} {{diskIo.read.unit}}/s</b></span>
-          <span><i class="legendDot" style="background:#e0be92"></i>写 <b>{{diskIo.write.size}} {{diskIo.write.unit}}/s</b></span>
-          <span><i class="legendDot" style="background:#8E8691"></i>合计 <b>{{diskIo.total.size}} {{diskIo.total.unit}}/s</b></span>
-        </div>
-      </div>
-      {{/if}}
     </div>
     {{/if}}
 
@@ -560,13 +563,15 @@
     {{/if}}
 
     <div class="box">
-      <div class="title"><span class="bar"></span>进程信息</div>
-      <div class="procCounts">
-        <div>全部<b>{{processInfo.counts.all}}</b></div>
-        <div>运行中<b class="ok">{{processInfo.counts.running}}</b></div>
-        <div>阻塞<b class="warn">{{processInfo.counts.blocked}}</b></div>
-        <div>休眠<b class="info">{{processInfo.counts.sleeping}}</b></div>
-        <div>未知<b>{{processInfo.counts.unknown}}</b></div>
+      <div class="title">
+        <span class="bar"></span>进程信息
+        <span class="procCounts">
+          <span>全部<b>{{processInfo.counts.all}}</b></span>
+          <span>运行<b class="ok">{{processInfo.counts.running}}</b></span>
+          <span>阻塞<b class="warn">{{processInfo.counts.blocked}}</b></span>
+          <span>休眠<b class="info">{{processInfo.counts.sleeping}}</b></span>
+          <span>未知<b>{{processInfo.counts.unknown}}</b></span>
+        </span>
       </div>
       <div class="procTable">
         <div class="procRow head"><span class="name">Name</span><span>Pid</span><span>CPU</span><span>MEM</span></div>
