@@ -229,6 +229,9 @@
         <div class="avatar-wrap" id="avatarWrap">
           <button class="avatar" type="button" id="avatar" title="Yunzai" aria-haspopup="menu" aria-expanded="false">Y</button>
           <div class="user-menu" id="userMenu" role="menu" hidden>
+            <button class="user-menu-item" type="button" id="settingsBtn" role="menuitem">
+              <svg class="icon"><use href="#i-settings"></use></svg>设置
+            </button>
             <button class="user-menu-item" type="button" id="logoutBtn" role="menuitem">
               <svg class="icon"><use href="#i-logout"></use></svg>退出登录
             </button>
@@ -1694,22 +1697,34 @@
     <div class="login-loading" id="loginLoading"><span class="spinner"></span></div>
     <form id="loginForm" hidden>
       <label class="field">
-        <span>访问令牌</span>
+        <span>访问密码</span>
         <input id="loginToken" type="password" autocomplete="current-password" />
       </label>
       <div class="login-options">
         <label class="login-check">
-          <input type="checkbox" id="loginRemember" />
-          <span>记住令牌</span>
-        </label>
-        <label class="login-check">
           <input type="checkbox" id="loginAuto" />
           <span>自动登录</span>
         </label>
+        <span class="login-help" tabindex="0" role="note" aria-label="自动登录有效期七天">?<span class="login-help-tip">自动登录有效期七天</span></span>
       </div>
       <div class="form-error" id="loginError"></div>
       <button class="btn btn-primary btn-block" type="submit" id="loginSubmit">
         <svg class="icon"><use href="#i-lock"></use></svg>进入控制台
+      </button>
+    </form>
+    <form id="passwordForm" hidden>
+      <p class="login-hint">首次登录需要设置新密码，至少 8 位，且必须同时包含字母和数字。</p>
+      <label class="field">
+        <span>新密码</span>
+        <input id="passwordNew" type="password" autocomplete="new-password" />
+      </label>
+      <label class="field">
+        <span>确认新密码</span>
+        <input id="passwordConfirm" type="password" autocomplete="new-password" />
+      </label>
+      <div class="form-error" id="passwordError"></div>
+      <button class="btn btn-primary btn-block" type="submit" id="passwordSubmit">
+        <svg class="icon"><use href="#i-lock"></use></svg>保存并进入
       </button>
     </form>
     <button class="btn btn-outline btn-block" type="button" id="loginRetry" hidden>重新检测</button>

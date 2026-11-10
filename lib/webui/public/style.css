@@ -1441,11 +1441,19 @@ body.modal-open { overflow: hidden; }
 .login-card > .btn-block { margin-top: 20px; }
 .login .field { text-align: left; }
 
+.login-hint {
+  margin: 0 0 14px;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-3);
+}
+
 .login-options {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 22px;
+  gap: 6px;
   margin: 16px 0 20px;
   font-size: 12.5px;
   color: var(--text-3);
@@ -1461,6 +1469,53 @@ body.modal-open { overflow: hidden; }
 
 .login-check input { margin: 0; accent-color: var(--text); cursor: pointer; }
 .login-check:hover { color: var(--text); }
+
+.login-help {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-3);
+  cursor: help;
+  user-select: none;
+}
+
+.login-help:hover,
+.login-help:focus {
+  color: var(--text);
+  border-color: var(--text-3);
+  outline: none;
+}
+
+.login-help-tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.login-help:hover .login-help-tip,
+.login-help:focus .login-help-tip { opacity: 1; visibility: visible; }
 
 .login-options + .form-error { margin: 0 0 12px; }
 
@@ -1838,6 +1893,8 @@ textarea.config-input.text-area { font-family: inherit; font-size: 12.5px; }
   border: 1px dashed var(--border);
   border-radius: 9px;
 }
+
+.config-inline-actions { display: flex; justify-content: flex-end; margin-top: 2px; }
 
 .config-list-editor { display: flex; flex-direction: column; gap: 6px; }
 .config-tags {
