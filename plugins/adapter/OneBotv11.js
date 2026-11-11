@@ -183,8 +183,10 @@ Bot.adapter.push(
       Bot.makeLog("info", `撤回消息：${message_id}`, data.self_id)
       if (!Array.isArray(message_id)) message_id = [message_id]
       const msgs = []
-      for (const i of message_id)
-        msgs.push(await data.bot.sendApi("delete_msg", { message_id: i }).catch(i => i))
+      for (const i of message_id) {
+        const id = /^-?\d+$/.test(String(i)) ? Number(i) : i
+        msgs.push(await data.bot.sendApi("delete_msg", { message_id: id }).catch(i => i))
+      }
       return msgs
     }
 
@@ -200,6 +202,15 @@ Bot.adapter.push(
       const msg = (await data.bot.sendApi("get_msg", { message_id })).data
       if (msg?.message) msg.message = this.parseMsg(msg.message)
       return msg
+    }
+
+    setMsgEmojiLike(data, message_id, emoji_id, set = true) {
+      const id = /^-?\d+$/.test(String(message_id)) ? Number(message_id) : message_id
+      return data.bot.sendApi("set_msg_emoji_like", {
+        message_id: id,
+        emoji_id: String(emoji_id),
+        set: set !== false,
+      })
     }
 
     async getFriendMsgHistory(data, message_seq, count, reverseOrder = true) {
@@ -943,6 +954,7 @@ Bot.adapter.push(
           return this.avatar || `https://p.qlogo.cn/gh/${group_id}/${group_id}/0`
         },
         getChatHistory: this.getGroupMsgHistory.bind(this, i),
+        setMsgEmojiLike: this.setMsgEmojiLike.bind(this, i),
         getHonorInfo: this.getGroupHonorInfo.bind(this, i),
         getEssence: this.getEssenceMsg.bind(this, i),
         getTodoList: this.getGroupTodoList.bind(this, i),

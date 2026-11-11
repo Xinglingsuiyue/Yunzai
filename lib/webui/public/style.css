@@ -1380,17 +1380,148 @@ body.modal-open { overflow: hidden; }
   color: var(--text-3);
 }
 
-.chat-recall {
-  padding: 0;
-  font: inherit;
+.chat-quote-ref {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  max-width: 78%;
+  padding: 5px 9px;
   font-size: 11px;
   color: var(--text-3);
+  background: var(--bg-soft);
+  border-left: 2px solid var(--ring);
+  border-radius: 6px;
+}
+
+.chat-quote-ref-name {
+  flex: none;
+  max-width: 42%;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-quote-ref-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-reactions { display: flex; flex-wrap: wrap; gap: 4px; max-width: 78%; }
+
+.chat-reaction {
+  padding: 1px 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.chat-context-menu {
+  position: fixed;
+  z-index: 10050;
+  min-width: 132px;
+  padding: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.chat-context-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+  text-align: left;
+  white-space: nowrap;
   cursor: pointer;
   background: none;
   border: 0;
+  border-radius: 7px;
 }
 
-.chat-recall:hover { color: var(--red); }
+.chat-context-item:hover { background: var(--hover); }
+.chat-context-item.danger { color: var(--red); }
+
+.chat-context-sep { height: 1px; margin: 4px 6px; background: var(--border); }
+
+.chat-react-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  width: 216px;
+  max-width: calc(100vw - 24px);
+  padding: 2px 6px 6px;
+}
+
+.chat-react-palette[hidden] { display: none; }
+
+.chat-react-item {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+}
+
+.chat-react-item:hover { background: var(--hover); }
+
+.chat-react-custom {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  width: 100%;
+  padding-top: 5px;
+  margin-top: 2px;
+  border-top: 1px solid var(--border);
+}
+
+.chat-react-input {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.chat-react-input:focus { outline: none; border-color: var(--ring); }
+
+.chat-react-send {
+  flex: none;
+  height: 28px;
+  padding: 0 10px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--bg);
+  cursor: pointer;
+  background: var(--black);
+  border: 0;
+  border-radius: 7px;
+}
+
+.chat-react-send:hover { opacity: 0.85; }
+
+@media (hover: none) {
+  .chat-msg { -webkit-touch-callout: none; }
+  .chat-context-item { padding: 10px 16px; }
+}
 
 .modal.chat-image-modal { max-width: min(880px, 92vw); }
 
@@ -1410,7 +1541,56 @@ body.modal-open { overflow: hidden; }
   border-radius: 10px;
 }
 
-.chat-compose { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+.chat-quote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--text-3);
+  background: var(--bg-soft);
+  border-left: 2px solid var(--ring);
+  border-radius: 6px;
+}
+
+.chat-quote[hidden] { display: none; }
+
+.chat-quote-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-quote-close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  color: var(--text-3);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+}
+
+.chat-quote-close:hover { color: var(--text); background: var(--hover); }
+.chat-quote-close .icon { width: 12px; height: 12px; }
+
+.chat-compose {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  width: 100%;
+}
+
+.chat-compose-main { display: flex; align-items: flex-end; gap: 8px; }
 
 .chat-input {
   flex: 1;
