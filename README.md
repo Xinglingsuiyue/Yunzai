@@ -68,6 +68,7 @@ pnpm start
 | -------- | ------------ |
 | [Yunzai-Bot](https://gitee.com/le-niao/Yunzai-Bot) | 乐神的 Yunzai-Bot |
 | [Miao-Yunzai](https://github.com/yoimiya-kokomi/Miao-Yunzai) | 喵喵的 Miao-Yunzai |
+| [miao-plugin](https://github.com/yoimiya-kokomi/miao-plugin) | 喵喵的 miao-plugin |
 | [TRSS-Yunzai](https://github.com/TimeRainStarSky/Yunzai) | 时雨的 TRSS-Yunzai |
 | [yenai-plugin](https://gitee.com/yeyang52/yenai-plugin) | 椰羊的 yenai-plugin |
 | [zhishui-plugin](https://gitee.com/fjcq/zhishui-plugin) | 止水的 zhishui-plugin |
