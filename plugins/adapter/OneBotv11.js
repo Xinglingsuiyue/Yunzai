@@ -204,13 +204,36 @@ Bot.adapter.push(
       return msg
     }
 
+    isLagrange(data) {
+      const version = data?.bot?.version || {}
+      return /lagrange/i.test(
+        String(version.app_name || version.app_full_name || version.version || ""),
+      )
+    }
+
     setMsgEmojiLike(data, message_id, emoji_id, set = true) {
       const id = /^-?\d+$/.test(String(message_id)) ? Number(message_id) : message_id
+      if (data.group_id && this.isLagrange(data))
+        return data.bot.sendApi("set_group_reaction", {
+          group_id: Number(data.group_id),
+          message_id: id,
+          code: String(emoji_id),
+          is_add: set !== false,
+        })
       return data.bot.sendApi("set_msg_emoji_like", {
         message_id: id,
         emoji_id: String(emoji_id),
         set: set !== false,
       })
+    }
+
+    setHistoryCursor(data, params, message_seq) {
+      if (!this.isLagrange(data)) {
+        params.message_seq = message_seq
+        return
+      }
+      const id = Number(message_seq)
+      if (Number.isFinite(id)) params.message_id = id
     }
 
     async getFriendMsgHistory(data, message_seq, count, reverseOrder = true) {
@@ -219,7 +242,7 @@ Bot.adapter.push(
         count,
         reverseOrder,
       }
-      if (message_seq) params.message_seq = message_seq
+      if (message_seq) this.setHistoryCursor(data, params, message_seq)
       const msgs = (await data.bot.sendApi("get_friend_msg_history", params)).data?.messages
 
       for (const i of Array.isArray(msgs) ? msgs : [msgs]) {
@@ -236,7 +259,7 @@ Bot.adapter.push(
         count,
         reverseOrder,
       }
-      if (message_seq) params.message_seq = message_seq
+      if (message_seq) this.setHistoryCursor(data, params, message_seq)
       const msgs = (await data.bot.sendApi("get_group_msg_history", params)).data?.messages
 
       for (const i of Array.isArray(msgs) ? msgs : [msgs]) {

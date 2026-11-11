@@ -1153,7 +1153,7 @@ Bot.adapter.push(
         thumbUp: times => this.sendLike(i, user_id, times),
         delete: () => this.deleteFriend(i, user_id),
         getMsg: message_seq =>
-          this.getMsg({ ...i, message_scene: "private", peer_id: Number(user_id), message_seq }),
+          this.getChatMessage({ ...i, message_scene: "private", peer_id: Number(user_id), message_seq }),
         getHistory: (start_message_seq, limit = 20) =>
           this.getHistoryMessages({
             ...i,
@@ -1184,7 +1184,7 @@ Bot.adapter.push(
         removeEssence: message_seq => this.setGroupEssenceMessage({ ...i, message_seq }, false),
         getEssence: (page = 0, size = 50) => this.getGroupEssenceMessages(i, page, size),
         getMsg: message_seq =>
-          this.getMsg({ ...i, message_scene: "group", peer_id: Number(group_id), message_seq }),
+          this.getChatMessage({ ...i, message_scene: "group", peer_id: Number(group_id), message_seq }),
         getHistory: (start_message_seq, limit = 20) =>
           this.getHistoryMessages({
             ...i,
@@ -1193,6 +1193,10 @@ Bot.adapter.push(
             start_message_seq,
             limit,
           }),
+        getChatHistory: (start_message_seq, limit = 20) =>
+          this.getGroupChatHistory(i, start_message_seq, limit),
+        setMsgEmojiLike: (message_seq, emoji_id, set = true) =>
+          this.sendGroupMessageReaction({ ...i, message_seq }, String(emoji_id), set !== false),
         setName: name => this.setGroupName(i, name),
         muteMember: (user_id, duration) => this.setGroupBan(i, user_id, duration),
         kickMember: user_id => this.setGroupKick(i, user_id),
@@ -1686,6 +1690,61 @@ Bot.adapter.push(
           silent: true,
         },
       )
+    }
+
+    async getGroupChatHistory(data, start_message_seq, limit = 20) {
+      const res = await this.getHistoryMessages({
+        ...data,
+        message_scene: "group",
+        peer_id: Number(data.group_id),
+        start_message_seq: start_message_seq ? Number(start_message_seq) : undefined,
+        limit: Math.min(Math.max(Number(limit) || 20, 1), 50),
+      })
+      if (res.retcode !== 0) throw new Error(res.error || res.wording || "获取群历史消息失败")
+      const messages = res.data?.messages ?? res.messages
+      return (Array.isArray(messages) ? messages : []).map(item =>
+        this.formatIncomingMessage(item),
+      )
+    }
+
+    async getChatMessage(data) {
+      const res = await this.execApi(
+        data,
+        "get_message",
+        {
+          message_scene: data.message_scene,
+          peer_id: data.peer_id,
+          message_seq: data.message_seq,
+        },
+        {
+          silent: true,
+        },
+      )
+      const message = res.data?.message
+      return message ? this.formatIncomingMessage(message) : res
+    }
+
+    formatIncomingMessage(item) {
+      const segments = this.parseMsg(item?.segments)
+      const member = item?.group_member || {}
+      const friend = item?.friend || {}
+      const userId = String(item?.sender_id ?? member.user_id ?? friend.user_id ?? "")
+      return {
+        message_id: String(item?.message_seq ?? ""),
+        message_seq: item?.message_seq,
+        user_id: userId,
+        time: Number(item?.time) || 0,
+        sender: {
+          user_id: userId,
+          nickname: member.nickname || friend.nickname || "",
+          card: member.card || "",
+          role: member.role || "",
+        },
+        message: segments,
+        raw_message: segments
+          .map(segment => (segment.type === "text" ? segment.text : `[${segment.type}]`))
+          .join(""),
+      }
     }
 
     async uploadGroupFile(data, file, folder = "/", name) {
