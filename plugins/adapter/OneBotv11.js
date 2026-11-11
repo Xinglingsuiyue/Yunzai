@@ -17,7 +17,6 @@ Bot.adapter.push(
     sendApi(data, ws, action, params = {}) {
       const echo = ulid()
       const request = { action, params, echo }
-      // 断线后发出的请求不会有任何响应，直接失败，别挂到 60 秒超时
       if (typeof ws.readyState === "number" && ws.readyState !== 1)
         return Promise.reject(Bot.makeError("连接已断开", request))
       ws.sendMsg(request)
@@ -35,8 +34,6 @@ Bot.adapter.push(
         .then(data => {
           if (data.retcode !== 0 && data.retcode !== 1)
             throw Bot.makeError(data.msg || data.wording, request, { error: data })
-          // 发消息类接口成功后累加；这里要按 self_id 找账号实例，
-          // 传进来的 data 是连接报文，不带 stat
           if (/^(send_msg|send_private_msg|send_group_msg)$/.test(action)) {
             const bot = Bot[selfId]
             if (bot?.stat) bot.stat.message_sent = (Number(bot.stat.message_sent) || 0) + 1
@@ -63,12 +60,6 @@ Bot.adapter.push(
       return file
     }
 
-    /**
-     * @param msg 消息
-     * @param splitFile 是否将 file 段剥离到 files 由专用上传 API 发送
-     *   send_msg 需要剥离（部分协议端不再自动路由 file 段），
-     *   合并转发节点必须保留在 content 内，节点没有可用的上传 API
-     */
     async makeMsg(msg, splitFile = true) {
       if (!Array.isArray(msg)) msg = [msg]
       const msgs = []
@@ -109,7 +100,6 @@ Bot.adapter.push(
     }
 
     async sendMsg(msg, send, sendForwardMsg, sendFile) {
-      /** 无专用上传回调时(如频道)保持 file 段内联，行为与旧版一致，不静默丢弃 */
       const [message, forward, files] = await this.makeMsg(msg, Boolean(sendFile))
       const ret = []
 
@@ -213,32 +203,40 @@ Bot.adapter.push(
     }
 
     async getFriendMsgHistory(data, message_seq, count, reverseOrder = true) {
-      const msgs = (
-        await data.bot.sendApi("get_friend_msg_history", {
-          user_id: data.user_id,
-          message_seq,
-          count,
-          reverseOrder,
-        })
-      ).data?.messages
+      const params = {
+        user_id: data.user_id,
+        count,
+        reverseOrder,
+      }
+      if (message_seq) params.message_seq = message_seq
+      const msgs = (await data.bot.sendApi("get_friend_msg_history", params)).data?.messages
 
-      for (const i of Array.isArray(msgs) ? msgs : [msgs])
-        if (i?.message) i.message = this.parseMsg(i.message)
+      for (const i of Array.isArray(msgs) ? msgs : [msgs]) {
+        if (!i) continue
+        if (i.message) i.message = this.parseMsg(i.message)
+        if (!i.sender) i.sender = data.bot.fl.get(i.user_id) || { user_id: i.user_id }
+      }
       return msgs
     }
 
     async getGroupMsgHistory(data, message_seq, count, reverseOrder = true) {
-      const msgs = (
-        await data.bot.sendApi("get_group_msg_history", {
-          group_id: data.group_id,
-          message_seq,
-          count,
-          reverseOrder,
-        })
-      ).data?.messages
+      const params = {
+        group_id: data.group_id,
+        count,
+        reverseOrder,
+      }
+      if (message_seq) params.message_seq = message_seq
+      const msgs = (await data.bot.sendApi("get_group_msg_history", params)).data?.messages
 
-      for (const i of Array.isArray(msgs) ? msgs : [msgs])
-        if (i?.message) i.message = this.parseMsg(i.message)
+      for (const i of Array.isArray(msgs) ? msgs : [msgs]) {
+        if (!i) continue
+        if (i.message) i.message = this.parseMsg(i.message)
+        if (!i.sender)
+          i.sender =
+            data.bot.gml.get(i.group_id ?? data.group_id)?.get(i.user_id) ||
+            data.bot.fl.get(i.user_id) ||
+            { user_id: i.user_id }
+      }
       return msgs
     }
 
@@ -249,15 +247,17 @@ Bot.adapter.push(
         })
       ).data?.messages
 
-      for (const i of Array.isArray(msgs) ? msgs : [msgs])
-        if (i?.message) i.message = this.parseMsg(i.message || i.content)
+      for (const i of Array.isArray(msgs) ? msgs : [msgs]) {
+        if (!i) continue
+        const content = i.message || i.content
+        if (Array.isArray(content)) i.message = this.parseMsg(content)
+      }
       return msgs
     }
 
     async makeForwardMsg(msg) {
       const msgs = []
       for (const i of msg) {
-        /** 转发节点内保留 file 段，剥离会导致整段文件丢失，只含文件的节点还会整条消失 */
         const [content, forward] = await this.makeMsg(i.message, false)
         if (forward.length) msgs.push(...(await this.makeForwardMsg(forward)))
         if (content.length)
@@ -343,7 +343,6 @@ Bot.adapter.push(
               group_name: `${guild.guild_name}-${channel.channel_name}`,
             })
       } catch (err) {
-        //Bot.makeLog("error", ["获取频道列表错误", err])
       }
       return array
     }
@@ -440,7 +439,6 @@ Bot.adapter.push(
       )
     }
 
-    /** 获取频道 ID 列表，复用频道列表接口 */
     async getGuildChannelList(data) {
       const array = []
       for (const { channel_id } of await this.getGuildChannelArray(data)) array.push(channel_id)
@@ -988,8 +986,6 @@ Bot.adapter.push(
         sendApi: this.sendApi.bind(this, data, ws),
         stat: {
           start_time: data.time,
-          // 协议端心跳上报的原始 status 放这里，getter 不能再用 this.stat.*，
-          // 那会取到这个空对象自己、永远读到 undefined
           stat: {},
           message_received: 0,
           message_sent: 0,
@@ -1067,7 +1063,6 @@ Bot.adapter.push(
       }
       data.bot = Bot[data.self_id]
 
-      // 可选的兼容接口（频道、在线客户端、Cookie 等）缺失或断线时只降级，不中断连接
       const api = async (action, params) => {
         try {
           return await data.bot.sendApi(action, params)
@@ -1136,8 +1131,6 @@ Bot.adapter.push(
     }
 
     makeMessage(data) {
-      // 收发统计自己累加：协议端心跳里的 status 往往不带这两个计数，
-      // 只靠它会让面板一直是 0
       if (data.bot?.stat) data.bot.stat.message_received = (Number(data.bot.stat.message_received) || 0) + 1
       data.message = this.parseMsg(data.message)
       switch (data.message_type) {
@@ -1527,7 +1520,6 @@ Bot.adapter.push(
 
     heartbeat(data) {
       if (data.status) Object.assign(data.bot.stat, data.status)
-      // 心跳时间用于判断账号是否仍然在线；间隔由协议端上报（毫秒）
       data.bot.stat.last_heartbeat = Date.now()
       if (Number(data.interval) > 0) data.bot.stat.heartbeat_interval = Number(data.interval)
     }
@@ -1538,8 +1530,6 @@ Bot.adapter.push(
           this.heartbeat(data)
           break
         case "lifecycle":
-          // SnowLuma 等协议端会先后发 connect 与 enable，同一连接只初始化一次；
-          // disable 表示账号下线，不能当成就绪事件重新握手
           if (data.sub_type === "disable") {
             Bot.makeLog("info", "账号已离线", data.self_id)
             break
@@ -1592,7 +1582,6 @@ Bot.adapter.push(
       if (!Array.isArray(Bot.wsf[this.path])) Bot.wsf[this.path] = []
       Bot.wsf[this.path].push((ws, ...args) => {
         ws.on("message", data => this.message(data, ws, ...args))
-        // 断线后挂起的请求不可能再有响应，立刻拒绝，避免逐条等满 60 秒超时
         ws.on("close", () => {
           for (const [echo, cache] of this.echo) {
             if (cache.ws !== ws) continue
