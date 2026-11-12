@@ -416,16 +416,17 @@
             {{$value.nickname}}
           </div>
           <div class="chips">
-            <span class="chip gray"><b>{{$value.loginProtocol}}</b></span>
+            {{if $value.loginProtocol}}<span class="chip gray"><b>{{$value.loginProtocol}}</b></span>{{/if}}
             {{if $value.protocolVersion}}<span class="chip gray"><b>{{$value.protocolVersion}}</b></span>{{/if}}
+            {{if $value.platform}}<span class="chip gray"><b>{{$value.platform}}</b></span>{{/if}}
             {{if $value.botRuntime}}<span class="chip purple">{{$value.botRuntime}}</span>{{/if}}
           </div>
           <div class="chips">
             <span class="chip plain"><b>{{$value.friendCount}}</b><span class="suffix">好友</span></span>
             <span class="chip plain"><b>{{$value.groupCount}}</b><span class="suffix">群组</span></span>
             <span class="chip plain"><b>{{$value.groupMemberCount}}</b><span class="suffix">群员</span></span>
-            <span class="chip plain"><b>{{$value.recvCount}}</b><span class="suffix">收</span></span>
             <span class="chip plain"><b>{{$value.sendCount}}</b><span class="suffix">发</span></span>
+            <span class="chip plain"><b>{{$value.recvCount}}</b><span class="suffix">收</span></span>
           </div>
         </div>
       </div>
