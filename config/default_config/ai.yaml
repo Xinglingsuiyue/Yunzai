@@ -89,8 +89,7 @@ toolResultMaxLength: 4000
 disabledTools: []
 # 禁止 AI 调用的插件名列表
 disabledToolPlugins: []
-# 允许 AI 启动和查找本机程序。
-# 开启后，AI 可按主人的要求在本机查找并启动程序、带参数运行；关闭时这些工具不注册
+# 本地执行。
 enableLaunchProgram: false
 
 # ===================== 知识库 =====================
