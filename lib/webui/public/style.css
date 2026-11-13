@@ -1562,6 +1562,22 @@ body.modal-open { overflow: hidden; }
   border-radius: 10px;
 }
 
+.chat-buttons { display: flex; flex-wrap: wrap; gap: 6px; max-width: 100%; }
+
+.chat-button {
+  max-width: 100%;
+  padding: 3px 12px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+}
+
 .chat-context-menu {
   position: fixed;
   z-index: 10050;
@@ -1774,7 +1790,34 @@ body.modal-open { overflow: hidden; }
 
 .chat-tool:hover { color: var(--text); background: var(--hover); }
 .chat-tool:disabled { color: var(--text-3); cursor: default; background: var(--bg-soft); }
+.chat-tool.active { color: var(--text); background: var(--pill); border-color: var(--border-strong); }
 .chat-tool .icon { width: 16px; height: 16px; }
+
+.chat-button-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chat-button-bar[hidden] { display: none; }
+
+.chat-button-bar input {
+  flex: 1 1 120px;
+  min-width: 0;
+  height: 32px;
+  padding: 0 10px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  outline: none;
+}
+
+.chat-button-bar input:focus { border-color: var(--ring); box-shadow: 0 0 0 3px var(--hover); }
+.chat-button-bar .chat-button-label { flex: 0 1 140px; }
 
 .chat-attachments {
   display: flex;
