@@ -1341,6 +1341,13 @@ body.modal-open { overflow: hidden; }
 
 .chat-avatar .icon { width: 18px; height: 18px; }
 
+.chat-avatar-poke {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.chat-avatar-poke:active { transform: scale(0.94); }
+
 .chat-name {
   max-width: 100%;
   overflow: hidden;
@@ -1488,6 +1495,22 @@ body.modal-open { overflow: hidden; }
   border: 1px dashed var(--border);
   border-radius: 10px;
 }
+
+.chat-poke {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 2px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-3);
+  text-align: center;
+}
+
+.chat-poke-text { overflow-wrap: anywhere; }
+.chat-poke-name { font-weight: 600; color: var(--text-2); }
+.chat-poke-time { flex: none; font-size: 11px; opacity: 0.75; }
 
 .chat-msg.recalled .chat-name { opacity: 0.7; }
 
