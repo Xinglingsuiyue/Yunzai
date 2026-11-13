@@ -1568,6 +1568,7 @@ body.modal-open { overflow: hidden; }
   max-width: 100%;
   padding: 3px 12px;
   overflow: hidden;
+  font-family: inherit;
   font-size: 12px;
   line-height: 1.6;
   color: var(--text-2);
@@ -1577,6 +1578,11 @@ body.modal-open { overflow: hidden; }
   border: 1px solid var(--border-strong);
   border-radius: 999px;
 }
+
+button.chat-button { cursor: pointer; }
+button.chat-button:hover { color: var(--text); border-color: var(--text-2); }
+button.chat-button:active { transform: translateY(1px); }
+button.chat-button:disabled { opacity: 0.6; cursor: default; }
 
 .chat-context-menu {
   position: fixed;
