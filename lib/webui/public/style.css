@@ -845,6 +845,33 @@ kbd {
 .table tbody tr:hover { background: var(--hover-soft); }
 
 .cell-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cell-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cell-avatar {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  user-select: none;
+}
+.cell-avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+.cell-avatar.has-image img { opacity: 1; }
 .cell-main strong { font-size: 12.5px; font-weight: 600; }
 .cell-main small { overflow: hidden; font-family: var(--mono); font-size: 10.5px; color: var(--text-3); white-space: nowrap; text-overflow: ellipsis; }
 
