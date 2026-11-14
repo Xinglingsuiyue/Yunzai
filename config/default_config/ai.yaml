@@ -91,6 +91,8 @@ disabledTools: []
 disabledToolPlugins: []
 # 本地执行。
 enableLaunchProgram: false
+# 本机文件与命令。开启后 AI 可读取本机文件并执行命令（仅主人）。
+enableHostAccess: false
 
 # ===================== 知识库 =====================
 # 启用知识库
