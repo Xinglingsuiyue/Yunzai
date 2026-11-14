@@ -4564,8 +4564,16 @@ a.plugin-link:hover { color: var(--blue); }
   overscroll-behavior: contain;
 }
 
-.term-line { min-height: 1.62em; white-space: pre-wrap; overflow-wrap: anywhere; }
-.term-pane:focus-within .term-line:last-child::after { content: ""; }
+.term-view.xterm-host { overflow: hidden; }
+.term-view .xterm-viewport {
+  background-color: transparent !important;
+  scrollbar-width: thin;
+  scrollbar-color: #2b3039 transparent;
+}
+.term-view .xterm-viewport::-webkit-scrollbar { width: 8px; }
+.term-view .xterm-viewport::-webkit-scrollbar-track { background: transparent; }
+.term-view .xterm-viewport::-webkit-scrollbar-thumb { background: #2b3039; border-radius: 4px; }
+.term-view .xterm-viewport::-webkit-scrollbar-thumb:hover { background: #3b4048; }
 .term-pane.active:focus-within .term-view { box-shadow: inset 0 0 0 1px rgba(120, 130, 255, 0.22); }
 
 .term-toolbar {
