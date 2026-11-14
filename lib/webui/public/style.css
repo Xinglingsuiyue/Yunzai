@@ -1848,6 +1848,7 @@ button.chat-button:disabled { opacity: 0.6; cursor: default; }
 }
 
 .chat-compose-main { display: flex; align-items: flex-end; gap: 8px; }
+.chat-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 
 .chat-input {
   flex: 1;
