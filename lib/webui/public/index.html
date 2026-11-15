@@ -79,7 +79,6 @@
 
     <nav class="nav">
       <div class="nav-group" data-nav-group="work">
-        <button class="nav-head" type="button">工作台 <svg class="icon"><use href="#i-chevron"></use></svg></button>
         <div class="nav-items">
           <button class="nav-item active" type="button" data-nav="dashboard">
             <svg class="icon"><use href="#i-grid"></use></svg>仪表盘
@@ -416,8 +415,11 @@
 
         <section class="card ai-model-card">
           <div class="card-head">
-            <div><h3>模型选择</h3></div>
-            <span class="pill" id="aiKeyPill">—</span>
+            <div><h3>模型</h3></div>
+            <div class="ai-model-head-actions">
+              <span class="pill" id="aiKeyPill">—</span>
+              <button class="link-btn" type="button" data-ai-goto-model>模型设置<svg class="icon"><use href="#i-arrow"></use></svg></button>
+            </div>
           </div>
           <div class="card-body">
             <div class="ai-current">
@@ -433,34 +435,7 @@
                 <div class="ai-current-endpoint mono" id="aiCurrentEndpoint">—</div>
               </div>
             </div>
-            <div class="ai-model-note" id="aiModelNote" hidden></div>
-            <div class="ai-picker">
-              <label class="field">
-                <span>渠道</span>
-                <select id="aiModelChannel"></select>
-              </label>
-              <label class="field">
-                <span>模型</span>
-                <select id="aiModelName"></select>
-              </label>
-              <span class="model-badge" id="aiModelBadge" hidden></span>
-              <button type="button" class="btn btn-primary" id="aiModelApply">应用</button>
-            </div>
-            <div class="ai-pool-head">
-              <div><h4>模型池</h4></div>
-              <span class="pill pill-outline" id="aiPoolCount">—</span>
-            </div>
-            <div class="ai-pool" id="aiModelPool">
-              <div class="skeleton sk-row" style="width:60%"></div>
-            </div>
           </div>
-        </section>
-
-        <section class="card">
-          <div class="card-head">
-            <div><h3>备选模型轮询</h3></div>
-          </div>
-          <div class="card-body" id="aiModelFallbackPanel"><div class="muted">正在加载…</div></div>
         </section>
 
         <div class="grid-2">
