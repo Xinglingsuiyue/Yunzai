@@ -112,5 +112,5 @@ kbRecencyHalfLifeDays: 90
 # 内容相似度达到该值自动合并（0~1）
 kbMergeSimilarity: 0.85
 
-# 主人称呼，用于预设提示词里的 {master_name} 占位符
+# 主人称呼，用于 {master_name} 占位符和 AI 对主人的称呼
 masterName: ""
