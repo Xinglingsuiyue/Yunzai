@@ -5346,6 +5346,16 @@ a.plugin-link:hover { color: var(--blue); }
 .sticker-cat.active { color: var(--text); background: var(--bg-soft); font-weight: 600; }
 .sticker-cat .count { font-size: 11px; color: var(--text-3); }
 
+.sticker-cat-group {
+  padding: 8px 10px 2px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+}
+
+.sticker-cat-group:first-child { padding-top: 2px; }
+
+
 .sticker-main .card-head { flex-wrap: wrap; row-gap: 10px; }
 
 .sticker-tools {
@@ -5503,7 +5513,18 @@ a.plugin-link:hover { color: var(--blue); }
   }
   .sticker-cat .count { flex: none; }
   .sticker-cat.active { background: var(--hover); border-color: var(--border); }
+  .sticker-cat-group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 0 8px 0 4px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-right: 1px solid var(--border);
+  }
+  .sticker-cat-group:first-child { display: none; }
 }
+
 
 @media (max-width: 720px) {
   .sticker-main .card-head { align-items: flex-start; }
