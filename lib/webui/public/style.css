@@ -3620,7 +3620,8 @@ a.plugin-link:hover { color: var(--blue); }
 }
 .channel-test-row.is-testing { border-color: var(--border-strong); }
 .channel-test-model { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.channel-test-model strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.channel-test-model-name { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.channel-test-model-name strong { flex: 1 1 auto; min-width: 0; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .channel-test-model small { font-size: 10.5px; color: var(--text-3); }
 .channel-test-caps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 1px; }
 .channel-test-cap {
@@ -4548,6 +4549,8 @@ a.plugin-link:hover { color: var(--blue); }
   .channel-test-progress { margin-left: 0; }
   .model-picker-layer { align-items: flex-end; padding: 0; }
   .model-picker { max-height: 90vh; border-radius: 16px 16px 0 0; }
+
+  .model-menu-tools input { font-size: 16px; }
 }
 
 
