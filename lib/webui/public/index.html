@@ -128,6 +128,9 @@
           <button class="nav-item" type="button" data-nav="ai-stickers">
             <svg class="icon"><use href="#i-grid"></use></svg>表情
           </button>
+          <button class="nav-item" type="button" data-nav="ai-characters">
+            <svg class="icon"><use href="#i-users"></use></svg>角色教学
+          </button>
           <button class="nav-item" type="button" data-nav="ai-groups">
             <svg class="icon"><use href="#i-users"></use></svg>群设置
           </button>
@@ -891,6 +894,32 @@
             <div class="sticker-grid" id="stickerGrid"></div>
           </section>
         </div>
+      </section>
+
+      <section class="page" data-page="ai-characters">
+        <div class="page-head">
+          <div>
+            <h1>角色教学</h1>
+            <p>给同一个角色上传多张参考图，AI 会整理外观特征；之后认图时先查这份档案。</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" id="characterAdd">
+              <svg class="icon"><use href="#i-plus"></use></svg>新建角色
+            </button>
+          </div>
+        </div>
+        <div class="mini-stats" id="characterStats"></div>
+        <section class="card">
+          <div class="filter-bar">
+            <div class="field-inline">
+              <svg class="icon"><use href="#i-search"></use></svg>
+              <input id="characterSearch" type="search" placeholder="搜索角色、作品、别称或外观…" autocomplete="off" />
+            </div>
+            <div class="filter-spacer"></div>
+            <span class="log-meta" id="characterCount">—</span>
+          </div>
+          <div class="character-grid" id="characterGrid"><div class="character-empty">正在加载…</div></div>
+        </section>
       </section>
 
       <section class="page" data-page="ai-image" data-ai-section-page="imagePresets">
