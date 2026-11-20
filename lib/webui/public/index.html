@@ -1630,10 +1630,11 @@
 
         <section class="card">
           <div class="card-head">
-            <div><h3>联系人与群组</h3><p id="groupCountText">正在加载…</p></div>
+            <div><h3>联系人</h3><p id="groupCountText">正在加载…</p></div>
             <div class="head-tools">
               <div class="segmented" id="groupTabs">
-                <button type="button" class="active" data-group-tab="groups">群聊</button>
+                <button type="button" class="active" data-group-tab="recent">最近</button>
+                <button type="button" data-group-tab="groups">群聊</button>
                 <button type="button" data-group-tab="friends">好友</button>
               </div>
             </div>
@@ -1647,10 +1648,10 @@
           <div class="table-wrap">
             <table class="table">
               <thead>
-                <tr><th>名称</th><th>账号</th><th>详情</th><th>机器人</th><th style="text-align:right">操作</th></tr>
+                <tr><th>名称</th><th>详情</th><th>机器人</th><th style="text-align:right">操作</th></tr>
               </thead>
               <tbody id="groupRows">
-                <tr class="table-empty"><td colspan="5">正在加载…</td></tr>
+                <tr class="table-empty"><td colspan="4">正在加载…</td></tr>
               </tbody>
             </table>
           </div>
