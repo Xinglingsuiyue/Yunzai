@@ -2299,9 +2299,44 @@ button.chat-button:disabled { opacity: 0.6; cursor: default; }
   .chat-bubble .chat-image img { max-width: 180px; max-height: 180px; }
 }
 
-
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .field > span { font-size: 12px; font-weight: 500; color: var(--text-2); }
+.field-title { display: inline-flex; align-items: center; gap: 6px; }
+.help-q {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-3);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: help;
+  user-select: none;
+}
+.help-q:hover, .help-q:focus { color: var(--text); border-color: var(--text-3); outline: none; }
+.page-head h1 .help-q, .card-head h3 .help-q { margin-left: 7px; vertical-align: 2px; }
+.help-tip {
+  position: fixed;
+  z-index: 999;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .45);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  pointer-events: none;
+}
+.help-tip[hidden] { display: none; }
 
 .field input,
 .field textarea,
