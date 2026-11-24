@@ -82,12 +82,20 @@ helpList:
         title: "#结束对话"
         desc: 清空当前会话上下文
     auth: master
+  - group: 好感度
+    list:
+      - icon: 💗
+        title: "#查看好感度"
+        desc: 按权限查看本群近30天活跃成员的好感度
   - group: 管理
     auth: master
     list:
       - icon: 🔑
         title: "#云崽登录"
         desc: 获取带一次性登录码的 WebUI 地址
+      - icon: 🎛
+        title: "#设置好感度 @某人 30"
+        desc: 仅主人，不 @ 则设置自己
       - icon: 📄
         title: "#版本"
         desc: 查看当前框架版本
